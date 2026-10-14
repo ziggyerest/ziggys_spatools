@@ -840,7 +840,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.8</span>
+      <span class="topbar-badge">v1.1.9</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5541,17 +5541,17 @@ async function loadSuggestions() {
 async function submitSuggestion() {
   const box = g('suggest-input'), msg = g('suggest-status');
   const text = box.value.trim();
-  if (!text) { msg.textContent = 'Write something first.'; return; }
+  if (!text) { msg.style.color = 'var(--red)'; msg.textContent = 'Write something first.'; return; }
   if (!SUGGEST_FORM_URL || !SUGGEST_FIELD_ID) { msg.textContent = 'Not connected yet.'; return; }
   const body = new URLSearchParams();
   body.append(SUGGEST_FIELD_ID, text);
   try {
     await fetch(SUGGEST_FORM_URL, { method: 'POST', mode: 'no-cors', body });
     box.value = '';
-    msg.textContent = 'Sent anonymously. The list updates in a few seconds.';
+    msg.style.color = 'var(--green)'; msg.textContent = 'Success! Your suggestion was sent anonymously.';
     setTimeout(loadSuggestions, 3000);
   } catch (e) {
-    msg.textContent = 'Could not send. Try again.';
+    msg.style.color = 'var(--red)'; msg.textContent = 'Could not send. Try again.';
   }
 }
 
@@ -5561,6 +5561,8 @@ const DISCORD_GUILD_ID   = '709581352768634920';
 const DISCORD_REDIRECT   = 'https://ziggyerest.github.io/ziggys_spatools/index.html';
 const DISCORD_TOKEN_KEY  = 'spa_discord_token';
 const DISCORD_EXPIRY_KEY = 'spa_discord_expires';
+const DISCORD_VISITS_KEY = 'spa_discord_visits';
+const DISCORD_LOGIN_EVERY = 25;  // log in again on every 25th visit
 
 function discordLoginURL() {
   const q = new URLSearchParams({ client_id: DISCORD_CLIENT_ID, redirect_uri: DISCORD_REDIRECT, response_type: 'token', scope: 'identify guilds' });
@@ -5574,6 +5576,7 @@ function captureDiscordToken() {
   const seconds = ex ? parseInt(ex[1], 10) : 604800;
   localStorage.setItem(DISCORD_TOKEN_KEY, m[1]);
   localStorage.setItem(DISCORD_EXPIRY_KEY, String(Date.now() + seconds * 1000));
+  localStorage.setItem(DISCORD_VISITS_KEY, '0');
   history.replaceState(null, '', location.pathname + location.search);
   return true;
 }
@@ -5610,6 +5613,11 @@ async function enforceLogin() {
   const msg = g('auth-msg'), btn = g('auth-login');
   if (!msg || !btn) return;
   if (!DISCORD_CLIENT_ID) { msg.textContent = 'Discord login is not set up yet.'; btn.style.display = 'none'; setAuthVisible(true); return; }
+  if (getDiscordToken()) {
+    const v = parseInt(localStorage.getItem(DISCORD_VISITS_KEY) || '0', 10);
+    if (v >= DISCORD_LOGIN_EVERY) { clearDiscordToken(); localStorage.removeItem(DISCORD_VISITS_KEY); }
+    else localStorage.setItem(DISCORD_VISITS_KEY, String(v + 1));
+  }
   if (!getDiscordToken()) {
     msg.textContent = 'Log in with Discord to use the tool. Your account is never shown to other users.';
     btn.style.display = ''; setAuthVisible(true); return;
@@ -6018,9 +6026,6 @@ else enforceLogin();
     <div id="suggest-list" style="display:flex;flex-direction:column;gap:6px"></div>
   </div>
 
-  </div>
-  <div class="info-box" style="font-size:.78rem">
-    <b>Setup (one time):</b> create a Google Form with one long-answer question, turn off "Collect email addresses", then paste its settings into the SUGGEST_ constants at the top of the Suggestions script.
   </div>
 </div>
 
