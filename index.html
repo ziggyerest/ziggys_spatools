@@ -840,7 +840,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.7</span>
+      <span class="topbar-badge">v1.1.8</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5490,8 +5490,8 @@ renderRecent();
 
 // ── SUGGESTIONS (anonymous; stored in a Google Form + Sheet) ──
 // Fill these in once. Leave blank and the tab just says "Not connected yet".
-const SUGGEST_FORM_URL = '';  // formResponse link, e.g. https://docs.google.com/forms/d/e/XXXX/formResponse
-const SUGGEST_FIELD_ID = '';  // the entry ID for the question, e.g. entry.123456789
+const SUGGEST_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfuewPrBh6Us-TbuJHvaARMtOHrtWbqzd04HJs6doho7DShaw/formResponse';  // formResponse link, e.g. https://docs.google.com/forms/d/e/XXXX/formResponse
+const SUGGEST_FIELD_ID = 'entry.138929201';  // the entry ID for the question, e.g. entry.123456789
 const SUGGEST_CSV_URL  = '';  // the sheet published as CSV, e.g. https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv
 
 function parseCSV(text) {
