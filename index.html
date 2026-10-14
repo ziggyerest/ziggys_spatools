@@ -840,8 +840,9 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.5</span>
+      <span class="topbar-badge">v1.1.7</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
+      <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
   </div>
   <nav class="main-nav">
@@ -5554,59 +5555,84 @@ async function submitSuggestion() {
   }
 }
 
-// ── DISCORD LOGIN (gates the Suggestions tab; account details are never shown or saved with suggestions) ──
-const DISCORD_CLIENT_ID = '1559916673459421305';   // Application ID from the Discord developer portal
-const DISCORD_GUILD_ID  = '709581352768634920';   // your SPA Discord server ID (blank = any Discord account can log in)
-const DISCORD_REDIRECT  = 'https://zigggerzig2020.github.io/ziggyspatool/';
-const DISCORD_TOKEN_KEY = 'spa_discord_token';
+// ── DISCORD LOGIN (required to use the tool; stays signed in on this device until it expires or you sign out) ──
+const DISCORD_CLIENT_ID  = '1559916673459421305';
+const DISCORD_GUILD_ID   = '709581352768634920';
+const DISCORD_REDIRECT   = 'https://ziggyerest.github.io/ziggys_spatools/index.html';
+const DISCORD_TOKEN_KEY  = 'spa_discord_token';
+const DISCORD_EXPIRY_KEY = 'spa_discord_expires';
 
 function discordLoginURL() {
   const q = new URLSearchParams({ client_id: DISCORD_CLIENT_ID, redirect_uri: DISCORD_REDIRECT, response_type: 'token', scope: 'identify guilds' });
   return 'https://discord.com/oauth2/authorize?' + q.toString();
 }
-// Returns true if this page load came back from Discord with a token.
+// Saves the token when Discord sends the browser back here. Returns true if it did.
 function captureDiscordToken() {
   const m = location.hash.match(/access_token=([^&]+)/);
   if (!m) return false;
-  sessionStorage.setItem(DISCORD_TOKEN_KEY, m[1]);
+  const ex = location.hash.match(/expires_in=(\d+)/);
+  const seconds = ex ? parseInt(ex[1], 10) : 604800;
+  localStorage.setItem(DISCORD_TOKEN_KEY, m[1]);
+  localStorage.setItem(DISCORD_EXPIRY_KEY, String(Date.now() + seconds * 1000));
   history.replaceState(null, '', location.pathname + location.search);
   return true;
 }
+function getDiscordToken() {
+  const t = localStorage.getItem(DISCORD_TOKEN_KEY);
+  const exp = parseInt(localStorage.getItem(DISCORD_EXPIRY_KEY) || '0', 10);
+  if (!t || Date.now() > exp) { clearDiscordToken(); return null; }
+  return t;
+}
+function clearDiscordToken() {
+  localStorage.removeItem(DISCORD_TOKEN_KEY);
+  localStorage.removeItem(DISCORD_EXPIRY_KEY);
+}
 async function checkDiscordAccess() {
-  const token = sessionStorage.getItem(DISCORD_TOKEN_KEY);
+  const token = getDiscordToken();
   if (!token) return false;
   try {
     const r = await fetch('https://discord.com/api/users/@me/guilds', { headers: { Authorization: 'Bearer ' + token } });
-    if (!r.ok) { sessionStorage.removeItem(DISCORD_TOKEN_KEY); return false; }
-    if (!DISCORD_GUILD_ID) return true;
+    if (r.status === 401) { clearDiscordToken(); return false; }
+    if (!r.ok) return false;
     const guilds = await r.json();
     return guilds.some(gd => gd.id === DISCORD_GUILD_ID);
   } catch (e) { return false; }
 }
 function discordSignOut() {
-  sessionStorage.removeItem(DISCORD_TOKEN_KEY);
-  renderSuggestGate();
+  clearDiscordToken();
+  location.reload();
 }
-async function renderSuggestGate() {
-  const main = g('suggest-main'), msg = g('gate-msg'), login = g('gate-login'), logout = g('gate-logout');
-  if (!main || !msg) return;
-  login.style.display = 'none'; logout.style.display = 'none';
-  if (!DISCORD_CLIENT_ID) { msg.textContent = 'Discord login is not set up yet.'; main.style.display = 'none'; return; }
-  if (!sessionStorage.getItem(DISCORD_TOKEN_KEY)) {
-    msg.textContent = 'Log in with Discord to send and read suggestions. Your account is never shown to anyone.';
-    login.style.display = ''; main.style.display = 'none'; return;
+function setAuthVisible(show) {
+  const a = g('auth-gate');
+  if (a) a.style.display = show ? 'flex' : 'none';
+}
+async function enforceLogin() {
+  const msg = g('auth-msg'), btn = g('auth-login');
+  if (!msg || !btn) return;
+  if (!DISCORD_CLIENT_ID) { msg.textContent = 'Discord login is not set up yet.'; btn.style.display = 'none'; setAuthVisible(true); return; }
+  if (!getDiscordToken()) {
+    msg.textContent = 'Log in with Discord to use the tool. Your account is never shown to other users.';
+    btn.style.display = ''; setAuthVisible(true); return;
   }
-  msg.textContent = 'Checking your access…';
+  msg.textContent = 'Checking access…'; btn.style.display = 'none'; setAuthVisible(true);
   const ok = await checkDiscordAccess();
-  logout.style.display = '';
-  if (ok) { msg.textContent = 'Signed in. Your account is not shown to anyone.'; main.style.display = ''; loadSuggestions(); }
-  else { msg.textContent = 'This Discord account is not in the SPA server.'; main.style.display = 'none'; }
+  if (ok) { setAuthVisible(false); }
+  else {
+    msg.textContent = 'Could not confirm access. Make sure you are in the SPA server, then log in again.';
+    btn.style.display = ''; btn.textContent = 'Log in with Discord';
+  }
 }
-// ── RETURN FROM DISCORD LOGIN (runs after the Discord settings above) ──
-if (captureDiscordToken()) {
-  const sb = [...document.querySelectorAll('.main-nav button')].find(x => x.textContent.includes('Suggestions'));
-  if (sb) showPage('suggest', sb);
+function renderSuggestGate() {
+  const gate = g('suggest-gate'), main = g('suggest-main');
+  if (gate) gate.style.display = 'none';
+  if (main) main.style.display = '';
+  loadSuggestions();
 }
+
+// ── LOGIN CHECK (runs after everything above is defined) ──
+captureDiscordToken();
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', enforceLogin);
+else enforceLogin();
 </script>
 
 <!-- ═══════════════════════  CO-HOST  ═══════════════════════ -->
@@ -5996,6 +6022,13 @@ if (captureDiscordToken()) {
   <div class="info-box" style="font-size:.78rem">
     <b>Setup (one time):</b> create a Google Form with one long-answer question, turn off "Collect email addresses", then paste its settings into the SUGGEST_ constants at the top of the Suggestions script.
   </div>
+</div>
+
+<div id="auth-gate" style="position:fixed;inset:0;z-index:20000;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:24px">
+  <div style="font-size:2.6rem">✈️</div>
+  <div style="font-size:1.2rem;font-weight:800">SPA Flight Ops</div>
+  <div id="auth-msg" style="color:var(--text2);max-width:420px">Checking access…</div>
+  <button id="auth-login" class="roles-tab-btn active" style="display:none;padding:10px 20px" onclick="window.location.href=discordLoginURL()">Log in with Discord</button>
 </div>
 
 </body>
