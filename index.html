@@ -834,7 +834,7 @@ input[type="checkbox"]{
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.0</span>
+      <span class="topbar-badge">v1.1.1</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
     </div>
   </div>
@@ -5444,7 +5444,35 @@ function selCH(tab, btn) {
   btn.classList.add('active');
 }
 
+// ── LOCAL SAVE: every input/select is saved in this browser and restored on load ──
+const SAVE_KEY = 'spa_tool_inputs_v1';
+const SAVE_SKIP = ['route-search'];
+function saveInputs() {
+  try {
+    const data = {};
+    document.querySelectorAll('input[id], select[id], textarea[id]').forEach(el => {
+      if (SAVE_SKIP.includes(el.id) || el.type === 'checkbox' || el.type === 'button') return;
+      data[el.id] = el.value;
+    });
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+  } catch (e) {}
+}
+function restoreInputs() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    Object.keys(data).forEach(id => {
+      const el = document.getElementById(id);
+      if (el && data[id] !== '') el.value = data[id];
+    });
+  } catch (e) {}
+}
+document.addEventListener('input', saveInputs);
+document.addEventListener('change', saveInputs);
+
 // ── STARTUP (after all declarations) ──
+restoreInputs();
 initGreetings();
 initCC();
 loadState();
