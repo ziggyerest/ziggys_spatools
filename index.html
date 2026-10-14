@@ -229,7 +229,8 @@ body{
   text-transform:uppercase;
 }
 input,select{
-  background:rgba(255,255,255,.04);
+  background:#0b1628;color-scheme:dark;
+  background:rgba(11,22,40,1);
   border:1px solid var(--border2);
   color:var(--text);
   padding:9px 13px;
@@ -615,6 +616,7 @@ input::placeholder{color:var(--text3)}
   border-radius:var(--radius);
   cursor:pointer;transition:all .12s;
   margin-bottom:3px;
+  min-width:0;
 }
 .cl-item:hover{background:rgba(255,255,255,.03)}
 .cl-item.done{opacity:.5}
@@ -629,10 +631,11 @@ input::placeholder{color:var(--text3)}
   background:var(--green);border-color:var(--green);
 }
 .cl-item.done .cl-check::after{content:'✓';color:#fff;font-size:.65rem;font-weight:800}
-.cl-text{font-size:.82rem;color:var(--text2);line-height:1.4}
+.cl-text{font-size:.82rem;color:var(--text2);line-height:1.4;word-break:break-word}
 .cl-cmd{
   font-size:.72rem;font-family:'JetBrains Mono','Consolas',monospace;
   color:var(--accent2);margin-top:2px;
+  word-break:break-all;white-space:normal;display:block;
 }
 .cl-pa{font-size:.75rem;color:var(--text3);margin-top:2px;font-style:italic}
 
@@ -759,6 +762,14 @@ code{
   backdrop-filter:blur(8px);
 }
 .toast.show{opacity:1}
+select option{background:#0b1628;color:var(--text)}
+option{background:#0b1628;color:var(--text)}
+input[type="checkbox"]{
+  width:16px;height:16px;flex-shrink:0;
+  accent-color:var(--green);
+  cursor:pointer;
+  border-radius:4px;
+}
 </style>
 </head>
 <body>
@@ -770,7 +781,7 @@ code{
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">428 routes</span>
+      <span class="topbar-badge">v1.0.1</span><span class="topbar-badge" style="opacity:.6">428 routes</span>
     </div>
     <nav class="main-nav">
       <button class="active" onclick="showPage('flight',this)">✈️ Flight Tool</button>
@@ -782,6 +793,7 @@ code{
       <button onclick="showPage('gc',this)">🛠️ Ground Crew</button>
       <button onclick="showPage('fleet',this)">🛩️ Fleet</button>
       <button onclick="showPage('charts',this)">🗺️ Charts</button>
+      <button onclick="showPage('cohost',this)">🎤 Co-Host</button>
     </nav>
   </div>
 </div>
@@ -843,8 +855,7 @@ code{
   <div id="route-hdr" class="route-header">Enter a Route ID above</div>
 
   <div class="charts-toggle-row" id="charts-toggle-row" style="display:none">
-    <label class="toggle"><input type="checkbox" id="charts-chk" onchange="renderInlineCharts()"><span class="slider"></span></label>
-    <label>Show charts for this airport</label>
+    <button id="charts-chk-btn" onclick="toggleCharts(this)" style="background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);color:var(--accent);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.76rem;font-weight:600;font-family:'Inter',sans-serif;transition:all .15s">📊 Show Charts</button>
   </div>
   <div class="charts-grid" id="inline-charts"></div>
 
@@ -852,7 +863,6 @@ code{
     <button class="active r-cpt" onclick="showRole('cpt',this,'r-cpt')">Captain</button>
     <button onclick="showRole('fo',this,'r-fo')">First Officer</button>
     <button onclick="showRole('so',this,'r-so')">Second Officer <span class="beta-badge">BETA</span></button>
-    <button onclick="showRole('atc',this,'r-atc')">📡 ATC</button>
   </div>
 
   <!-- ── CAPTAIN ── -->
@@ -912,65 +922,7 @@ code{
 <div id="so-scripts"></div>
   </div>
 
-  <!-- ── ATC ── -->
-  <div id="role-atc" class="role-panel">
 
-    <!-- ATC Inputs -->
-    <div style="background:#0a1d36;border:1px solid #1a3456;border-radius:12px;padding:16px 20px;margin-bottom:18px">
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:10px">
-        <div class="form-group">
-          <label>Route ID (callsign)</label>
-          <input id="atc-rid" placeholder="280" oninput="buildATC()">
-        </div>
-        <div class="form-group">
-          <label>Dep Airport Code</label>
-          <input id="atc-dep" placeholder="MDPC" oninput="buildATC()">
-        </div>
-        <div class="form-group">
-          <label>Dest Airport Code</label>
-          <input id="atc-dest" placeholder="KEWR" oninput="buildATC()">
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
-        <div class="form-group">
-          <label>Gate Number</label>
-          <input id="atc-gate" placeholder="A4" oninput="buildATC()">
-        </div>
-        <div class="form-group">
-          <label>Runway</label>
-          <input id="atc-rwy" placeholder="32" oninput="buildATC()">
-        </div>
-        <div class="form-group">
-          <label>Vacated Taxiway (arr)</label>
-          <input id="atc-vac" placeholder="Hotel 4" oninput="buildATC()">
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px">
-        <div class="form-group">
-          <label>Tail Push Direction</label>
-          <select id="atc-push" onchange="buildATC()">
-            <option value="left">Left</option>
-            <option value="right">Right</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Arr Taxi Route</label>
-          <input id="atc-taxi" placeholder="Hotel 4, Alpha" oninput="buildATC()">
-        </div>
-      </div>
-    </div>
-
-    <button onclick="buildATC()" style="width:100%;padding:11px;background:linear-gradient(135deg,#1565c0,#0d8a9e);border:none;border-radius:10px;color:#fff;font-weight:700;font-size:.88rem;cursor:pointer;margin-bottom:16px;letter-spacing:.04em">
-      ⚡ Generate ATC Scripts
-    </button>
-
-    <div id="atc-scripts" style="min-height:100px">
-      <div style="color:#4a7aaa;font-size:.82rem;padding:12px;text-align:center">
-        ✏️ Fill in the inputs above — scripts will appear here automatically.
-      </div>
-    </div>
-
-  </div><!-- /role-atc -->
 
 </div>
 
@@ -1780,6 +1732,12 @@ code{
     <button onclick="showSSRole('pfo',this)">✈️ PFO</button>
     <button onclick="showSSRole('bus',this)">🚌 Bus Escort</button>
     <button onclick="showSSRole('emergency',this)">🚨 Emergency</button>
+    <button onclick="showSSRole('dep_check',this)">🛫 Dep. Check</button>
+    <button onclick="showSSRole('arr_check',this)">🛬 Arr. Check</button>
+    <button onclick="showSSRole('runway_dep',this)">🏃 Runway (Dep)</button>
+    <button onclick="showSSRole('runway_arr',this)">🏃 Runway (Arr)</button>
+    <button onclick="showSSRole('airport_check',this)">🏢 Airport Check</button>
+    <button onclick="showSSRole('deboard',this)">🚶 Deboarding</button>
     <button onclick="showSSRole('mod',this)">⚖️ Moderation</button>
     <button onclick="showSSRole('radio',this)">📻 Radio Codes</button>
   </div>
@@ -2463,6 +2421,192 @@ code{
     <div class="info-box" style="margin-top:4px">If debris or an issue is found, notify Ground Crew and the Flight Host before issuing any landing clearance. Only clear the runway once the stand is fully confirmed safe.</div>
   </div>
 
+
+  <!-- ══════ DEPARTURE AIRPORT CHECK ══════ -->
+  <div id="ss-dep_check" class="ss-panel">
+    <div class="info-box"><b>Departure Airport Check</b><br>
+    Done before passengers arrive. Walk the terminal, check all areas are safe, equipment is in place and nothing suspicious is present.</div>
+
+    <div class="s-section"><h3>📢 Begin Check</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Beginning departure airport inspection. Standing by.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me flash</div></div>
+    </div>
+
+    <div class="s-section"><h3>🔦 Inspection RP</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks terminal entrance for any suspicious activity-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-inspects check-in area for hazards-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks TSA scanner area is operational-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-inspects gate area for any issues-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks lounge areas are clear and ready-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-verifies all security equipment is in place-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks for any debris or hazards in walkways-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-confirms emergency exits are accessible-</div></div>
+    </div>
+
+    <div class="s-section"><h3>✅ Complete</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Departure airport inspection complete. Terminal is clear and ready for passengers. 10-4</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] Departure airport is cleared and ready for passenger arrival. - [NAME]</div></div>
+    </div>
+
+    <div class="s-section"><h3>⚠️ Issue Found</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Issue found during departure inspection. Notifying staff. 10-12.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] Issue found at [LOCATION] during departure check. Please advise. - [NAME]</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ ARRIVAL AIRPORT CHECK ══════ -->
+  <div id="ss-arr_check" class="ss-panel">
+    <div class="info-box"><b>Arrival Airport Check</b><br>
+    Done when the plane is approaching the destination. Walk the arrival terminal and check all areas are ready to receive passengers. If there is no interior, walk around outside.</div>
+
+    <div class="s-section"><h3>📢 Begin Check</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Destination Security will now inspect the arrival terminal to ensure it is ready for passengers. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me flash</div></div>
+    </div>
+
+    <div class="s-section"><h3>🔦 Inspection RP</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks under chairs for suspicious items-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-reports lost baggage to Security Sergeant-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks that arrival airport scanners function-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-inspects baggage claim area-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks passport control area is clear-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-verifies arrival gate area is accessible-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-inspects terminal for any hazards or debris-</div></div>
+    </div>
+
+    <div class="s-section"><h3>✅ Complete</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Arrival airport inspection complete. Terminal is clear and ready for passengers. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] Arrival airport is cleared and ready for deboarding. - [NAME]</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ RUNWAY INSPECTION (DEPARTURE) ══════ -->
+  <div id="ss-runway_dep" class="ss-panel">
+    <div class="info-box"><b>Runway Inspection — Departure</b><br>
+    Done before aircraft pushes back. Drive the Explorer along taxiways and runway to confirm they are clear. Speed limit: 45 MPH taxiways / 65 MPH runway.</div>
+
+    <div class="s-section"><h3>📢 Announce</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Departure runway inspection commencing. Checking taxiways and runway are clear for pushback. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+    </div>
+
+    <div class="s-section"><h3>🚗 Setup</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-takes explorer car keys-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">!insert</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -inspects explorer-</div></div>
+    </div>
+
+    <div class="s-section"><h3>🛣️ Driving RP</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -enters taxiway-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -inspects taxiway surface for debris-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -enters runway-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -inspects runway for debris or obstructions-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -checks runway lighting-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -exits runway-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -proceeds back to gate-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-shuts engine off-</div></div>
+    </div>
+
+    <div class="s-section"><h3>✅ Clear for Pushback</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Departure runway inspection complete. Taxiways and runway are clear — aircraft is clear for pushback. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] Runway cleared for pushback. No debris or obstructions found. - [NAME]</div></div>
+    </div>
+
+    <div class="s-section"><h3>⚠️ Issue Found</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Debris/obstruction found on runway. Holding pushback clearance until resolved. 10-12.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] Obstruction found at [LOCATION] — holding pushback clearance. Please advise. - [NAME]</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ RUNWAY INSPECTION (ARRIVAL) ══════ -->
+  <div id="ss-runway_arr" class="ss-panel">
+    <div class="info-box"><b>Runway Inspection — Arrival</b><br>
+    Done when plane is approaching destination. Follow the route map for your airport. Speed limit: 45 MPH taxiways / 65 MPH runway.</div>
+
+    <div class="s-section"><h3>📢 Announce</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Destination Security will now inspect the taxiways and runways for any debris to verify that the airport is ready for arrival. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+    </div>
+
+    <div class="s-section"><h3>🛣️ Inspection RP</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -looks for debris on taxiways-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -enters runway-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -inspects runway for issues-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -checks runway surface and lighting-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -exits runway and returns to gate-</div></div>
+    </div>
+
+    <div class="s-section"><h3>✅ Clear for Landing</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] The airport's runways and taxiways have been cleared for arrival. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] [CALLSIGN] runway [RUNWAY] cleared to land.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] Arrival runway inspection complete — cleared for landing. - [NAME]</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ AIRPORT POLICE CHECK ══════ -->
+  <div id="ss-airport_check" class="ss-panel">
+    <div class="info-box"><b>Airport Police Check</b><br>
+    Comprehensive patrol combining terminal, tarmac and lounge checks. Done pre-boarding. No set schedule but you must cover the majority of the airport between XX:50 and XX:10.</div>
+
+    <div class="s-section"><h3>📢 Begin Patrol</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] 10-41 Beginning patrol.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:repeat 40 60 :track nonadmins</div></div>
+    </div>
+
+    <div class="s-section"><h3>🏢 Terminal Check</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] -inspects terminal entrance-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] -checks check-in area for trollers or glitchers-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] -inspects duty-free and shop areas-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] -checks gate area and boarding queue-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] -patrols lounge areas-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] -verifies passport control area is clear-</div></div>
+    </div>
+
+    <div class="s-section"><h3>🕐 XX:16 Final Loop</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [AIRPORT POLICE] Airport Police has finished inspecting the terminal, lounges, and stores. The plane is now clear to pushback when ready. | :scriptchat sy [AIRPORT POLICE] The airport is all clear. Please be seated for pushback shortly.</div></div>
+    </div>
+
+    <div class="s-section"><h3>🚨 Passenger Left Behind</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [AIRPORT POLICE] We have come across a passenger still in the airport. Airport Police Personnel will direct the passenger to the gate. Please halt until pushback. Thank you - Airport Police</div></div>
+    </div>
+
+    <div class="s-section"><h3>🏁 End Patrol</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] 10-42 Ending patrol.</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ DEBOARDING SECURITY ══════ -->
+  <div id="ss-deboard" class="ss-panel">
+    <div class="info-box"><b>Deboarding Security</b><br>
+    Once the plane parks at destination, position yourself at the airstairs to welcome passengers. Rename to Arrival Airport Police. Air Marshals do NOT rename and deboard with passengers as normal.</div>
+
+    <div class="s-section"><h3>🏷️ Rename</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:name me [NAME] [-] Arrival Airport Police [-] [ENG]</div></div>
+    </div>
+
+    <div class="s-section"><h3>👋 Welcome Greetings</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Welcome to [DESTINATION]! We hope you enjoyed your flight!</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Welcome to [DESTINATION]! Thank you for flying with South Pacific Airways!</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">We hope you had a wonderful flight! Welcome to [DESTINATION]!</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">:talk Welcome to [DESTINATION]! Please follow staff instructions for deboarding.</div></div>
+    </div>
+
+    <div class="s-section"><h3>🚌 Direct to After-Flight</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">:talk Please follow me to the after-flight activity!</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:bring [USER]</div></div>
+    </div>
+
+    <div class="s-section"><h3>🔍 Last Passenger Check</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:track nonadmins</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks aircraft to ensure all passengers have deboarded-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] Aircraft checked — all passengers have deboarded. 10-4</div></div>
+    </div>
+
+    <div class="s-section"><h3>🎉 After-Flight Activity</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:talk Head over to the after-flight activity area for some fun!</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-moderates chat during after-flight activity-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-directs passengers to after-flight activity-</div></div>
+    </div>
+  </div>
+
 </div><!-- /page-ss -->
 
 
@@ -3066,6 +3210,7 @@ code{
     <button class="roles-tab-btn" onclick="selGC('investorcar',this)">🚗 Investor Car</button>
     <button class="roles-tab-btn" onclick="selGC('deicing',this)">🧊 De-icing</button>
     <button class="roles-tab-btn" onclick="selGC('arrival',this)">🛬 Arrival</button>
+    <button class="roles-tab-btn" onclick="selGC('atc',this)">📡 ATC</button>
   </div>
 
   <!-- ══ GENERAL INFO ══ -->
@@ -3703,6 +3848,69 @@ code{
     </div></div>
   </div>
 
+
+  <!-- ══ ATC ══ -->
+  <div id="gc-atc" class="roletab">
+    <div id="gc-atc-inner" class="role-panel">
+
+    <!-- ATC Inputs -->
+    <div style="background:#0a1d36;border:1px solid #1a3456;border-radius:12px;padding:16px 20px;margin-bottom:18px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:10px">
+        <div class="form-group">
+          <label>Route ID (callsign)</label>
+          <input id="atc-rid" placeholder="280" oninput="buildATC()">
+        </div>
+        <div class="form-group">
+          <label>Dep Airport Code</label>
+          <input id="atc-dep" placeholder="MDPC" oninput="buildATC()">
+        </div>
+        <div class="form-group">
+          <label>Dest Airport Code</label>
+          <input id="atc-dest" placeholder="KEWR" oninput="buildATC()">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+        <div class="form-group">
+          <label>Gate Number</label>
+          <input id="atc-gate" placeholder="A4" oninput="buildATC()">
+        </div>
+        <div class="form-group">
+          <label>Runway</label>
+          <input id="atc-rwy" placeholder="32" oninput="buildATC()">
+        </div>
+        <div class="form-group">
+          <label>Vacated Taxiway (arr)</label>
+          <input id="atc-vac" placeholder="Hotel 4" oninput="buildATC()">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px">
+        <div class="form-group">
+          <label>Tail Push Direction</label>
+          <select id="atc-push" onchange="buildATC()">
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Arr Taxi Route</label>
+          <input id="atc-taxi" placeholder="Hotel 4, Alpha" oninput="buildATC()">
+        </div>
+      </div>
+    </div>
+
+    <button onclick="buildATC()" style="width:100%;padding:11px;background:linear-gradient(135deg,#1565c0,#0d8a9e);border:none;border-radius:10px;color:#fff;font-weight:700;font-size:.88rem;cursor:pointer;margin-bottom:16px;letter-spacing:.04em">
+      ⚡ Generate ATC Scripts
+    </button>
+
+    <div id="atc-scripts" style="min-height:100px">
+      <div style="color:#4a7aaa;font-size:.82rem;padding:12px;text-align:center">
+        ✏️ Fill in the inputs above — scripts will appear here automatically.
+      </div>
+    </div>
+
+  </div><!-- /role-atc -->
+  </div>
+
 </div><!-- /page-gc -->
 
 <!-- Modal -->
@@ -4270,7 +4478,7 @@ function update() {
   // Charts row
   const chartKey = curRoute ? CHART_MAP[curRoute.airport] : null;
   g('charts-toggle-row').style.display = chartKey ? 'flex' : 'none';
-  if (g('charts-chk').checked) renderInlineCharts();
+  if (_chartsVisible) renderInlineCharts();
 
   // Weather button
   if (curRoute) {
@@ -4289,14 +4497,10 @@ function update() {
     wxData = null;
   }
 
-  // Scripts
-  g('cpt-board').textContent = genCptBoard();
-  g('cpt-arr').textContent   = genCptArr();
-  g('fo-cruise').textContent  = genFOCruise();
-  g('fo-desc-early').textContent = genFODescEarly();
-  g('fo-desc').textContent    = genFODesc();
-  g('fo-1500').textContent    = genFO1500();
-  g('so-scripts').innerHTML   = buildSO();
+  // Scripts - null-guarded
+  var _ids = {'cpt-board':genCptBoard,'cpt-arr':genCptArr,'fo-cruise':genFOCruise,'fo-desc-early':genFODescEarly,'fo-desc':genFODesc,'fo-1500':genFO1500};
+  Object.keys(_ids).forEach(function(id){ var el=g(id); if(el) el.textContent=_ids[id](); });
+  var soEl=g('so-scripts'); if(soEl) soEl.innerHTML=buildSO();
   buildFOChecklist();
 }
 
@@ -4315,9 +4519,16 @@ function acSuggest(cat) {
 // ═══════════════════════════════════════════════════════════════
 //  CHARTS
 // ═══════════════════════════════════════════════════════════════
+var _chartsVisible = false;
+function toggleCharts(btn) {
+  _chartsVisible = !_chartsVisible;
+  btn.textContent = _chartsVisible ? '📊 Hide Charts' : '📊 Show Charts';
+  btn.style.background = _chartsVisible ? 'rgba(59,130,246,.18)' : 'rgba(59,130,246,.08)';
+  renderInlineCharts();
+}
 function renderInlineCharts() {
   const el = g('inline-charts');
-  const show = g('charts-chk').checked;
+  const show = _chartsVisible;
   el.classList.toggle('show', show);
   if (!show || !curRoute) return;
   const key = CHART_MAP[curRoute.airport];
@@ -4592,7 +4803,7 @@ function showPage(p, btn) {
   if (p==='cc') renderCC();
   if (p==='greet') renderGreetings();
   if (p==='fleet') { setTimeout(renderFleet,0); }
-  if (p==='flight') { setTimeout(buildATC,0); }
+  if (p==='flight') { setTimeout(update,0); }
 }
 function showRole(role, btn, cls) {
   document.querySelectorAll('.role-panel').forEach(p=>p.classList.remove('active'));
@@ -5175,6 +5386,295 @@ function selCCTop(tab, btn) {
   btn.classList.add('active');
 }
 
+
+// ── CO-HOST ───────────────────────────────────────────────────
+function selCH(tab, btn) {
+  document.querySelectorAll('#page-cohost .roletab').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('#page-cohost .roles-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  var el = document.getElementById('ch-' + tab);
+  if (el) el.classList.add('active');
+  btn.classList.add('active');
+}
 </script>
+
+<!-- ═══════════════════════  CO-HOST  ═══════════════════════ -->
+<div id="page-cohost" class="page" style="max-width:1100px">
+
+  <div class="roles-hero">
+    <div class="roles-hero-inner">
+      <div class="roles-hero-icon">🎤</div>
+      <div>
+        <div class="roles-hero-title">Co-Host Guide</div>
+        <div class="roles-hero-sub">Passenger engagement · Upgrading · Questions · Announcements</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="roles-tab-row" style="flex-wrap:wrap">
+    <button class="roles-tab-btn active" onclick="selCH('general',this)">📋 General</button>
+    <button class="roles-tab-btn" onclick="selCH('questions',this)">❓ Questions</button>
+    <button class="roles-tab-btn" onclick="selCH('engage',this)">🎮 Engagement</button>
+    <button class="roles-tab-btn" onclick="selCH('games',this)">🎲 Games</button>
+    <button class="roles-tab-btn" onclick="selCH('trivia',this)">🧠 Trivia</button>
+    <button class="roles-tab-btn" onclick="selCH('upgrading',this)">⬆️ Upgrading</button>
+    <button class="roles-tab-btn" onclick="selCH('announce',this)">📢 Announcements</button>
+  </div>
+
+  <!-- ══ GENERAL ══ -->
+  <div id="ch-general" class="roletab active">
+    <div class="role-info-header"><div class="role-info-badge">📋</div><div>
+      <div class="role-info-title">Co-Host Overview</div>
+      <div class="role-info-meta">Your main duties: answer passenger questions, engage with passengers, assist with upgrades, and make announcements. Stay near Customer Assistance desks from start to taxi.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">📍 Positioning</div>
+        <div class="info-box">Stay near Customer Assistance desks in the check-in area, or roam the airport. Engage with passengers throughout. Never ignore a question — if you can't respond directly, ask another staff member or :pm the answer.</div>
+      </div>
+      <div class="rs"><div class="rs-title">⏰ Timeline</div>
+        <div class="role-table">
+          <div class="role-table-row header"><span>Time</span><span>Duty</span></div>
+          <div class="role-table-row"><span>XX:52–XX:55</span><span>Welcome announcement, start engagement</span></div>
+          <div class="role-table-row"><span>Until XX:10</span><span>Airport games, passenger engagement</span></div>
+          <div class="role-table-row"><span>XX:07–XX:08</span><span>Stop games, prepare for boarding</span></div>
+          <div class="role-table-row"><span>Ascent</span><span>Trivia / engagement activities</span></div>
+          <div class="role-table-row"><span>Descent</span><span>Trivia / wrap-up engagement</span></div>
+          <div class="role-table-row"><span>Landing</span><span>Duties complete</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🛠️ Key Commands</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Announce</div><div class="rc-text rc-cmd">:ann [MESSAGE]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">PM passenger</div><div class="rc-text rc-cmd">:pm [USER] [MESSAGE]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give item</div><div class="rc-text rc-cmd">:give nonadmins [ITEM]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give one person</div><div class="rc-text rc-cmd">:give [USER] [ITEM]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Check profile</div><div class="rc-text rc-cmd">!profile [USER]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Check tools</div><div class="rc-text rc-cmd">:viewtools [USER]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Upgrade investor</div><div class="rc-text rc-cmd">:give [USER] Investor | :give [USER] Lounge | :give [USER] Flight | :name [USER] // Investor Class</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Upgrade first</div><div class="rc-text rc-cmd">:give [USER] First | :give [USER] Lounge | :give [USER] Flight | :name [USER] // First Class</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Upgrade business</div><div class="rc-text rc-cmd">:give [USER] Business | :give [USER] Lounge | :give [USER] Flight | :name [USER] // Business Class</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Upgrade economy</div><div class="rc-text rc-cmd">:give [USER] Eco | :give [USER] Flight | :name [USER] // Economy Class</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ QUESTIONS ══ -->
+  <div id="ch-questions" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">❓</div><div>
+      <div class="role-info-title">Answering Passenger Questions</div>
+      <div class="role-info-meta">Remain patient — these may be old questions but they are new passengers. Be fun, warm and welcoming. Never ignore a question.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">📬 PM Format</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Answer via PM</div><div class="rc-text rc-cmd">:pm [USER] "[QUESTION]" - To answer your question, [ANSWER]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Example</div><div class="rc-text rc-cmd">:pm baconhair "How do I give my order?" - To answer your question, you will be asked in PMs regarding your order when we are at cruising altitude!</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">🗣️ Common Questions</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Economy check-in time</div><div class="rc-text">Economy Check-in will open at [TIME]!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">What does XX:00 mean</div><div class="rc-text">XX:00 displays the minute of time — it just means the minute of any specific hour! For me the time would be [TIME].</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">No seats left</div><div class="rc-text">It says there are zero seats left because the class is not open yet — it will open at [TIME]!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Can't check in</div><div class="rc-text">I apologize for that, one moment while I set you up!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Language barrier</div><div class="rc-text">Please hold on while I find a staff member who speaks your language!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Where is the gate</div><div class="rc-text">The gate is located at [GATE LOCATION] — please follow the signs or feel free to follow me!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Can't sit on plane</div><div class="rc-text">Please check you have the correct boarding pass for your class. Some seats are reserved for other classes. Try removing your boarding pass and sitting again!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">How to book / pay</div><div class="rc-text">There is no booking required — just head to check-in when it opens and check in for free!</div></div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">⚠️ Issues</div>
+        <div class="info-box">
+          <b>Passenger failed to upgrade:</b> Ask the host to open more premium tickets in Self Check-In, then ask them to check in again. Or manually give them their class via commands.<br><br>
+          <b>Can't find their seat:</b> Check their class. Some seats require specific boarding passes. Passengers can't sit in some planes if they have their boarding pass equipped.<br><br>
+          <b>Language barrier:</b> Try to find a staff member who speaks their language. Use Google Translate as a last resort.
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ ENGAGEMENT ══ -->
+  <div id="ch-engage" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🎮</div><div>
+      <div class="role-info-title">Passenger Engagement</div>
+      <div class="role-info-meta">All announcements MUST be done via :ann or the Announcements menu. Be creative but don't let it affect flight quality. Stop games by XX:10 at the latest.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">👋 Opening Announcements</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Welcome</div><div class="rc-text rc-cmd">:ann Welcome to [AIRPORT]! Thank you all for being so eager to join our flight, check in will begin in [X] minutes.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Upgrade promo</div><div class="rc-text rc-cmd">:ann While we're waiting for check in to open, why not consider upgrading your travel class? You can purchase either one-time or permanent passes using the menu in the bottom right of your screen.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">OnePass</div><div class="rc-text rc-cmd">:ann Have you heard about our OnePass subscription? It offers exclusive perks both in-game and on our discord server, as well as free class upgrades. Check out our discord server for more information!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Miles</div><div class="rc-text rc-cmd">:ann Are you a frequent flyer? Check your miles balance using the menu in the bottom right of your screen. You may have enough to purchase a one-time class upgrade!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Staff recruitment</div><div class="rc-text rc-cmd">:ann Want to join the lovely staff team serving you today? See our communications server for more updates on our hiring process!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Report reminder</div><div class="rc-text rc-cmd">:ann If you see something that doesn't look right, report it to a member of staff either in-game or on the discord server. Your safety is our priority.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Rules reminder</div><div class="rc-text rc-cmd">:ann A reminder that any inappropriate roleplay or jokes are strictly prohibited on our flights. These include bomb/crash jokes. If you are found to be violating our flight rules, you may be removed from the flight.</div></div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">💬 General Chat Starters</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">How is everyone</div><div class="rc-text rc-cmd">:ann How is everyone doing today?</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Excited for flight</div><div class="rc-text rc-cmd">:ann Are you excited for today's flight to [DESTINATION]?</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Favourite airline</div><div class="rc-text rc-cmd">:ann Is SPA your favourite Roblox airline? Let us know!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give item</div><div class="rc-text rc-cmd">:ann Greetings everyone! Who would like a [ITEM]?</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give item confirm</div><div class="rc-text rc-cmd">:give nonadmins [ITEM]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Enjoy</div><div class="rc-text rc-cmd">:ann Enjoy!</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">✈️ Ascent / Descent</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Ascent trivia start</div><div class="rc-text rc-cmd">:ann A warm welcome to the friendly skies! As we begin our ascent to cruising altitude, who would like to play some trivia?</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Descent trivia end</div><div class="rc-text rc-cmd">:ann As we are descending to our final approach, we will now conclude trivia. Thank you for playing, and we'd like to welcome you to your destination!</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ GAMES ══ -->
+  <div id="ch-games" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🎲</div><div>
+      <div class="role-info-title">Airport Games</div>
+      <div class="role-info-meta">Play at the departure airport only. Stop all games by XX:10 (ideally XX:07–XX:08). Don't give away tickets, flags, or Robux items.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎁 Give Item Activity</div>
+        <div class="info-box" style="margin-bottom:8px">Simple and quick. Do this before economy checks in.</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Announce</div><div class="rc-text rc-cmd">:ann Greetings everyone! Who would like a [ITEM]?</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give</div><div class="rc-text rc-cmd">:give nonadmins [ITEM]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Confirm</div><div class="rc-text rc-cmd">:ann Enjoy!</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">🙈 Hide and Seek</div>
+        <div class="info-box" style="margin-bottom:8px">Play after economy has checked in. Hide somewhere passengers can still find you — corner of a restaurant, behind a pillar etc.</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Start</div><div class="rc-text rc-cmd">:ann Hello everyone! I'm hidden somewhere in the airport — first to find me gets a [REWARD]!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Found</div><div class="rc-text rc-cmd">:ann [USER] has found me in [PLACE]! Enjoy your [REWARD]!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give reward</div><div class="rc-text rc-cmd">:give [USER] [ITEM]</div></div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🗣️ Simon Says</div>
+        <div class="info-box" style="margin-bottom:8px">Do this at the boarding gate ~5 minutes before boarding. Last person/few people standing win.</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Invite</div><div class="rc-text rc-cmd">:ann Hello everyone! Who is interested in playing Simon Says at gate [GATE] before we board?</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Rules</div><div class="rc-text rc-cmd">:ann Alright! You all know the rules — if I say "Simon says", you do what I say. But if I don't say it and you still do it, you're out! Ready?</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Simon says jump</div><div class="rc-text rc-cmd">:ann Simon says jump!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Sit down (trick)</div><div class="rc-text rc-cmd">:ann Sit down!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Simon says follow me</div><div class="rc-text rc-cmd">:ann Simon says follow me!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Say SPA</div><div class="rc-text rc-cmd">:ann Simon says say SPA!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Winner</div><div class="rc-text rc-cmd">:ann [USER(S)] has/have won! Enjoy your [REWARD]!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give reward</div><div class="rc-text rc-cmd">:give [USER] [ITEM]</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ TRIVIA ══ -->
+  <div id="ch-trivia" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🧠</div><div>
+      <div class="role-info-title">Trivia Questions</div>
+      <div class="role-info-meta">Use during ascent and descent. Mix aviation, general knowledge and Would You Rather. First correct answer wins a reward.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">✈️ Aviation Trivia</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q1</div><div class="rc-text rc-cmd">:ann ✈️ TRIVIA: What does ATC stand for? First correct answer wins!</div></div>
+        <div class="info-box" style="margin:2px 0 8px;font-size:.72rem">Answer: Air Traffic Control</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q2</div><div class="rc-text rc-cmd">:ann ✈️ TRIVIA: What is the world's busiest airport by passenger traffic?</div></div>
+        <div class="info-box" style="margin:2px 0 8px;font-size:.72rem">Answer: Hartsfield-Jackson Atlanta (ATL)</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q3</div><div class="rc-text rc-cmd">:ann ✈️ TRIVIA: What does ICAO stand for?</div></div>
+        <div class="info-box" style="margin:2px 0 8px;font-size:.72rem">Answer: International Civil Aviation Organization</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q4</div><div class="rc-text rc-cmd">:ann ✈️ TRIVIA: How many engines does a Boeing 747 have?</div></div>
+        <div class="info-box" style="margin:2px 0 8px;font-size:.72rem">Answer: 4</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q5</div><div class="rc-text rc-cmd">:ann ✈️ TRIVIA: What is the typical cruising altitude of a commercial aircraft?</div></div>
+        <div class="info-box" style="margin:2px 0 8px;font-size:.72rem">Answer: Around 35,000 feet / ~10,700 metres</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q6</div><div class="rc-text rc-cmd">:ann ✈️ TRIVIA: What does the black box on a plane actually record?</div></div>
+        <div class="info-box" style="margin:2px 0 8px;font-size:.72rem">Answer: Flight data and cockpit voice recordings</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q7</div><div class="rc-text rc-cmd">:ann ✈️ TRIVIA: What country has the most airports in the world?</div></div>
+        <div class="info-box" style="margin:2px 0 8px;font-size:.72rem">Answer: United States</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q8</div><div class="rc-text rc-cmd">:ann ✈️ TRIVIA: What is the ICAO code for London Heathrow Airport?</div></div>
+        <div class="info-box" style="margin:2px 0 8px;font-size:.72rem">Answer: EGLL</div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🌍 General Trivia</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q1</div><div class="rc-text rc-cmd">:ann 🌍 TRIVIA: What is the capital of Australia?</div></div>
+        <div class="info-box" style="margin:2px 0 8px;font-size:.72rem">Answer: Canberra</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q2</div><div class="rc-text rc-cmd">:ann 🌍 TRIVIA: How many continents are there on Earth?</div></div>
+        <div class="info-box" style="margin:2px 0 8px;font-size:.72rem">Answer: 7</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q3</div><div class="rc-text rc-cmd">:ann 🌍 TRIVIA: What is the longest river in the world?</div></div>
+        <div class="info-box" style="margin:2px 0 8px;font-size:.72rem">Answer: The Nile</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q4</div><div class="rc-text rc-cmd">:ann 🌍 TRIVIA: What is the capital of Japan?</div></div>
+        <div class="info-box" style="margin:2px 0 8px;font-size:.72rem">Answer: Tokyo</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q5</div><div class="rc-text rc-cmd">:ann 🌍 TRIVIA: What is the smallest country in the world?</div></div>
+        <div class="info-box" style="margin:2px 0 8px;font-size:.72rem">Answer: Vatican City</div>
+      </div>
+      <div class="rs"><div class="rs-title">🤔 Would You Rather</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">WYR 1</div><div class="rc-text rc-cmd">:ann 🤔 WOULD YOU RATHER: Fly first class on a short flight OR economy on a long flight?</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">WYR 2</div><div class="rc-text rc-cmd">:ann 🤔 WOULD YOU RATHER: Have a window seat with no recline OR an aisle seat with full recline?</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">WYR 3</div><div class="rc-text rc-cmd">:ann 🤔 WOULD YOU RATHER: Travel to 10 countries for a week each OR live in 1 country for a year?</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">WYR 4</div><div class="rc-text rc-cmd">:ann 🤔 WOULD YOU RATHER: Always arrive 3 hours early to the airport OR always almost miss your flight?</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">WYR 5</div><div class="rc-text rc-cmd">:ann 🤔 WOULD YOU RATHER: Visit every country in the world OR visit your favourite country 10 times?</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Winner announce</div><div class="rc-text rc-cmd">:ann [USER] got it right! Enjoy your reward!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give reward</div><div class="rc-text rc-cmd">:give [USER] [ITEM]</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ UPGRADING ══ -->
+  <div id="ch-upgrading" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">⬆️</div><div>
+      <div class="role-info-title">Passenger Upgrading</div>
+      <div class="role-info-meta">Never upgrade for free unless they meet one of the criteria below. Always verify before upgrading. CC Customer Service Assistants handle most upgrades — only step in when needed.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎟️ One-Time Tickets</div>
+        <div class="info-box" style="margin-bottom:8px">Check #item-logs in the main server. Find their embed. If not there, ask them to redeem and wait a minute. Do NOT upgrade anyone who claims to have already redeemed without verifying.</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Confirming</div><div class="rc-text">Please give me a moment to confirm your redemption.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Not found</div><div class="rc-text">I apologize, I cannot find your redemption in our logs. Please redeem it and wait a minute, then let me know!</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">🤝 Allied Representatives</div>
+        <div class="info-box" style="margin-bottom:8px">Check their rank in the SPA Roblox group first (<code>!profile [user]</code> → Groups → search "South Pacific Airways"). Allied Reps get First Class.</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Not in group</div><div class="rc-text">I apologize, I cannot find you in our systems. Please ping me in the SPA communications server to verify!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Allied rep upgrade</div><div class="rc-text rc-cmd">:give [USER] First | :give [USER] Lounge | :give [USER] Flight | :name [USER] // Allied Representative</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">🔑 OnePass Upgrades</div>
+        <div class="info-box">Ask them to mention you in the SPA main server:<br>· OnePass only → Business<br>· Loyalty 2/3 (Recognized/Honored) → First<br>· Loyalty 4 (Legacy) → Investor<br>· No matching roles → upgrade to highest class they possess</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Verify</div><div class="rc-text">Please go ahead and ping [YOUR USERNAME] in the SPA communications server so I can verify!</div></div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">✅ How to Check Class</div>
+        <div class="info-box">
+          <b>Method 1:</b> <code>!profile [user]</code> → Groups tab → check rank<br>
+          <b>Method 2:</b> Ask them to mention you in the SPA server, then check their roles<br><br>
+          Look for roles like [P] Investors, [P] First Class etc.
+        </div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Check profile</div><div class="rc-text rc-cmd">!profile [USER]</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">🎫 Upgrade Commands</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Investor</div><div class="rc-text rc-cmd">:give [USER] Investor | :give [USER] Lounge | :give [USER] Flight | :name [USER] // Investor Class</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">First Class</div><div class="rc-text rc-cmd">:give [USER] First | :give [USER] Lounge | :give [USER] Flight | :name [USER] // First Class</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Business</div><div class="rc-text rc-cmd">:give [USER] Business | :give [USER] Lounge | :give [USER] Flight | :name [USER] // Business Class</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Economy</div><div class="rc-text rc-cmd">:give [USER] Eco | :give [USER] Flight | :name [USER] // Economy Class</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Done greeting</div><div class="rc-text">All done! I have upgraded you to [CLASS] class. Enjoy your flight with South Pacific Airways!</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ ANNOUNCEMENTS ══ -->
+  <div id="ch-announce" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">📢</div><div>
+      <div class="role-info-title">Announcements</div>
+      <div class="role-info-meta">All announcements must go through :ann or the Announcements menu. Never use main chat for official announcements.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🛫 Pre-Flight</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Welcome</div><div class="rc-text rc-cmd">:ann Welcome to [AIRPORT]! Thank you all for being so eager to join our flight, check in will begin in [X] minutes.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Premium CI open</div><div class="rc-text rc-cmd">:ann Premium check-in is now open! Investors, First and Business Class passengers may now check in at the self check-in kiosks.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Economy CI open</div><div class="rc-text rc-cmd">:ann Economy check-in is now open! All remaining passengers may now check in at the self check-in kiosks.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Investor boarding</div><div class="rc-text rc-cmd">:ann Investor and First Class passengers, boarding has now commenced. Please make your way to the boarding gate.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Business boarding</div><div class="rc-text rc-cmd">:ann Business Class passengers, you may now board. Please make your way to the boarding gate.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Economy boarding</div><div class="rc-text rc-cmd">:ann Economy Class passengers, boarding has now commenced. Please make your way to the boarding gate.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">All aboard</div><div class="rc-text rc-cmd">:ann All passengers should now be on board. We will be departing shortly. Please take your seats and fasten your seatbelts.</div></div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">✈️ In-Flight</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Ascent engagement</div><div class="rc-text rc-cmd">:ann A warm welcome to the friendly skies! As we begin our ascent, who would like to play some trivia?</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Trivia answer</div><div class="rc-text rc-cmd">:ann [USER] got it right! Enjoy your reward!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Descent engagement end</div><div class="rc-text rc-cmd">:ann As we are descending, we will now conclude our activities. Thank you for playing and welcome to [DESTINATION]!</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">🛬 Arrival</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Welcome to dest</div><div class="rc-text rc-cmd">:ann Welcome to [DESTINATION]! Thank you for flying with South Pacific Airways today. We hope to see you again soon!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Afterflight activity</div><div class="rc-text rc-cmd">:ann There will be an after-flight activity shortly — please stay tuned for further instructions from the Flight Host!</div></div>
+      </div>
+    </div></div>
+  </div>
+
+</div><!-- /page-cohost -->
+
 </body>
 </html>
