@@ -823,6 +823,12 @@ input[type="checkbox"]{
 #page-cc{max-width:none !important}
 #page-cc .cc-top-row{width:100%;margin:0 0 10px !important;padding-bottom:8px !important}
 #page-cc .cc-top-row button{flex:1 1 auto;padding:7px 9px !important;font-size:.72rem !important}
+textarea{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border2);
+  color:var(--text);padding:10px 13px;border-radius:var(--radius);
+  font-family:'Inter',system-ui,sans-serif;font-size:.85rem;resize:vertical;
+}
+textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,130,246,.06)}
 </style>
 </head>
 <body>
@@ -834,7 +840,7 @@ input[type="checkbox"]{
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.1</span>
+      <span class="topbar-badge">v1.1.5</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
     </div>
   </div>
@@ -849,6 +855,7 @@ input[type="checkbox"]{
       <button onclick="showPage('fleet',this)">🛩️ Fleet</button>
       <button onclick="showPage('charts',this)">🗺️ Charts</button>
       <button onclick="showPage('cohost',this)">🎤 Co-Host</button>
+      <button onclick="showPage('suggest',this)">💡 Suggestions</button>
   </nav>
 </div>
 
@@ -4857,6 +4864,7 @@ function showPage(p, btn) {
   if (p==='greet') renderGreetings();
   if (p==='fleet') { setTimeout(renderFleet,0); }
   if (p==='flight') { setTimeout(update,0); }
+  if (p==='suggest') renderSuggestGate();
 }
 function showRole(role, btn, cls) {
   document.querySelectorAll('.role-panel').forEach(p=>p.classList.remove('active'));
@@ -5478,6 +5486,127 @@ initCC();
 loadState();
 update();
 renderRecent();
+
+// ── SUGGESTIONS (anonymous; stored in a Google Form + Sheet) ──
+// Fill these in once. Leave blank and the tab just says "Not connected yet".
+const SUGGEST_FORM_URL = '';  // formResponse link, e.g. https://docs.google.com/forms/d/e/XXXX/formResponse
+const SUGGEST_FIELD_ID = '';  // the entry ID for the question, e.g. entry.123456789
+const SUGGEST_CSV_URL  = '';  // the sheet published as CSV, e.g. https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv
+
+function parseCSV(text) {
+  const rows = []; let row = [], cell = '', q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) {
+      if (c === '"') { if (text[i+1] === '"') { cell += '"'; i++; } else q = false; }
+      else cell += c;
+    }
+    else if (c === '"') q = true;
+    else if (c === ',') { row.push(cell); cell = ''; }
+    else if (c === '\n' || c === '\r') {
+      if (c === '\r' && text[i+1] === '\n') i++;
+      row.push(cell); rows.push(row); row = []; cell = '';
+    }
+    else cell += c;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows.filter(r => r.some(x => x.trim()));
+}
+
+async function loadSuggestions() {
+  const list = g('suggest-list'), msg = g('suggest-status');
+  if (!list || !msg) return;
+  if (!SUGGEST_CSV_URL) { msg.textContent = 'Not connected yet.'; list.innerHTML = ''; return; }
+  msg.textContent = 'Loading…';
+  try {
+    const res = await fetch(SUGGEST_CSV_URL, { cache: 'no-store' });
+    const rows = parseCSV(await res.text());
+    if (rows.length < 2) { msg.textContent = 'No suggestions yet.'; list.innerHTML = ''; return; }
+    let col = rows[0].findIndex(h => h.trim().toLowerCase() !== 'timestamp');
+    if (col < 0) col = 0;
+    const items = rows.slice(1).map(r => r[col] || '').filter(t => t.trim()).reverse();
+    msg.textContent = items.length + ' suggestion' + (items.length === 1 ? '' : 's');
+    list.innerHTML = '';
+    items.forEach(t => {
+      const d = document.createElement('div'); d.className = 'rc';
+      const x = document.createElement('div'); x.className = 'rc-text';
+      x.textContent = t; d.appendChild(x); list.appendChild(d);
+    });
+  } catch (e) {
+    msg.textContent = 'Could not load suggestions. Check the sheet link.';
+  }
+}
+
+async function submitSuggestion() {
+  const box = g('suggest-input'), msg = g('suggest-status');
+  const text = box.value.trim();
+  if (!text) { msg.textContent = 'Write something first.'; return; }
+  if (!SUGGEST_FORM_URL || !SUGGEST_FIELD_ID) { msg.textContent = 'Not connected yet.'; return; }
+  const body = new URLSearchParams();
+  body.append(SUGGEST_FIELD_ID, text);
+  try {
+    await fetch(SUGGEST_FORM_URL, { method: 'POST', mode: 'no-cors', body });
+    box.value = '';
+    msg.textContent = 'Sent anonymously. The list updates in a few seconds.';
+    setTimeout(loadSuggestions, 3000);
+  } catch (e) {
+    msg.textContent = 'Could not send. Try again.';
+  }
+}
+
+// ── DISCORD LOGIN (gates the Suggestions tab; account details are never shown or saved with suggestions) ──
+const DISCORD_CLIENT_ID = '1559916673459421305';   // Application ID from the Discord developer portal
+const DISCORD_GUILD_ID  = '709581352768634920';   // your SPA Discord server ID (blank = any Discord account can log in)
+const DISCORD_REDIRECT  = 'https://zigggerzig2020.github.io/ziggyspatool/';
+const DISCORD_TOKEN_KEY = 'spa_discord_token';
+
+function discordLoginURL() {
+  const q = new URLSearchParams({ client_id: DISCORD_CLIENT_ID, redirect_uri: DISCORD_REDIRECT, response_type: 'token', scope: 'identify guilds' });
+  return 'https://discord.com/oauth2/authorize?' + q.toString();
+}
+// Returns true if this page load came back from Discord with a token.
+function captureDiscordToken() {
+  const m = location.hash.match(/access_token=([^&]+)/);
+  if (!m) return false;
+  sessionStorage.setItem(DISCORD_TOKEN_KEY, m[1]);
+  history.replaceState(null, '', location.pathname + location.search);
+  return true;
+}
+async function checkDiscordAccess() {
+  const token = sessionStorage.getItem(DISCORD_TOKEN_KEY);
+  if (!token) return false;
+  try {
+    const r = await fetch('https://discord.com/api/users/@me/guilds', { headers: { Authorization: 'Bearer ' + token } });
+    if (!r.ok) { sessionStorage.removeItem(DISCORD_TOKEN_KEY); return false; }
+    if (!DISCORD_GUILD_ID) return true;
+    const guilds = await r.json();
+    return guilds.some(gd => gd.id === DISCORD_GUILD_ID);
+  } catch (e) { return false; }
+}
+function discordSignOut() {
+  sessionStorage.removeItem(DISCORD_TOKEN_KEY);
+  renderSuggestGate();
+}
+async function renderSuggestGate() {
+  const main = g('suggest-main'), msg = g('gate-msg'), login = g('gate-login'), logout = g('gate-logout');
+  if (!main || !msg) return;
+  login.style.display = 'none'; logout.style.display = 'none';
+  if (!DISCORD_CLIENT_ID) { msg.textContent = 'Discord login is not set up yet.'; main.style.display = 'none'; return; }
+  if (!sessionStorage.getItem(DISCORD_TOKEN_KEY)) {
+    msg.textContent = 'Log in with Discord to send and read suggestions. Your account is never shown to anyone.';
+    login.style.display = ''; main.style.display = 'none'; return;
+  }
+  msg.textContent = 'Checking your access…';
+  const ok = await checkDiscordAccess();
+  logout.style.display = '';
+  if (ok) { msg.textContent = 'Signed in. Your account is not shown to anyone.'; main.style.display = ''; loadSuggestions(); }
+  else { msg.textContent = 'This Discord account is not in the SPA server.'; main.style.display = 'none'; }
+}
+// ── RETURN FROM DISCORD LOGIN (runs after the Discord settings above) ──
+if (captureDiscordToken()) {
+  const sb = [...document.querySelectorAll('.main-nav button')].find(x => x.textContent.includes('Suggestions'));
+  if (sb) showPage('suggest', sb);
+}
 </script>
 
 <!-- ═══════════════════════  CO-HOST  ═══════════════════════ -->
@@ -5828,6 +5957,46 @@ renderRecent();
   </div>
 
 </div><!-- /page-cohost -->
+
+<!-- ═══════════════════════  SUGGESTIONS  ═══════════════════════ -->
+<div id="page-suggest" class="page" style="max-width:900px">
+  <div class="roles-hero">
+    <div class="roles-hero-inner">
+      <div class="roles-hero-icon">💡</div>
+      <div>
+        <div class="roles-hero-title">Suggestions</div>
+        <div class="roles-hero-sub">Send anonymously · everyone can read them</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="suggest-gate" class="rs" style="text-align:center;padding:26px 20px">
+    <div id="gate-msg" style="color:var(--text2);margin-bottom:14px"></div>
+    <button id="gate-login" class="roles-tab-btn active" style="display:none" onclick="window.location.href=discordLoginURL()">Log in with Discord</button>
+    <button id="gate-logout" class="roles-tab-btn" style="display:none" onclick="discordSignOut()">Sign out</button>
+  </div>
+  <div id="suggest-main" style="display:none">
+  <div class="rs"><div class="rs-title">Send a suggestion</div>
+    <textarea id="suggest-input" rows="4" placeholder="Write your suggestion…"></textarea>
+    <div style="display:flex;gap:12px;align-items:center;margin-top:10px;flex-wrap:wrap">
+      <button class="roles-tab-btn active" onclick="submitSuggestion()">Send anonymously</button>
+      <span id="suggest-status" style="font-size:.78rem;color:var(--text3)"></span>
+    </div>
+  </div>
+
+  <div class="rs">
+    <div class="rs-title" style="display:flex;align-items:center;justify-content:space-between">
+      <span>All suggestions</span>
+      <button class="roles-tab-btn" onclick="loadSuggestions()">Refresh</button>
+    </div>
+    <div id="suggest-list" style="display:flex;flex-direction:column;gap:6px"></div>
+  </div>
+
+  </div>
+  <div class="info-box" style="font-size:.78rem">
+    <b>Setup (one time):</b> create a Google Form with one long-answer question, turn off "Collect email addresses", then paste its settings into the SUGGEST_ constants at the top of the Suggestions script.
+  </div>
+</div>
 
 </body>
 </html>
