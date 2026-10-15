@@ -830,6 +830,8 @@ textarea{
   font-family:'Inter',system-ui,sans-serif;font-size:.85rem;resize:vertical;
 }
 textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,130,246,.06)}
+.main-nav button.locked{opacity:.4;cursor:not-allowed}
+.main-nav button.locked::after{content:' \\1F512';font-size:.7em}
 </style>
 </head>
 <body>
@@ -841,7 +843,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.16</span>
+      <span class="topbar-badge">v1.0.18</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -853,7 +855,6 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
       <button onclick="showPage('roles',this)">🎭 Roles</button>
       <button onclick="showPage('greet',this)">👋 Greetings</button>
       <button onclick="showPage('ss',this)">🛡️ Safety &amp; Security</button>
-      <button onclick="showPage('gc',this)">🛠️ Ground Crew</button>
       <button onclick="showPage('fleet',this)">🛩️ Fleet</button>
       <button onclick="showPage('charts',this)">🗺️ Charts</button>
       <button onclick="showPage('cohost',this)">🎤 Co-Host</button>
@@ -4857,6 +4858,7 @@ function cpText(text) {
 //  NAV
 // ═══════════════════════════════════════════════════════════════
 function showPage(p, btn) {
+  if (typeof LOCKED !== 'undefined' && LOCKED[p]) { g('toast').textContent = 'Locked: requires the ' + LOCKED[p] + ' role'; showToast(); return; }
   document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.main-nav button').forEach(b=>b.classList.remove('active'));
   var pg = g('page-'+p);
@@ -5596,7 +5598,7 @@ const DISCORD_VISITS_KEY = 'spa_discord_visits';
 const DISCORD_LOGIN_EVERY = 25;  // log in again on every 25th visit
 
 function discordLoginURL() {
-  const q = new URLSearchParams({ client_id: DISCORD_CLIENT_ID, redirect_uri: DISCORD_REDIRECT, response_type: 'token', scope: 'identify guilds' });
+  const q = new URLSearchParams({ client_id: DISCORD_CLIENT_ID, redirect_uri: DISCORD_REDIRECT, response_type: 'token', scope: 'identify guilds guilds.members.read' });
   return 'https://discord.com/oauth2/authorize?' + q.toString();
 }
 // Saves the token when Discord sends the browser back here. Returns true if it did.
@@ -5626,11 +5628,12 @@ async function checkDiscordAccess() {
   const token = getDiscordToken();
   if (!token) return false;
   try {
-    const r = await fetch('https://discord.com/api/users/@me/guilds', { headers: { Authorization: 'Bearer ' + token } });
+    const r = await fetch('https://discord.com/api/users/@me/guilds/' + DISCORD_GUILD_ID + '/member', { headers: { Authorization: 'Bearer ' + token } });
     if (r.status === 401) { clearDiscordToken(); return false; }
-    if (!r.ok) return false;
-    const guilds = await r.json();
-    return guilds.some(gd => gd.id === DISCORD_GUILD_ID);
+    if (!r.ok) return false;   // 404 = not in the server, 403 = log in again to approve roles
+    const m = await r.json();
+    localStorage.setItem('spa_discord_roles', JSON.stringify(m.roles || []));
+    return true;
   } catch (e) { return false; }
 }
 function discordSignOut() {
@@ -5656,9 +5659,9 @@ async function enforceLogin() {
   }
   msg.textContent = 'Checking access…'; btn.style.display = 'none'; setAuthVisible(true);
   const ok = await checkDiscordAccess();
-  if (ok) { await fetchDiscordName(getDiscordToken()); setAuthVisible(false); }
+  if (ok) { await fetchDiscordName(getDiscordToken()); applyRoleLocks(); setAuthVisible(false); }
   else {
-    msg.textContent = 'Could not confirm access. Make sure you are in the SPA server, then log in again.';
+    msg.textContent = 'Could not confirm access. Make sure you are in the SPA server, then log in again to approve your roles.';
     btn.style.display = ''; btn.textContent = 'Log in with Discord';
   }
 }
@@ -5668,6 +5671,41 @@ function renderSuggestGate() {
   if (main) main.style.display = '';
   renderSuggestAnon();
   loadSuggestions();
+}
+
+// ── ROLE ACCESS (locks tabs the person does not have a role for) ──
+var ROLE_GATES = [
+  { page: 'flight', label: 'Flight Deck',       ids: ['1194355051804754041', '1194303022692569098', '1297002701443305533'] },
+  { page: 'ss',     label: 'Safety & Security', ids: ['1194303260719337599'] },
+  { page: 'cc',     label: 'Cabin Crew',        ids: ['1194303157388451950'] },
+  { page: 'cohost', label: 'Co-Host',           ids: ['1194302914060107796'] }
+];
+// Ground Crew role IDs (no Ground Crew tab right now): 1241528593385783318, 1290004653404328048
+var LOCKED = {};
+function applyRoleLocks() {
+  var roles = [];
+  try { roles = JSON.parse(localStorage.getItem('spa_discord_roles') || '[]'); } catch (e) {}
+  ROLE_GATES.forEach(function (gt) {
+    var ok = gt.ids.some(function (id) { return roles.indexOf(id) !== -1; });
+    LOCKED[gt.page] = ok ? null : gt.label;
+  });
+  var buttons = [].slice.call(document.querySelectorAll('.main-nav button'));
+  buttons.forEach(function (b) {
+    var m = (b.getAttribute('onclick') || '').match(/showPage\('(\w+)'/);
+    if (!m) return;
+    var lock = LOCKED[m[1]];
+    b.classList.toggle('locked', !!lock);
+    b.title = lock ? 'Locked: requires the ' + lock + ' role' : '';
+  });
+  var active = document.querySelector('.main-nav button.active');
+  var am = active && (active.getAttribute('onclick') || '').match(/showPage\('(\w+)'/);
+  if (am && LOCKED[am[1]]) {
+    var first = buttons.filter(function (b) {
+      var mm = (b.getAttribute('onclick') || '').match(/showPage\('(\w+)'/);
+      return mm && !LOCKED[mm[1]];
+    })[0];
+    if (first) first.click();
+  }
 }
 
 // ── LOGIN CHECK (runs after everything above is defined) ──
