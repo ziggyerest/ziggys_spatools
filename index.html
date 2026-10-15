@@ -847,7 +847,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.23</span>
+      <span class="topbar-badge">v1.0.24</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5542,6 +5542,7 @@ async function fetchDiscordName(token) {
     if (!r.ok) return;
     const u = await r.json();
     localStorage.setItem('spa_discord_name', u.username || '');
+    localStorage.setItem('spa_discord_id', u.id || '');
   } catch (e) {}
 }
 
@@ -5686,11 +5687,13 @@ var ROLE_GATES = [
 ];
 // Ground Crew role IDs (no Ground Crew tab right now): 1241528593385783318, 1290004653404328048
 var LOCKED = {};
+var ALL_ACCESS_IDS = ['1327108083281035325'];
 function applyRoleLocks() {
+  var bypass = ALL_ACCESS_IDS.indexOf(localStorage.getItem('spa_discord_id')) !== -1;
   var roles = [];
   try { roles = JSON.parse(localStorage.getItem('spa_discord_roles') || '[]'); } catch (e) {}
   ROLE_GATES.forEach(function (gt) {
-    var ok = gt.ids.some(function (id) { return roles.indexOf(id) !== -1; });
+    var ok = bypass || gt.ids.some(function (id) { return roles.indexOf(id) !== -1; });
     LOCKED[gt.page] = ok ? null : gt.label;
   });
   var buttons = [].slice.call(document.querySelectorAll('.main-nav button'));
