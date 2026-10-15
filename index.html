@@ -841,7 +841,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.14</span>
+      <span class="topbar-badge">v1.0.15</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5494,7 +5494,7 @@ renderRecent();
 const SUGGEST_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfuewPrBh6Us-TbuJHvaARMtOHrtWbqzd04HJs6doho7DShaw/formResponse';  // formResponse link, e.g. https://docs.google.com/forms/d/e/XXXX/formResponse
 const SUGGEST_FIELD_ID = 'entry.138929201';  // the entry ID for the question, e.g. entry.123456789
 const SUGGEST_NAME_FIELD_ID = 'entry.955504930';  // Discord username question
-const SUGGEST_CSV_URL  = '';  // the sheet published as CSV, e.g. https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv
+const SUGGEST_CSV_URL  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSpo4f8tfAN2oWh46n527ov4iBGsGf0MH9uamaZ070uyeA2vtOr-8lk7AeTlKZKl_zEfTf6DZ6YzGdJ/pub?output=csv';  // the sheet published as CSV, e.g. https://docs.google.com/spreadsheets/d/e/XXXX/pub?output=csv
 
 function parseCSV(text) {
   const rows = []; let row = [], cell = '', q = false;
