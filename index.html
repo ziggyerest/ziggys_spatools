@@ -847,7 +847,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.25</span>
+      <span class="topbar-badge">v1.0.26</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5492,6 +5492,7 @@ restoreInputs();
 initGreetings();
 initCC();
 loadState();
+applyCohostAirport();
 update();
 renderRecent();
 
@@ -5715,6 +5716,18 @@ function applyRoleLocks() {
   }
 }
 
+// ── CO-HOST AIRPORT (fills [AIRPORT] in the Co-Host tab) ──
+function applyCohostAirport() {
+  var pg = document.getElementById('page-cohost');
+  if (!pg) return;
+  var inp = document.getElementById('cohost-airport');
+  var v = inp ? inp.value.trim() : '';
+  pg.querySelectorAll('.rc-text, .s-text').forEach(function (el) {
+    if (el.dataset.tpl === undefined) el.dataset.tpl = el.textContent;
+    el.textContent = el.dataset.tpl.replace(/\[AIRPORT\]/g, v || '[AIRPORT]');
+  });
+}
+
 // ── LOGIN CHECK (runs after everything above is defined) ──
 captureDiscordToken();
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', enforceLogin);
@@ -5734,6 +5747,10 @@ else enforceLogin();
     </div>
   </div>
 
+  <div class="form-group" style="max-width:360px;margin-bottom:14px">
+    <label>Airport we are at</label>
+    <input id="cohost-airport" placeholder="e.g. Punta Cana" oninput="applyCohostAirport()">
+  </div>
   <div class="roles-tab-row" style="flex-wrap:wrap">
     <button class="roles-tab-btn active" onclick="selCH('general',this)">📋 General</button>
     <button class="roles-tab-btn" onclick="selCH('questions',this)">❓ Questions</button>
