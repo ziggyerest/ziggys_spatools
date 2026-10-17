@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.49</span>
+      <span class="topbar-badge">v1.0.50</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6020,7 +6020,7 @@ function brRestorePaste() {
 var BR_DEFAULT_ROLES = {
   "air": "Premium Lounge Attendant\nCustomer Service Assistant\nInvestor Lounge Attendant\nGate Agent\nGate Agent 2",
   "onb": "Premium Whole\nEconomy Whole\nWhole Plane",
-  "sec": "Runway Inspection\nDeboard Usher\nArrival Airport Checks"
+  "sec": "Arrival Airport Checks\nDeboard Usher\nRunway Inspection\nBus Escort (if needed)\nAir Marshal"
 };
 function brRestoreRoles() {
   var saved = {};
@@ -6029,6 +6029,35 @@ function brRestoreRoles() {
   if (g('br-role-onb')) g('br-role-onb').value = saved.onb || BR_DEFAULT_ROLES.onb;
   if (g('br-role-sec')) g('br-role-sec').value = saved.sec || BR_DEFAULT_ROLES.sec;
 }
+// Security assignment rules:
+//  - titles cycle Security Agent, Airport Police, Paramedic
+//  - each person gets two roles, worked through the box in order so every role gets covered
+//  - roles can be shared between people
+//  - Air Marshal only goes to an Airport Police
+//  - Bus Escort is added as "(if needed)" to every other person
+function brAssignSEC(people, pool) {
+  var titles = ['Security Agent', 'Airport Police', 'Paramedic'];
+  var marshal = pool.filter(function (x) { return /air marshal/i.test(x); });
+  var escort = pool.filter(function (x) { return /bus escort/i.test(x); })
+    .map(function (x) { return x.replace(/\s*\(.*\)\s*$/, '') + ' (if needed)'; });
+  var base = pool.filter(function (x) { return !/air marshal|bus escort/i.test(x); });
+  var order = brShuffle(people.slice());
+  var cursor = 0;
+  return order.map(function (id, i) {
+    var title = titles[i % titles.length];
+    var got = [];
+    for (var k = 0; k < 2 && base.length; k++) {
+      var pick = base[cursor % base.length];
+      cursor++;
+      if (got.indexOf(pick) === -1) got.push(pick);
+    }
+    if (title === 'Airport Police' && marshal.length) got.push(marshal[i % marshal.length]);
+    if (escort.length && i % 2 === 1) got.push(escort[0]);
+    if (!got.length) got.push('Roles');
+    return '<@' + id + '> • *' + title + '* → *' + got.join(', ') + '*';
+  });
+}
+
 // Cabin Crew assignment: one lead, Gate Agents on Economy, everyone else unique roles
 function brAssignCC(people, airPool, onPool) {
   var isGate = function (x) { return /gate agent/i.test(x); };
@@ -6130,13 +6159,10 @@ function brGenerate(reroll) {
     g('br-sec-roles').value = r.secRoles.join('\n');
     msg += ' ' + r.secRoles.length + ' Security roles taken from the sheet.';
   } else {
-    // Security: people are picked in a random order, and each gets the next role in the box (no repeats until it runs out)
+    // Security: rules in brAssignSEC
     var secPool = brLinesOf('br-role-sec');
     g('br-sy').value = r.sec.length;
-    g('br-sec-roles').value = brShuffle(r.sec.slice()).map(function (id, n) {
-      return secPool.length ? '<@' + id + '> • *Security* → *' + secPool[n % secPool.length] + '*'
-                            : '<@' + id + '> • *Role* → *Roles*';
-    }).join('\n');
+    g('br-sec-roles').value = brAssignSEC(r.sec, secPool).join('\n');
     msg += ' ' + r.sec.length + ' Security.';
     if (!secPool.length && r.sec.length) notes.push('Fill the Security box to assign Security roles.');
   }
