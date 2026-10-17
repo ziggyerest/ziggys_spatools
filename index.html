@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.52</span>
+      <span class="topbar-badge">v1.0.53</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6722,6 +6722,11 @@ else enforceLogin();
     <div style="font-size:1.2rem;font-weight:700;letter-spacing:-.01em">📋 Briefing Sheets</div>
     <div style="font-size:.8rem;color:var(--text3)">Fill in the details, then copy the sheet into Discord.</div>
   </div>
+  <div class="roles-tab-row" style="flex-wrap:wrap;margin-bottom:14px">
+    <button class="roles-tab-btn active" onclick="selBR('cc',this)">🧳 Cabin Crew</button>
+    <button class="roles-tab-btn" onclick="selBR('sec',this)">🛡️ Security</button>
+  </div>
+
   <div class="form-row" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
     <div class="form-group" style="flex:1;min-width:200px"><label>Host's username</label><input id="br-host" placeholder="e.g. Ziggy" oninput="brRender()"></div>
     <div class="form-group" style="flex:1;min-width:160px"><label>Route ID</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2)">SPA</span><input id="br-route" placeholder="1452" oninput="brRender()"></div></div>
@@ -6749,10 +6754,6 @@ else enforceLogin();
       <button class="roles-tab-btn" onclick="rpOpenBriefing()">📄 Open big briefing sheet</button>
     </div>
     <textarea id="rp-out" rows="4" readonly style="margin-top:10px"></textarea>
-  </div>
-  <div class="roles-tab-row" style="flex-wrap:wrap;margin-bottom:14px">
-    <button class="roles-tab-btn active" onclick="selBR('cc',this)">🧳 Cabin Crew</button>
-    <button class="roles-tab-btn" onclick="selBR('sec',this)">🛡️ Security</button>
   </div>
 
   <div id="br-cc" class="br-panel">
