@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.55</span>
+      <span class="topbar-badge">v1.0.56</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6093,7 +6093,8 @@ function brAssignCC(people, airPool, onPool) {
   var otherAir = airPool.filter(function (x) { return !isGate(x); });
   var econ = onPool.filter(isEcon).sort(function (a, b) { return (isFO(a) ? 1 : 0) - (isFO(b) ? 1 : 0); });
   var nonEcon = onPool.filter(function (x) { return !isEcon(x); });
-  var whole = nonEcon.filter(function (x) { return /premium|investor|first|business/i.test(x); });
+  var singles = nonEcon.filter(function (x) { return !/whole/i.test(x); });
+  var whole = singles.filter(function (x) { return /premium|investor|first|business/i.test(x); });
   var lounge = otherAir.filter(function (x) { return /lounge/i.test(x); });
 
   var airOf = {}, onOf = {};
@@ -6107,7 +6108,7 @@ function brAssignCC(people, airPool, onPool) {
   });
 
   var airLeft = brShuffle(otherAir.slice());
-  var onLeft = brShuffle(nonEcon.slice());
+  var onLeft = brShuffle(singles.slice());
   var lead = rest.shift();
   if (lead) {
     var lr = lounge.length ? lounge[0] : airLeft[0];
@@ -6119,7 +6120,7 @@ function brAssignCC(people, airPool, onPool) {
     if (airLeft.length) airOf[id] = airLeft.shift();
     else if (otherAir.length) airOf[id] = otherAir[n % otherAir.length];
     if (onLeft.length) onOf[id] = onLeft.shift();
-    else if (nonEcon.length) onOf[id] = nonEcon[n % nonEcon.length];
+    else if (singles.length) onOf[id] = singles[n % singles.length];
   });
 
   // three or more people: Economy CPT, Economy MID & FO, Premium Whole in that order (Gate Agents first),
@@ -6128,7 +6129,7 @@ function brAssignCC(people, airPool, onPool) {
   if (all.length >= 3) {
     onOf = {};
     var positional = ['Economy CPT', 'Economy MID & FO', 'Premium Whole'];
-    var extras = brShuffle(onPool.filter(function (x) { return !isEcon(x) && !/premium whole|whole plane/i.test(x); }).slice());
+    var extras = brShuffle(onPool.filter(function (x) { return !/whole/i.test(x) && x !== 'Economy CPT'; }).slice());
     all.forEach(function (id, i) {
       if (i < 3) onOf[id] = positional[i];
       else if (extras.length) onOf[id] = extras[(i - 3) % extras.length];
