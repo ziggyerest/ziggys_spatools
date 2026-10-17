@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.41</span>
+      <span class="topbar-badge">v1.0.42</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5922,7 +5922,7 @@ function rpOpenBriefing() {
   window.open(BIG_BRIEFING_URL, '_blank');
 }
 
-// ── FILL BRIEFING SHEETS FROM PASTED BIG BRIEFING SHEET ──
+// ── FILL BRIEFING SHEETS FROM A PASTED SHEET (big briefing sheet or a Cabin Crew sheet) ──
 var BR_PARSED = null;
 var BR_ROLE_TIMER = null;
 function brShuffle(arr) {
@@ -5936,17 +5936,40 @@ function brLinesOf(id) {
   return (g(id).value || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
 }
 function brParseSheet(text) {
-  var res = { flight: '', aircraft: '', cc: [], sec: [], roleMentions: [] };
+  var res = { flight: '', aircraft: '', host: '', arm: [], disarm: [], cc: [], sec: [], roleMentions: [],
+              ccAir: [], ccOnb: [], secRoles: [] };
   var fm = text.match(/SPA\s?(\d+)/);
   if (fm) res.flight = fm[1];
-  var am = text.match(/via the \*\*([^*]+)\*\*/) || text.match(/via the ([^*,\n]+?),/);
+  var cs = text.match(/Callsign:\s*SPA\s?(\d+)/);
+  if (cs) res.flight = cs[1];
+  var am = text.match(/via the \*\*([^*]+)\*\*/) || text.match(/via the ([^*,\n]+?),/) || text.match(/Aircraft:\s*([^|*\n]+)/);
   if (am) res.aircraft = am[1].trim();
-  var cur = '';
-  var seen = {};
+  var hm = text.match(/Flight Host:\s*([^*\n]+)/) || text.match(/hosted by\s+([^*\n]+)/);
+  if (hm) res.host = hm[1].trim();
+
+  var cur = '', block = '', seen = {};
   text.split('\n').forEach(function (raw) {
     var line = raw.trim();
+    var plain = line.replace(/\*/g, '');
+    // big briefing sheet section headings: "| *Cabin Crew*"
     var h = line.match(/\|\s*\*([^*]+)\*\s*$/);
-    if (h) { cur = h[1].trim(); return; }
+    if (h) { cur = h[1].trim(); block = ''; return; }
+    if (!line) { block = ''; return; }
+    // Cabin Crew sheet headings
+    if (/Airport Roles/i.test(plain)) { block = 'air'; return; }
+    if (/Onboard Roles/i.test(plain)) { block = 'onb'; return; }
+    if (/Arming Roleplay/i.test(plain)) { block = 'arm'; return; }
+    if (/Disarming Roleplay/i.test(plain)) { block = 'disarm'; return; }
+    if (/Role Assignments/i.test(plain)) { block = 'sec'; return; }
+    if (line.charAt(0) !== '>') block = '';
+    var body = line.replace(/^>\s*/, '').trim();
+    if (block === 'arm' && body) res.arm.push(body);
+    else if (block === 'disarm' && body) res.disarm.push(body);
+    else if (block === 'air' && /<@/.test(body)) res.ccAir.push(body.replace(/\s*\|\s*/, ' | '));
+    else if (block === 'onb' && /<@/.test(body)) res.ccOnb.push(body.replace(/\s*\|\s*/, ' | '));
+    else if (block === 'sec' && /→/.test(body)) res.secRoles.push(body);
+
+    // mentions in big briefing sheet sections
     var re = /<@(&?)!?(\d+)>/g, m;
     while ((m = re.exec(line)) !== null) {
       var isRole = m[1] === '&', id = m[2];
@@ -5960,19 +5983,23 @@ function brParseSheet(text) {
   });
   return res;
 }
-// pasted sheet: fill route + aircraft, then generate roles
+// pasted sheet: fill everything it can, then generate the rest
 function brPasted() {
   var text = g('br-paste').value || '';
   localStorage.setItem('spa_br_paste', text);
   BR_PARSED = text.trim() ? brParseSheet(text) : null;
   if (BR_PARSED) {
-    if (BR_PARSED.flight) g('br-route').value = BR_PARSED.flight;
-    if (BR_PARSED.aircraft) {
+    var r = BR_PARSED;
+    if (r.flight) g('br-route').value = r.flight;
+    if (r.host) g('br-host').value = r.host;
+    if (r.aircraft) {
       var sel = g('br-plane');
-      var hit = [].slice.call(sel.options).filter(function (o) { return BR_PARSED.aircraft.indexOf(o.value) !== -1; })[0];
+      var hit = [].slice.call(sel.options).filter(function (o) { return r.aircraft.indexOf(o.value) !== -1; })[0];
       if (hit) sel.value = hit.value;
     }
     brApplyScripts();
+    if (r.arm.length) g('br-cc-arm').value = r.arm.join('\n');
+    if (r.disarm.length) g('br-cc-disarm').value = r.disarm.join('\n');
   }
   brGenerate(false);
 }
@@ -5999,55 +6026,74 @@ function brRestoreRoles() {
     if (g('br-role-sec')) g('br-role-sec').value = saved.sec || '';
   } catch (e) {}
 }
-// build the assignments from the parsed sheet and the role boxes
+// build the assignments: use roles already written on the sheet, otherwise generate them
 function brGenerate(reroll) {
   var status = g('br-fill-status');
   if (!BR_PARSED) { status.textContent = 'Paste the briefing sheet first.'; return; }
   var r = BR_PARSED;
-  var airPool = brLinesOf('br-role-air');
-  var onPool = brLinesOf('br-role-onb');
-  var secPool = brLinesOf('br-role-sec');
   var notes = [];
-
-  // Cabin Crew: each person gets one airport role and one onboard role
-  var people = brShuffle(r.cc.slice());
-  var airSlots = brShuffle(airPool.slice());
-  var airOf = {};
-  people.forEach(function (id, i) { if (i < airSlots.length) airOf[id] = airSlots[i]; });
-  var gates = people.filter(function (id) { return /gate agent/i.test(airOf[id] || ''); });
-  var rest = people.filter(function (id) { return gates.indexOf(id) === -1; });
-
-  var econ = onPool.filter(function (x) { return /econom/i.test(x); });
-  var nonEcon = onPool.filter(function (x) { return !/econom/i.test(x); });
-  var econSlots = brShuffle((econ.length ? econ : onPool).slice());
-  var otherSlots = brShuffle((nonEcon.length ? nonEcon : onPool).slice());
-  var onOf = {};
-  gates.forEach(function (id, n) { if (econSlots.length) onOf[id] = econSlots[n % econSlots.length]; });
-  rest.forEach(function (id, n) { if (otherSlots.length) onOf[id] = otherSlots[n % otherSlots.length]; });
-
-  g('br-cc-count').value = r.cc.length;
-  g('br-cc-airport').value = airPool.length
-    ? people.filter(function (id) { return airOf[id]; }).map(function (id) { return '<@' + id + '> | ' + airOf[id]; }).join('\n')
-    : people.map(function (id) { return '<@' + id + '> | [Role]'; }).join('\n');
-  g('br-cc-onboard').value = onPool.length
-    ? people.filter(function (id) { return onOf[id]; }).map(function (id) { return '<@' + id + '> | ' + onOf[id]; }).join('\n')
-    : people.map(function (id) { return '<@' + id + '> | [Insert roles]'; }).join('\n');
-
-  if (airPool.length && people.length > airSlots.length) notes.push((people.length - airSlots.length) + ' Cabin Crew have no airport role (add more to the Airport box).');
-  if (airPool.length && !gates.length) notes.push('No Gate Agent was given out (add Gate Agent to the Airport box).');
-
-  // Security: every person gets a random role from the Security box
-  var secSlots = brShuffle(secPool.slice());
-  g('br-sy').value = r.sec.length;
-  g('br-sec-roles').value = brShuffle(r.sec.slice()).map(function (id, n) {
-    return secSlots.length ? '<@' + id + '> • *Security* → *' + secSlots[n % secSlots.length] + '*'
-                           : '<@' + id + '> • *Role* → *Roles*';
-  }).join('\n');
-
   var flight = r.flight ? 'SPA' + r.flight : 'not found';
+  var ccCount, msg;
+
+  if (r.ccAir.length || r.ccOnb.length) {
+    // Cabin Crew sheet: the roles are already written, so use them as they are
+    var ids = {};
+    r.ccAir.concat(r.ccOnb).forEach(function (l) { var m = l.match(/<@!?(\d+)>/); if (m) ids[m[1]] = true; });
+    ccCount = Object.keys(ids).length;
+    g('br-cc-count').value = ccCount;
+    g('br-cc-airport').value = r.ccAir.join('\n');
+    g('br-cc-onboard').value = r.ccOnb.join('\n');
+    msg = 'Cabin Crew roles taken from the sheet (' + ccCount + ' people).';
+  } else {
+    // big briefing sheet: generate Cabin Crew roles from the role boxes
+    var airPool = brLinesOf('br-role-air');
+    var onPool = brLinesOf('br-role-onb');
+    var people = brShuffle(r.cc.slice());
+    var airSlots = brShuffle(airPool.slice());
+    var airOf = {};
+    people.forEach(function (id, i) { if (i < airSlots.length) airOf[id] = airSlots[i]; });
+    var gates = people.filter(function (id) { return /gate agent/i.test(airOf[id] || ''); });
+    var rest = people.filter(function (id) { return gates.indexOf(id) === -1; });
+    var econ = onPool.filter(function (x) { return /econom/i.test(x); });
+    var nonEcon = onPool.filter(function (x) { return !/econom/i.test(x); });
+    var econSlots = brShuffle((econ.length ? econ : onPool).slice());
+    var otherSlots = brShuffle((nonEcon.length ? nonEcon : onPool).slice());
+    var onOf = {};
+    gates.forEach(function (id, n) { if (econSlots.length) onOf[id] = econSlots[n % econSlots.length]; });
+    rest.forEach(function (id, n) { if (otherSlots.length) onOf[id] = otherSlots[n % otherSlots.length]; });
+    ccCount = r.cc.length;
+    g('br-cc-count').value = ccCount;
+    g('br-cc-airport').value = airPool.length
+      ? people.filter(function (id) { return airOf[id]; }).map(function (id) { return '<@' + id + '> | ' + airOf[id]; }).join('\n')
+      : people.map(function (id) { return '<@' + id + '> | [Role]'; }).join('\n');
+    g('br-cc-onboard').value = onPool.length
+      ? people.filter(function (id) { return onOf[id]; }).map(function (id) { return '<@' + id + '> | ' + onOf[id]; }).join('\n')
+      : people.map(function (id) { return '<@' + id + '> | [Insert roles]'; }).join('\n');
+    if (airPool.length && people.length > airSlots.length) notes.push((people.length - airSlots.length) + ' Cabin Crew have no airport role (add more to the Airport box).');
+    if (airPool.length && !gates.length) notes.push('No Gate Agent was given out (add Gate Agent to the Airport box).');
+    if (!airPool.length || !onPool.length) notes.push('Fill the Airport and Onboard boxes to assign Cabin Crew roles.');
+    msg = 'Found ' + ccCount + ' Cabin Crew (' + gates.length + ' Gate Agent).';
+  }
+
+  if (r.secRoles.length) {
+    // Security sheet: roles already written, use them as they are
+    g('br-sy').value = r.secRoles.length;
+    g('br-sec-roles').value = r.secRoles.join('\n');
+    msg += ' ' + r.secRoles.length + ' Security roles taken from the sheet.';
+  } else {
+    var secPool = brLinesOf('br-role-sec');
+    var secSlots = brShuffle(secPool.slice());
+    g('br-sy').value = r.sec.length;
+    g('br-sec-roles').value = brShuffle(r.sec.slice()).map(function (id, n) {
+      return secSlots.length ? '<@' + id + '> • *Security* → *' + secSlots[n % secSlots.length] + '*'
+                             : '<@' + id + '> • *Role* → *Roles*';
+    }).join('\n');
+    msg += ' ' + r.sec.length + ' Security.';
+    if (!secPool.length && r.sec.length) notes.push('Fill the Security box to assign Security roles.');
+  }
+
   var skipped = r.roleMentions.length ? ' Skipped ' + r.roleMentions.length + ' role mention(s), so check those by hand.' : '';
-  var emptyBoxes = (!airPool.length || !onPool.length || !secPool.length) ? ' Fill the role boxes to assign roles.' : '';
-  status.textContent = 'Found ' + r.cc.length + ' Cabin Crew (' + gates.length + ' Gate Agent) and ' + r.sec.length + ' Security. Flight ' + flight + '.' + (notes.length ? ' ' + notes.join(' ') : '') + skipped + emptyBoxes + (reroll ? ' Roles re-rolled.' : '');
+  status.textContent = msg + ' Flight ' + flight + '.' + (notes.length ? ' ' + notes.join(' ') : '') + skipped + (reroll ? ' Roles re-rolled.' : '');
   brRender();
 }
 
