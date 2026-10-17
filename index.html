@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.45</span>
+      <span class="topbar-badge">v1.0.46</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6029,6 +6029,52 @@ function brRestoreRoles() {
   if (g('br-role-onb')) g('br-role-onb').value = saved.onb || BR_DEFAULT_ROLES.onb;
   if (g('br-role-sec')) g('br-role-sec').value = saved.sec || BR_DEFAULT_ROLES.sec;
 }
+// Cabin Crew assignment: one lead, Gate Agents on Economy, everyone else unique roles
+function brAssignCC(people, airPool, onPool) {
+  var isGate = function (x) { return /gate agent/i.test(x); };
+  var isEcon = function (x) { return /econom/i.test(x); };
+  var isFO = function (x) { return /\bFO\b/.test(x); };
+  var gateAir = brShuffle(airPool.filter(isGate));
+  var otherAir = airPool.filter(function (x) { return !isGate(x); });
+  var econ = onPool.filter(isEcon).sort(function (a, b) { return (isFO(a) ? 1 : 0) - (isFO(b) ? 1 : 0); });
+  var nonEcon = onPool.filter(function (x) { return !isEcon(x); });
+  var whole = nonEcon.filter(function (x) { return /premium|investor|first|business/i.test(x); });
+  var lounge = otherAir.filter(function (x) { return /lounge/i.test(x); });
+
+  var airOf = {}, onOf = {};
+  var order = brShuffle(people.slice());
+  var gateCount = Math.min(gateAir.length, order.length);
+  var gates = order.slice(0, gateCount);
+  var rest = order.slice(gateCount);
+  gates.forEach(function (id, n) {
+    airOf[id] = gateAir[n];
+    if (econ.length) onOf[id] = econ[n % econ.length];
+  });
+
+  var airLeft = brShuffle(otherAir.slice());
+  var onLeft = brShuffle(nonEcon.slice());
+  var lead = rest.shift();
+  if (lead) {
+    var lr = lounge.length ? lounge[0] : airLeft[0];
+    if (lr) { airOf[lead] = lr; airLeft = airLeft.filter(function (x) { return x !== lr; }); }
+    var wr = whole.length ? whole[0] : onLeft[0];
+    if (wr) { onOf[lead] = wr; onLeft = onLeft.filter(function (x) { return x !== wr; }); }
+  }
+  rest.forEach(function (id, n) {
+    if (airLeft.length) airOf[id] = airLeft.shift();
+    else if (otherAir.length) airOf[id] = otherAir[n % otherAir.length];
+    if (onLeft.length) onOf[id] = onLeft.shift();
+    else if (nonEcon.length) onOf[id] = nonEcon[n % nonEcon.length];
+  });
+
+  var out = (lead ? [lead] : []).concat(gates, rest);
+  return {
+    air: out.filter(function (id) { return airOf[id]; }).map(function (id) { return '<@' + id + '> | ' + airOf[id]; }),
+    onb: out.filter(function (id) { return onOf[id]; }).map(function (id) { return '<@' + id + '> | ' + onOf[id]; }),
+    gates: gates.length,
+    noAir: out.filter(function (id) { return !airOf[id]; }).length
+  };
+}
 // build the assignments: use roles already written on the sheet, otherwise generate them
 function brGenerate(reroll) {
   var status = g('br-fill-status');
@@ -6051,31 +6097,17 @@ function brGenerate(reroll) {
     // big briefing sheet: generate Cabin Crew roles from the role boxes
     var airPool = brLinesOf('br-role-air');
     var onPool = brLinesOf('br-role-onb');
-    var people = brShuffle(r.cc.slice());
-    var airSlots = brShuffle(airPool.slice());
-    var airOf = {};
-    people.forEach(function (id, i) { if (i < airSlots.length) airOf[id] = airSlots[i]; });
-    var gates = people.filter(function (id) { return /gate agent/i.test(airOf[id] || ''); });
-    var rest = people.filter(function (id) { return gates.indexOf(id) === -1; });
-    var econ = onPool.filter(function (x) { return /econom/i.test(x); });
-    var nonEcon = onPool.filter(function (x) { return !/econom/i.test(x); });
-    var econSlots = brShuffle((econ.length ? econ : onPool).slice());
-    var otherSlots = brShuffle((nonEcon.length ? nonEcon : onPool).slice());
-    var onOf = {};
-    gates.forEach(function (id, n) { if (econSlots.length) onOf[id] = econSlots[n % econSlots.length]; });
-    rest.forEach(function (id, n) { if (otherSlots.length) onOf[id] = otherSlots[n % otherSlots.length]; });
+    var res = brAssignCC(r.cc, airPool, onPool);
     ccCount = r.cc.length;
     g('br-cc-count').value = ccCount;
-    g('br-cc-airport').value = airPool.length
-      ? people.filter(function (id) { return airOf[id]; }).map(function (id) { return '<@' + id + '> | ' + airOf[id]; }).join('\n')
-      : people.map(function (id) { return '<@' + id + '> | [Role]'; }).join('\n');
-    g('br-cc-onboard').value = onPool.length
-      ? people.filter(function (id) { return onOf[id]; }).map(function (id) { return '<@' + id + '> | ' + onOf[id]; }).join('\n')
-      : people.map(function (id) { return '<@' + id + '> | [Insert roles]'; }).join('\n');
-    if (airPool.length && people.length > airSlots.length) notes.push((people.length - airSlots.length) + ' Cabin Crew have no airport role (add more to the Airport box).');
-    if (airPool.length && !gates.length) notes.push('No Gate Agent was given out (add Gate Agent to the Airport box).');
+    g('br-cc-airport').value = airPool.length ? res.air.join('\n')
+      : r.cc.map(function (id) { return '<@' + id + '> | [Role]'; }).join('\n');
+    g('br-cc-onboard').value = onPool.length ? res.onb.join('\n')
+      : r.cc.map(function (id) { return '<@' + id + '> | [Insert roles]'; }).join('\n');
+    if (airPool.length && res.noAir) notes.push(res.noAir + ' Cabin Crew have no airport role (add more to the Airport box).');
+    if (airPool.length && !res.gates) notes.push('No Gate Agent was given out (add Gate Agent to the Airport box).');
     if (!airPool.length || !onPool.length) notes.push('Fill the Airport and Onboard boxes to assign Cabin Crew roles.');
-    msg = 'Found ' + ccCount + ' Cabin Crew (' + gates.length + ' Gate Agent).';
+    msg = 'Found ' + ccCount + ' Cabin Crew (' + res.gates + ' Gate Agent).';
   }
 
   if (r.secRoles.length) {
