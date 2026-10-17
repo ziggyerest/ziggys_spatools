@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.46</span>
+      <span class="topbar-badge">v1.0.47</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6067,7 +6067,21 @@ function brAssignCC(people, airPool, onPool) {
     else if (nonEcon.length) onOf[id] = nonEcon[n % nonEcon.length];
   });
 
-  var out = (lead ? [lead] : []).concat(gates, rest);
+  // three or more people: Economy CPT, Economy MID & FO, Premium Whole in that order (Gate Agents first),
+  // then anyone else gets a non-Economy role from the box
+  var all = gates.concat(lead ? [lead] : [], rest);
+  if (all.length >= 3) {
+    onOf = {};
+    var positional = ['Economy CPT', 'Economy MID & FO', 'Premium Whole'];
+    var extras = brShuffle(onPool.filter(function (x) { return !isEcon(x) && !/premium whole/i.test(x); }).slice());
+    all.forEach(function (id, i) {
+      if (i < 3) onOf[id] = positional[i];
+      else if (extras.length) onOf[id] = extras[(i - 3) % extras.length];
+      else onOf[id] = '[Insert roles]';
+    });
+  }
+
+  var out = all;
   return {
     air: out.filter(function (id) { return airOf[id]; }).map(function (id) { return '<@' + id + '> | ' + airOf[id]; }),
     onb: out.filter(function (id) { return onOf[id]; }).map(function (id) { return '<@' + id + '> | ' + onOf[id]; }),
