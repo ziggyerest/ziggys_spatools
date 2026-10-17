@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.37</span>
+      <span class="topbar-badge">v1.0.39</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5929,6 +5929,9 @@ function brShuffle(arr) {
   }
   return arr;
 }
+function brLinesOf(id) {
+  return (g(id).value || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+}
 function brParseSheet(text) {
   var res = { flight: '', aircraft: '', cc: [], sec: [], roleMentions: [] };
   var fm = text.match(/SPA\s?(\d+)/);
@@ -5965,33 +5968,75 @@ function brFillFromSheet() {
     var hit = [].slice.call(sel.options).filter(function (o) { return r.aircraft.indexOf(o.value) !== -1; })[0];
     if (hit) sel.value = hit.value;
   }
+  brApplyScripts();
 
-  // Roles box: Gate Agent is handled separately, so it's removed from the random pool
-  var pool = (g('rp-tasks').value || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean)
-    .filter(function (x) { return x.toLowerCase() !== 'gate agent'; });
+  var airPool = brLinesOf('br-role-air');
+  var onPool = brLinesOf('br-role-onb');
+  var secPool = brLinesOf('br-role-sec');
+  var notes = [];
 
-  // Cabin Crew: one random Gate Agent (boards economy, no onboard role); everyone else gets a random onboard role
-  var cc = brShuffle(r.cc.slice());
-  var gate = cc.shift();
-  var ccPool = brShuffle(pool.slice());
+  // Cabin Crew: each person gets one airport role and one onboard role
+  var people = brShuffle(r.cc.slice());
+  var airSlots = brShuffle(airPool.slice());
+  var airOf = {};
+  people.forEach(function (id, i) { if (i < airSlots.length) airOf[id] = airSlots[i]; });
+  var gates = people.filter(function (id) { return /gate agent/i.test(airOf[id] || ''); });
+  var rest = people.filter(function (id) { return gates.indexOf(id) === -1; });
+
+  var econ = onPool.filter(function (x) { return /econom/i.test(x); });
+  var nonEcon = onPool.filter(function (x) { return !/econom/i.test(x); });
+  var econSlots = brShuffle((econ.length ? econ : onPool).slice());
+  var otherSlots = brShuffle((nonEcon.length ? nonEcon : onPool).slice());
+  var onOf = {};
+  gates.forEach(function (id, n) { if (econSlots.length) onOf[id] = econSlots[n % econSlots.length]; });
+  rest.forEach(function (id, n) { if (otherSlots.length) onOf[id] = otherSlots[n % otherSlots.length]; });
+
   g('br-cc-count').value = r.cc.length;
-  g('br-cc-airport').value = gate ? '<@' + gate + '> | Gate Agent' : '';
-  g('br-cc-onboard').value = cc.map(function (id, n) {
-    return ccPool.length ? '<@' + id + '> | ' + ccPool[n % ccPool.length] : '<@' + id + '> | [Insert roles]';
-  }).join('\n');
+  g('br-cc-airport').value = airPool.length
+    ? people.filter(function (id) { return airOf[id]; }).map(function (id) { return '<@' + id + '> | ' + airOf[id]; }).join('\n')
+    : people.map(function (id) { return '<@' + id + '> | [Role]'; }).join('\n');
+  g('br-cc-onboard').value = onPool.length
+    ? people.filter(function (id) { return onOf[id]; }).map(function (id) { return '<@' + id + '> | ' + onOf[id]; }).join('\n')
+    : people.map(function (id) { return '<@' + id + '> | [Insert roles]'; }).join('\n');
 
-  // Security: every person gets a random role
-  var secPool = brShuffle(pool.slice());
+  if (people.length > airSlots.length && airPool.length) notes.push((people.length - airSlots.length) + ' Cabin Crew have no airport role (add more to the Airport box).');
+  if (airPool.length && !gates.length) notes.push('No Gate Agent was given out (add Gate Agent to the Airport box).');
+
+  // Security: every person gets a random role from the Security box
+  var secSlots = brShuffle(secPool.slice());
   g('br-sy').value = r.sec.length;
   g('br-sec-roles').value = brShuffle(r.sec.slice()).map(function (id, n) {
-    return secPool.length ? '<@' + id + '> • *Security* → *' + secPool[n % secPool.length] + '*'
-                          : '<@' + id + '> • *Role* → *Roles*';
+    return secSlots.length ? '<@' + id + '> • *Security* → *' + secSlots[n % secSlots.length] + '*'
+                           : '<@' + id + '> • *Role* → *Roles*';
   }).join('\n');
 
   var skipped = r.roleMentions.length ? ' Skipped ' + r.roleMentions.length + ' role mention(s), so check those by hand.' : '';
-  var gateNote = gate ? ' Gate Agent given to one Cabin Crew member, who gets no onboard role.' : '';
-  var noRoles = pool.length ? '' : ' Add roles to the Roles box and fill again to assign them.';
-  status.textContent = 'Found ' + r.cc.length + ' Cabin Crew and ' + r.sec.length + ' Security. Flight ' + (r.flight ? 'SPA' + r.flight : 'not found') + '.' + gateNote + skipped + noRoles;
+  var emptyBoxes = (!airPool.length || !onPool.length || !secPool.length) ? ' Fill the role boxes and click again to assign roles.' : '';
+  status.textContent = 'Found ' + r.cc.length + ' Cabin Crew (' + gates.length + ' Gate Agent) and ' + r.sec.length + ' Security. Flight ' + (r.flight ? 'SPA' + r.flight : 'not found') + '.' + (notes.length ? ' ' + notes.join(' ') : '') + skipped + emptyBoxes;
+  brRender();
+}
+
+// ── ARMING / DISARMING SCRIPTS BY AIRCRAFT TYPE ──
+var BR_SCRIPTS = {
+  "Airbus A350": {
+    "arm": [
+      "-slides open protective cover-",
+      "-removes safety pin with red streamer-",
+      "-changes arming lever mode to \"armed\"-",
+      "-closes protective cover-"
+    ],
+    "disarm": [
+      "-slides open protective cover-",
+      "-changes arming lever mode to \"disarmed\"-",
+      "-inserts safety pin with red streamer-",
+      "-closes protective cover-"
+    ]
+  }
+};
+function brApplyScripts() {
+  var sc = BR_SCRIPTS[g('br-plane').value];
+  g('br-cc-arm').value = sc ? sc.arm.join('\n') : '';
+  g('br-cc-disarm').value = sc ? sc.disarm.join('\n') : '';
   brRender();
 }
 
@@ -6380,6 +6425,11 @@ else enforceLogin();
   <div style="border:1px solid rgba(148,180,212,.15);border-radius:12px;padding:14px;margin-bottom:16px">
     <div style="font-weight:700;margin-bottom:8px">📥 Fill from big briefing sheet</div>
     <div class="form-group" style="margin-bottom:8px"><label>Paste the whole briefing sheet</label><textarea id="br-paste" rows="6" placeholder="Paste the whole sheet here"></textarea></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+      <div class="form-group" style="flex:1;min-width:200px"><label>Airport roles (one per line, include Gate Agent)</label><textarea id="br-role-air" rows="5"></textarea></div>
+      <div class="form-group" style="flex:1;min-width:200px"><label>Onboard roles (one per line, Economy roles go to Gate Agents)</label><textarea id="br-role-onb" rows="5"></textarea></div>
+      <div class="form-group" style="flex:1;min-width:200px"><label>Security roles (one per line)</label><textarea id="br-role-sec" rows="5"></textarea></div>
+    </div>
     <button class="roles-tab-btn active" onclick="brFillFromSheet()">📥 Fill from sheet</button>
     <div id="br-fill-status" style="font-size:.82rem;color:var(--text2);margin-top:8px"></div>
   </div>
@@ -6404,7 +6454,7 @@ else enforceLogin();
   <div id="br-cc" class="br-panel">
     <div class="form-row" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
       <div class="form-group" style="flex:1;min-width:160px"><label>Number of Cabin Crew</label><input id="br-cc-count" type="number" min="0" placeholder="0" oninput="brRender()"></div>
-      <div class="form-group" style="flex:2;min-width:220px"><label>Plane</label><select id="br-plane" onchange="brRender()"><option>Airbus A220</option><option>Airbus A318</option><option>Airbus A319</option><option>Airbus A320</option><option>Airbus A321neo</option><option>Airbus A330</option><option>Airbus A350</option><option>Boeing 737-MAX8</option><option>Boeing 787-9</option></select></div>
+      <div class="form-group" style="flex:2;min-width:220px"><label>Plane</label><select id="br-plane" onchange="brApplyScripts()"><option>Airbus A220</option><option>Airbus A318</option><option>Airbus A319</option><option>Airbus A320</option><option>Airbus A321neo</option><option>Airbus A330</option><option>Airbus A350</option><option>Boeing 737-MAX8</option><option>Boeing 787-9</option></select></div>
     </div>
     <div class="form-group" style="margin-bottom:12px"><label>Arming script</label><textarea id="br-cc-arm" rows="3" oninput="brRender()"></textarea></div>
     <div class="form-group" style="margin-bottom:12px"><label>Disarming script</label><textarea id="br-cc-disarm" rows="3" oninput="brRender()"></textarea></div>
