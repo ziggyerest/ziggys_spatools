@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.59</span>
+      <span class="topbar-badge">v1.0.60</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6007,7 +6007,8 @@ function brPasted() {
 // role boxes: save, then regenerate shortly after typing stops
 function brRoleBoxChanged() {
   localStorage.setItem('spa_br_roles', JSON.stringify({
-    air: g('br-role-air').value, onb: g('br-role-onb').value, sec: g('br-role-sec').value
+    air: g('br-role-air').value, onb: g('br-role-onb').value, sec: g('br-role-sec').value,
+    business: g('br-cls-business').checked, first: g('br-cls-first').checked, investor: g('br-cls-investor').checked
   }));
   clearTimeout(BR_ROLE_TIMER);
   BR_ROLE_TIMER = setTimeout(function () { brGenerate(false); }, 500);
@@ -6029,6 +6030,9 @@ function brRestoreRoles() {
   if (g('br-role-air')) g('br-role-air').value = saved.air || BR_DEFAULT_ROLES.air;
   if (g('br-role-onb')) g('br-role-onb').value = saved.onb || BR_DEFAULT_ROLES.onb;
   if (g('br-role-sec')) g('br-role-sec').value = saved.sec || BR_DEFAULT_ROLES.sec;
+  if (g('br-cls-business') && typeof saved.business === 'boolean') g('br-cls-business').checked = saved.business;
+  if (g('br-cls-first') && typeof saved.first === 'boolean') g('br-cls-first').checked = saved.first;
+  if (g('br-cls-investor') && typeof saved.investor === 'boolean') g('br-cls-investor').checked = saved.investor;
 }
 // Security assignment, matched to the Safety & Security guides:
 //  - Air Marshal: one person, only this role, stays on the plane the whole time (never deboards)
@@ -6120,7 +6124,10 @@ function brAssignCC(people, airPool, onPool, manager) {
 
   // onboard classes: Economy, plus one premium class that is in the box
   var classOf = function (x) { var m = x.match(/^(.+?)\s+(CPT|FO|Mid|Whole)\b/i); return m ? m[1].trim() : null; };
+  var clsBox = { 'Investor': 'br-cls-investor', 'First Class': 'br-cls-first', 'Business': 'br-cls-business' };
   var premiumPresent = ['Investor', 'First Class', 'Business'].filter(function (c) {
+    var box = document.getElementById(clsBox[c]);
+    if (box && !box.checked) return false;
     return onPool.some(function (x) { return classOf(x) && classOf(x).toLowerCase() === c.toLowerCase(); });
   });
   var premium = premiumPresent.length ? brShuffle(premiumPresent.slice())[0] : null;
@@ -6761,7 +6768,7 @@ else enforceLogin();
     <div class="form-group" style="margin-bottom:8px"><label>Paste the whole briefing sheet</label><textarea id="br-paste" rows="6" placeholder="Paste the whole sheet here" oninput="brPasted()"></textarea></div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
       <div class="form-group" style="flex:1;min-width:200px"><label>Airport roles (one per line, include Gate Agent)</label><textarea id="br-role-air" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
-      <div class="form-group" style="flex:1;min-width:200px"><label>Onboard roles (one per line, Economy roles go to Gate Agents)</label><textarea id="br-role-onb" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
+      <div class="form-group" style="flex:1;min-width:200px"><label>Onboard roles (one per line, Economy roles go to Gate Agents)</label><div style="display:flex;gap:10px;flex-wrap:wrap;margin:6px 0;font-size:.82rem;color:var(--text2)"><span>Classes on this flight (Economy is always used):</span><label><input type="checkbox" id="br-cls-business" checked onchange="brRoleBoxChanged()"> Business</label><label><input type="checkbox" id="br-cls-first" checked onchange="brRoleBoxChanged()"> First Class</label><label><input type="checkbox" id="br-cls-investor" checked onchange="brRoleBoxChanged()"> Investor</label></div><textarea id="br-role-onb" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
       <div class="form-group" style="flex:1;min-width:200px"><label>Security roles (one per line)</label><textarea id="br-role-sec" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
     </div>
     <button class="roles-tab-btn active" onclick="brGenerate(true)">🎲 Generate roles</button>
