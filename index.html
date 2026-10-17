@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.40</span>
+      <span class="topbar-badge">v1.0.41</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5500,7 +5500,7 @@ initGreetings();
 initCC();
 loadState();
 applyCohostAirport();
-document.addEventListener('DOMContentLoaded', brRestoreRoles);
+document.addEventListener('DOMContentLoaded', function () { brRestoreRoles(); brRestorePaste(); });
 brRender();
 update();
 renderRecent();
@@ -5963,6 +5963,7 @@ function brParseSheet(text) {
 // pasted sheet: fill route + aircraft, then generate roles
 function brPasted() {
   var text = g('br-paste').value || '';
+  localStorage.setItem('spa_br_paste', text);
   BR_PARSED = text.trim() ? brParseSheet(text) : null;
   if (BR_PARSED) {
     if (BR_PARSED.flight) g('br-route').value = BR_PARSED.flight;
@@ -5982,6 +5983,12 @@ function brRoleBoxChanged() {
   }));
   clearTimeout(BR_ROLE_TIMER);
   BR_ROLE_TIMER = setTimeout(function () { brGenerate(false); }, 500);
+}
+function brRestorePaste() {
+  var saved = localStorage.getItem('spa_br_paste');
+  if (!saved || !g('br-paste')) return;
+  g('br-paste').value = saved;
+  brPasted();
 }
 function brRestoreRoles() {
   try {
