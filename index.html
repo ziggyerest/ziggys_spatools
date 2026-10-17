@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.35</span>
+      <span class="topbar-badge">v1.0.36</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5921,6 +5921,64 @@ function rpOpenBriefing() {
   window.open(BIG_BRIEFING_URL, '_blank');
 }
 
+// ── FILL BRIEFING SHEETS FROM PASTED BIG BRIEFING SHEET ──
+function brParseSheet(text) {
+  var res = { flight: '', aircraft: '', cc: [], sec: [], roleMentions: [] };
+  var fm = text.match(/SPA\s?(\d+)/);
+  if (fm) res.flight = fm[1];
+  var am = text.match(/via the \*\*([^*]+)\*\*/) || text.match(/via the ([^*,\n]+?),/);
+  if (am) res.aircraft = am[1].trim();
+  var cur = '';
+  var seen = {};
+  text.split('\n').forEach(function (raw) {
+    var line = raw.trim();
+    var h = line.match(/\|\s*\*([^*]+)\*\s*$/);
+    if (h) { cur = h[1].trim(); return; }
+    var re = /<@(&?)!?(\d+)>/g, m;
+    while ((m = re.exec(line)) !== null) {
+      var isRole = m[1] === '&', id = m[2];
+      if (isRole) { res.roleMentions.push(cur + ': <@&' + id + '>'); continue; }
+      var key = cur + '|' + id;
+      if (seen[key]) continue;
+      seen[key] = true;
+      if (cur === 'Cabin Crew') res.cc.push(id);
+      else if (cur === 'Safety & Security') res.sec.push(id);
+    }
+  });
+  return res;
+}
+function brFillFromSheet() {
+  var text = (g('br-paste').value || '');
+  var status = g('br-fill-status');
+  if (!text.trim()) { status.textContent = 'Paste the briefing sheet first.'; return; }
+  var r = brParseSheet(text);
+  if (r.flight) g('br-route').value = r.flight;
+  if (r.aircraft) {
+    var sel = g('br-plane');
+    var hit = [].slice.call(sel.options).filter(function (o) { return r.aircraft.indexOf(o.value) !== -1; })[0];
+    if (hit) sel.value = hit.value;
+  }
+  g('br-cc-count').value = r.cc.length;
+  g('br-cc-airport').value = r.cc.map(function (id) { return '<@' + id + '> | [Role]'; }).join('\n');
+  g('br-cc-onboard').value = r.cc.map(function (id) { return '<@' + id + '> | [Insert roles]'; }).join('\n');
+
+  var tasks = (g('rp-tasks').value || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+  var order = r.sec.slice();
+  for (var i = order.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = order[i]; order[i] = order[j]; order[j] = t;
+  }
+  g('br-sy').value = r.sec.length;
+  g('br-sec-roles').value = order.map(function (id, n) {
+    var role = tasks.length ? tasks[n % tasks.length] : 'Roles';
+    return '<@' + id + '> • *' + (tasks.length ? 'Security' : 'Role') + '* → *' + role + '*';
+  }).join('\n');
+
+  var skipped = r.roleMentions.length ? ' Skipped ' + r.roleMentions.length + ' role mention(s), so check those by hand.' : '';
+  status.textContent = 'Found ' + r.cc.length + ' Cabin Crew and ' + r.sec.length + ' Security. Flight ' + (r.flight ? 'SPA' + r.flight : 'not found') + '.' + skipped;
+  brRender();
+}
+
 // ── CO-HOST AIRPORT (fills [AIRPORT] in the Co-Host tab) ──
 function applyCohostAirport() {
   var pg = document.getElementById('page-cohost');
@@ -6302,6 +6360,12 @@ else enforceLogin();
   <div class="form-row" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
     <div class="form-group" style="flex:1;min-width:200px"><label>Host's username</label><input id="br-host" placeholder="e.g. Ziggy" oninput="brRender()"></div>
     <div class="form-group" style="flex:1;min-width:160px"><label>Route ID</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2)">SPA</span><input id="br-route" placeholder="1452" oninput="brRender()"></div></div>
+  </div>
+  <div style="border:1px solid rgba(148,180,212,.15);border-radius:12px;padding:14px;margin-bottom:16px">
+    <div style="font-weight:700;margin-bottom:8px">📥 Fill from big briefing sheet</div>
+    <div class="form-group" style="margin-bottom:8px"><label>Paste the whole briefing sheet</label><textarea id="br-paste" rows="6" placeholder="Paste the whole sheet here"></textarea></div>
+    <button class="roles-tab-btn active" onclick="brFillFromSheet()">📥 Fill from sheet</button>
+    <div id="br-fill-status" style="font-size:.82rem;color:var(--text2);margin-top:8px"></div>
   </div>
   <div style="border:1px solid rgba(148,180,212,.15);border-radius:12px;padding:14px;margin-bottom:16px">
     <div style="font-weight:700;margin-bottom:8px">🎲 Random picker</div>
