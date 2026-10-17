@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.36</span>
+      <span class="topbar-badge">v1.0.37</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5922,6 +5922,13 @@ function rpOpenBriefing() {
 }
 
 // ── FILL BRIEFING SHEETS FROM PASTED BIG BRIEFING SHEET ──
+function brShuffle(arr) {
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+  }
+  return arr;
+}
 function brParseSheet(text) {
   var res = { flight: '', aircraft: '', cc: [], sec: [], roleMentions: [] };
   var fm = text.match(/SPA\s?(\d+)/);
@@ -5958,24 +5965,33 @@ function brFillFromSheet() {
     var hit = [].slice.call(sel.options).filter(function (o) { return r.aircraft.indexOf(o.value) !== -1; })[0];
     if (hit) sel.value = hit.value;
   }
-  g('br-cc-count').value = r.cc.length;
-  g('br-cc-airport').value = r.cc.map(function (id) { return '<@' + id + '> | [Role]'; }).join('\n');
-  g('br-cc-onboard').value = r.cc.map(function (id) { return '<@' + id + '> | [Insert roles]'; }).join('\n');
 
-  var tasks = (g('rp-tasks').value || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
-  var order = r.sec.slice();
-  for (var i = order.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var t = order[i]; order[i] = order[j]; order[j] = t;
-  }
+  // Roles box: Gate Agent is handled separately, so it's removed from the random pool
+  var pool = (g('rp-tasks').value || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean)
+    .filter(function (x) { return x.toLowerCase() !== 'gate agent'; });
+
+  // Cabin Crew: one random Gate Agent (boards economy, no onboard role); everyone else gets a random onboard role
+  var cc = brShuffle(r.cc.slice());
+  var gate = cc.shift();
+  var ccPool = brShuffle(pool.slice());
+  g('br-cc-count').value = r.cc.length;
+  g('br-cc-airport').value = gate ? '<@' + gate + '> | Gate Agent' : '';
+  g('br-cc-onboard').value = cc.map(function (id, n) {
+    return ccPool.length ? '<@' + id + '> | ' + ccPool[n % ccPool.length] : '<@' + id + '> | [Insert roles]';
+  }).join('\n');
+
+  // Security: every person gets a random role
+  var secPool = brShuffle(pool.slice());
   g('br-sy').value = r.sec.length;
-  g('br-sec-roles').value = order.map(function (id, n) {
-    var role = tasks.length ? tasks[n % tasks.length] : 'Roles';
-    return '<@' + id + '> • *' + (tasks.length ? 'Security' : 'Role') + '* → *' + role + '*';
+  g('br-sec-roles').value = brShuffle(r.sec.slice()).map(function (id, n) {
+    return secPool.length ? '<@' + id + '> • *Security* → *' + secPool[n % secPool.length] + '*'
+                          : '<@' + id + '> • *Role* → *Roles*';
   }).join('\n');
 
   var skipped = r.roleMentions.length ? ' Skipped ' + r.roleMentions.length + ' role mention(s), so check those by hand.' : '';
-  status.textContent = 'Found ' + r.cc.length + ' Cabin Crew and ' + r.sec.length + ' Security. Flight ' + (r.flight ? 'SPA' + r.flight : 'not found') + '.' + skipped;
+  var gateNote = gate ? ' Gate Agent given to one Cabin Crew member, who gets no onboard role.' : '';
+  var noRoles = pool.length ? '' : ' Add roles to the Roles box and fill again to assign them.';
+  status.textContent = 'Found ' + r.cc.length + ' Cabin Crew and ' + r.sec.length + ' Security. Flight ' + (r.flight ? 'SPA' + r.flight : 'not found') + '.' + gateNote + skipped + noRoles;
   brRender();
 }
 
@@ -6371,7 +6387,7 @@ else enforceLogin();
     <div style="font-weight:700;margin-bottom:8px">🎲 Random picker</div>
     <div style="display:flex;gap:12px;flex-wrap:wrap">
       <div class="form-group" style="flex:1;min-width:200px"><label>Users (one per line)</label><textarea id="rp-users" rows="5"></textarea></div>
-      <div class="form-group" style="flex:1;min-width:200px"><label>Tasks (one per line)</label><textarea id="rp-tasks" rows="5"></textarea></div>
+      <div class="form-group" style="flex:1;min-width:200px"><label>Roles (one per line, used for random role assignment)</label><textarea id="rp-tasks" rows="5"></textarea></div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
       <button class="roles-tab-btn active" onclick="rpPick()">🎲 Pick randomly</button>
