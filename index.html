@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.58</span>
+      <span class="topbar-badge">v1.0.59</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6020,7 +6020,7 @@ function brRestorePaste() {
 }
 var BR_DEFAULT_ROLES = {
   "air": "Premium Lounge Attendant\nCustomer Service Assistant\nInvestor Lounge Attendant\nGate Agent\nGate Agent 2",
-  "onb": "Economy CPT\nEconomy FO\nEconomy Mid\nBusiness CPT\nBusiness FO\nBusiness Mid\nFirst Class CPT\nFirst Class FO\nFirst Class Mid\nInvestor CPT\nInvestor FO\nInvestor Mid\nEconomy Whole\nFirst Class Whole\nInvestor Whole\nBusiness Whole",
+  "onb": "Economy CPT\nEconomy FO\nEconomy Mid\nBusiness CPT\nBusiness FO\nBusiness Mid\nFirst Class CPT\nFirst Class FO\nFirst Class Mid\nInvestor CPT\nInvestor FO\nInvestor Mid\nEconomy Whole\nFirst Class Whole\nInvestor Whole\nBusiness Whole\nDestination Crew",
   "sec": "Arrival Airport Checks\nDeboard Usher\nRunway Inspection\nBus Escort (if needed)\nAir Marshal"
 };
 function brRestoreRoles() {
@@ -6085,70 +6085,90 @@ function brAssignSEC(people, pool) {
   });
 }
 
-// Cabin Crew assignment: one lead, Gate Agents on Economy, everyone else unique roles
+// Cabin Crew assignment, matched to the sheets:
+//  - Economy: up to two people, Gate Agents first, CPT then FO
+//  - one Premium class per flight (Investor, First Class or Business, whichever is in the box): up to two people, CPT then FO
+//  - a class with only one person gets its Whole role (only when there are 3+ crew, counting the CC Manager)
+//  - everyone else is Destination Crew
+//  - airport roles: Gate Agents take the Gate Agent slots, the lead takes a lounge role, the rest take unique airport roles
 function brAssignCC(people, airPool, onPool, manager) {
   var isGate = function (x) { return /gate agent/i.test(x); };
-  var isEcon = function (x) { return /econom/i.test(x); };
-  var isFO = function (x) { return /\bFO\b/.test(x); };
   var gateAir = brShuffle(airPool.filter(isGate));
   var otherAir = airPool.filter(function (x) { return !isGate(x); });
-  var econ = onPool.filter(isEcon).sort(function (a, b) { return (isFO(a) ? 1 : 0) - (isFO(b) ? 1 : 0); });
-  var nonEcon = onPool.filter(function (x) { return !isEcon(x); });
-  var singles = nonEcon.filter(function (x) { return !/whole/i.test(x); });
-  var whole = singles.filter(function (x) { return /premium|investor|first|business/i.test(x); });
   var lounge = otherAir.filter(function (x) { return /lounge/i.test(x); });
 
-  var airOf = {}, onOf = {};
   var order = brShuffle(people.slice());
   if (manager && order.indexOf(manager) === -1) order.push(manager);
-  var gateCount = Math.min(gateAir.length, order.length);
+  var total = order.length;
+  var crewOK = total >= 3;
+
+  var airOf = {}, onOf = {};
+  var gateCount = Math.min(gateAir.length, total);
   var gates = order.slice(0, gateCount);
   var rest = order.slice(gateCount);
-  gates.forEach(function (id, n) {
-    airOf[id] = gateAir[n];
-    if (econ.length) onOf[id] = econ[n % econ.length];
-  });
-
+  gates.forEach(function (id, n) { airOf[id] = gateAir[n]; });
   var airLeft = brShuffle(otherAir.slice());
-  var onLeft = brShuffle(singles.slice());
   var lead = rest.shift();
   if (lead) {
-    var lr = lounge.length ? lounge[0] : airLeft[0];
+    var lr = lounge[0] || airLeft[0];
     if (lr) { airOf[lead] = lr; airLeft = airLeft.filter(function (x) { return x !== lr; }); }
-    var wr = whole.length ? whole[0] : onLeft[0];
-    if (wr) { onOf[lead] = wr; onLeft = onLeft.filter(function (x) { return x !== wr; }); }
   }
   rest.forEach(function (id, n) {
     if (airLeft.length) airOf[id] = airLeft.shift();
     else if (otherAir.length) airOf[id] = otherAir[n % otherAir.length];
-    if (onLeft.length) onOf[id] = onLeft.shift();
-    else if (singles.length) onOf[id] = singles[n % singles.length];
   });
 
-  // three or more people: Economy CPT, Economy MID & FO, Premium Whole in that order (Gate Agents first),
-  // then anyone else gets a non-Economy role from the box
-  var all = gates.concat(lead ? [lead] : [], rest);
-  if (all.length >= 3) {
-    onOf = {};
-    var positional = ['Economy CPT', 'Economy MID & FO', null];
-    var premiumWhole = ['Investor Whole', 'First Class Whole', 'Business Whole'];
-    var extras = brShuffle(onPool.filter(function (x) { return !/whole/i.test(x) && x !== 'Economy CPT'; }).slice());
-    all.forEach(function (id, i) {
-      if (i === 2) onOf[id] = premiumWhole[Math.floor(Math.random() * premiumWhole.length)];
-      else if (i < 2) onOf[id] = positional[i];
-      else if (extras.length) onOf[id] = extras[(i - 3) % extras.length];
-      else onOf[id] = '[Insert roles]';
-    });
-  }
+  // onboard classes: Economy, plus one premium class that is in the box
+  var classOf = function (x) { var m = x.match(/^(.+?)\s+(CPT|FO|Mid|Whole)\b/i); return m ? m[1].trim() : null; };
+  var premiumPresent = ['Investor', 'First Class', 'Business'].filter(function (c) {
+    return onPool.some(function (x) { return classOf(x) && classOf(x).toLowerCase() === c.toLowerCase(); });
+  });
+  var premium = premiumPresent.length ? brShuffle(premiumPresent.slice())[0] : null;
+  var classes = ['Economy', premium].filter(function (c) {
+    return c && onPool.some(function (x) { return classOf(x) && classOf(x).toLowerCase() === c.toLowerCase(); });
+  });
+  var roleFor = function (c, kind) {
+    return onPool.filter(function (x) {
+      return classOf(x) && classOf(x).toLowerCase() === c.toLowerCase() && new RegExp('\\b' + kind + '\\b', 'i').test(x);
+    })[0] || null;
+  };
 
-  var out = all;
+  var classPeople = {};
+  classes.forEach(function (c) { classPeople[c] = []; });
+  var placed = {};
+  var remaining = order.slice();
+  if (classes.indexOf('Economy') !== -1) {
+    gates.slice(0, 2).forEach(function (id) { classPeople.Economy.push(id); placed[id] = true; });
+  }
+  remaining = remaining.filter(function (id) { return !placed[id]; });
+  classes.forEach(function (c) {
+    while (classPeople[c].length < 2 && remaining.length) {
+      var id = remaining.shift();
+      classPeople[c].push(id);
+      placed[id] = true;
+    }
+  });
+
+  classes.forEach(function (c) {
+    var ids = classPeople[c];
+    if (ids.length === 1) {
+      onOf[ids[0]] = (crewOK && roleFor(c, 'Whole')) || roleFor(c, 'CPT') || roleFor(c, 'FO') || '[Insert roles]';
+    } else if (ids.length >= 2) {
+      onOf[ids[0]] = roleFor(c, 'CPT') || '[Insert roles]';
+      onOf[ids[1]] = roleFor(c, 'FO') || roleFor(c, 'Mid') || '[Insert roles]';
+    }
+  });
+  var dest = onPool.filter(function (x) { return /destination/i.test(x); })[0] || '[Insert roles]';
+  remaining.forEach(function (id) { onOf[id] = dest; });
+
   return {
-    air: out.filter(function (id) { return airOf[id]; }).map(function (id) { return '<@' + id + '> | ' + airOf[id]; }),
-    onb: out.filter(function (id) { return onOf[id]; }).map(function (id) { return '<@' + id + '> | ' + onOf[id]; }),
+    air: order.filter(function (id) { return airOf[id]; }).map(function (id) { return '<@' + id + '> | ' + airOf[id]; }),
+    onb: order.filter(function (id) { return onOf[id]; }).map(function (id) { return '<@' + id + '> | ' + onOf[id]; }),
     gates: gates.length,
-    noAir: out.filter(function (id) { return !airOf[id]; }).length
+    noAir: order.filter(function (id) { return !airOf[id]; }).length
   };
 }
+
 // build the assignments: use roles already written on the sheet, otherwise generate them
 function brGenerate(reroll) {
   var status = g('br-fill-status');
