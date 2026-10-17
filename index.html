@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.57</span>
+      <span class="topbar-badge">v1.0.58</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5937,7 +5937,7 @@ function brLinesOf(id) {
 }
 function brParseSheet(text) {
   var res = { flight: '', aircraft: '', host: '', arm: [], disarm: [], cc: [], sec: [], roleMentions: [],
-              ccAir: [], ccOnb: [], secRoles: [] };
+              ccAir: [], ccOnb: [], secRoles: [], ccManager: '' };
   var fm = text.match(/SPA\s?(\d+)/);
   if (fm) res.flight = fm[1];
   var cs = text.match(/Callsign:\s*SPA\s?(\d+)/);
@@ -5977,7 +5977,8 @@ function brParseSheet(text) {
       var key = cur + '|' + id;
       if (seen[key]) continue;
       seen[key] = true;
-      if (cur === 'Cabin Crew') res.cc.push(id);
+      if (cur === 'Managers' && /Cabin Crew:/i.test(line)) res.ccManager = id;
+      else if (cur === 'Cabin Crew') res.cc.push(id);
       else if (cur === 'Safety & Security') res.sec.push(id);
     }
   });
@@ -6085,7 +6086,7 @@ function brAssignSEC(people, pool) {
 }
 
 // Cabin Crew assignment: one lead, Gate Agents on Economy, everyone else unique roles
-function brAssignCC(people, airPool, onPool) {
+function brAssignCC(people, airPool, onPool, manager) {
   var isGate = function (x) { return /gate agent/i.test(x); };
   var isEcon = function (x) { return /econom/i.test(x); };
   var isFO = function (x) { return /\bFO\b/.test(x); };
@@ -6099,6 +6100,7 @@ function brAssignCC(people, airPool, onPool) {
 
   var airOf = {}, onOf = {};
   var order = brShuffle(people.slice());
+  if (manager && order.indexOf(manager) === -1) order.push(manager);
   var gateCount = Math.min(gateAir.length, order.length);
   var gates = order.slice(0, gateCount);
   var rest = order.slice(gateCount);
@@ -6169,7 +6171,7 @@ function brGenerate(reroll) {
     // big briefing sheet: generate Cabin Crew roles from the role boxes
     var airPool = brLinesOf('br-role-air');
     var onPool = brLinesOf('br-role-onb');
-    var res = brAssignCC(r.cc, airPool, onPool);
+    var res = brAssignCC(r.cc, airPool, onPool, r.ccManager);
     ccCount = r.cc.length;
     g('br-cc-count').value = ccCount;
     g('br-cc-airport').value = airPool.length ? res.air.join('\n')
@@ -6179,7 +6181,7 @@ function brGenerate(reroll) {
     if (airPool.length && res.noAir) notes.push(res.noAir + ' Cabin Crew have no airport role (add more to the Airport box).');
     if (airPool.length && r.cc.length && !res.gates) notes.push('No Gate Agent was given out (add Gate Agent to the Airport box).');
     if (!airPool.length || !onPool.length) notes.push('Fill the Airport and Onboard boxes to assign Cabin Crew roles.');
-    msg = 'Found ' + ccCount + ' Cabin Crew (' + res.gates + ' Gate Agent).';
+    msg = 'Found ' + ccCount + ' Cabin Crew (' + res.gates + ' Gate Agent).' + (r.ccManager ? ' CC Manager is on standby to step in.' : '');
   }
 
   if (r.secRoles.length) {
