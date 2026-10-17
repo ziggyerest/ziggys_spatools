@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.56</span>
+      <span class="topbar-badge">v1.0.57</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6019,7 +6019,7 @@ function brRestorePaste() {
 }
 var BR_DEFAULT_ROLES = {
   "air": "Premium Lounge Attendant\nCustomer Service Assistant\nInvestor Lounge Attendant\nGate Agent\nGate Agent 2",
-  "onb": "Economy CPT\nEconomy FO\nEconomy Mid\nBusiness CPT\nBusiness FO\nBusiness Mid\nFirst Class CPT\nFirst Class FO\nFirst Class Mid\nInvestor CPT\nInvestor FO\nInvestor Mid\nPremium Whole\nEconomy Whole\nFirst Class Whole\nInvestor Whole\nBusiness Whole",
+  "onb": "Economy CPT\nEconomy FO\nEconomy Mid\nBusiness CPT\nBusiness FO\nBusiness Mid\nFirst Class CPT\nFirst Class FO\nFirst Class Mid\nInvestor CPT\nInvestor FO\nInvestor Mid\nEconomy Whole\nFirst Class Whole\nInvestor Whole\nBusiness Whole",
   "sec": "Arrival Airport Checks\nDeboard Usher\nRunway Inspection\nBus Escort (if needed)\nAir Marshal"
 };
 function brRestoreRoles() {
@@ -6128,10 +6128,12 @@ function brAssignCC(people, airPool, onPool) {
   var all = gates.concat(lead ? [lead] : [], rest);
   if (all.length >= 3) {
     onOf = {};
-    var positional = ['Economy CPT', 'Economy MID & FO', 'Premium Whole'];
+    var positional = ['Economy CPT', 'Economy MID & FO', null];
+    var premiumWhole = ['Investor Whole', 'First Class Whole', 'Business Whole'];
     var extras = brShuffle(onPool.filter(function (x) { return !/whole/i.test(x) && x !== 'Economy CPT'; }).slice());
     all.forEach(function (id, i) {
-      if (i < 3) onOf[id] = positional[i];
+      if (i === 2) onOf[id] = premiumWhole[Math.floor(Math.random() * premiumWhole.length)];
+      else if (i < 2) onOf[id] = positional[i];
       else if (extras.length) onOf[id] = extras[(i - 3) % extras.length];
       else onOf[id] = '[Insert roles]';
     });
