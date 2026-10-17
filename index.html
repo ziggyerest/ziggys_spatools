@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.39</span>
+      <span class="topbar-badge">v1.0.40</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5500,6 +5500,7 @@ initGreetings();
 initCC();
 loadState();
 applyCohostAirport();
+document.addEventListener('DOMContentLoaded', brRestoreRoles);
 brRender();
 update();
 renderRecent();
@@ -5922,6 +5923,8 @@ function rpOpenBriefing() {
 }
 
 // ── FILL BRIEFING SHEETS FROM PASTED BIG BRIEFING SHEET ──
+var BR_PARSED = null;
+var BR_ROLE_TIMER = null;
 function brShuffle(arr) {
   for (var i = arr.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
@@ -5957,19 +5960,43 @@ function brParseSheet(text) {
   });
   return res;
 }
-function brFillFromSheet() {
-  var text = (g('br-paste').value || '');
-  var status = g('br-fill-status');
-  if (!text.trim()) { status.textContent = 'Paste the briefing sheet first.'; return; }
-  var r = brParseSheet(text);
-  if (r.flight) g('br-route').value = r.flight;
-  if (r.aircraft) {
-    var sel = g('br-plane');
-    var hit = [].slice.call(sel.options).filter(function (o) { return r.aircraft.indexOf(o.value) !== -1; })[0];
-    if (hit) sel.value = hit.value;
+// pasted sheet: fill route + aircraft, then generate roles
+function brPasted() {
+  var text = g('br-paste').value || '';
+  BR_PARSED = text.trim() ? brParseSheet(text) : null;
+  if (BR_PARSED) {
+    if (BR_PARSED.flight) g('br-route').value = BR_PARSED.flight;
+    if (BR_PARSED.aircraft) {
+      var sel = g('br-plane');
+      var hit = [].slice.call(sel.options).filter(function (o) { return BR_PARSED.aircraft.indexOf(o.value) !== -1; })[0];
+      if (hit) sel.value = hit.value;
+    }
+    brApplyScripts();
   }
-  brApplyScripts();
-
+  brGenerate(false);
+}
+// role boxes: save, then regenerate shortly after typing stops
+function brRoleBoxChanged() {
+  localStorage.setItem('spa_br_roles', JSON.stringify({
+    air: g('br-role-air').value, onb: g('br-role-onb').value, sec: g('br-role-sec').value
+  }));
+  clearTimeout(BR_ROLE_TIMER);
+  BR_ROLE_TIMER = setTimeout(function () { brGenerate(false); }, 500);
+}
+function brRestoreRoles() {
+  try {
+    var saved = JSON.parse(localStorage.getItem('spa_br_roles') || 'null');
+    if (!saved) return;
+    if (g('br-role-air')) g('br-role-air').value = saved.air || '';
+    if (g('br-role-onb')) g('br-role-onb').value = saved.onb || '';
+    if (g('br-role-sec')) g('br-role-sec').value = saved.sec || '';
+  } catch (e) {}
+}
+// build the assignments from the parsed sheet and the role boxes
+function brGenerate(reroll) {
+  var status = g('br-fill-status');
+  if (!BR_PARSED) { status.textContent = 'Paste the briefing sheet first.'; return; }
+  var r = BR_PARSED;
   var airPool = brLinesOf('br-role-air');
   var onPool = brLinesOf('br-role-onb');
   var secPool = brLinesOf('br-role-sec');
@@ -5999,7 +6026,7 @@ function brFillFromSheet() {
     ? people.filter(function (id) { return onOf[id]; }).map(function (id) { return '<@' + id + '> | ' + onOf[id]; }).join('\n')
     : people.map(function (id) { return '<@' + id + '> | [Insert roles]'; }).join('\n');
 
-  if (people.length > airSlots.length && airPool.length) notes.push((people.length - airSlots.length) + ' Cabin Crew have no airport role (add more to the Airport box).');
+  if (airPool.length && people.length > airSlots.length) notes.push((people.length - airSlots.length) + ' Cabin Crew have no airport role (add more to the Airport box).');
   if (airPool.length && !gates.length) notes.push('No Gate Agent was given out (add Gate Agent to the Airport box).');
 
   // Security: every person gets a random role from the Security box
@@ -6010,9 +6037,10 @@ function brFillFromSheet() {
                            : '<@' + id + '> • *Role* → *Roles*';
   }).join('\n');
 
+  var flight = r.flight ? 'SPA' + r.flight : 'not found';
   var skipped = r.roleMentions.length ? ' Skipped ' + r.roleMentions.length + ' role mention(s), so check those by hand.' : '';
-  var emptyBoxes = (!airPool.length || !onPool.length || !secPool.length) ? ' Fill the role boxes and click again to assign roles.' : '';
-  status.textContent = 'Found ' + r.cc.length + ' Cabin Crew (' + gates.length + ' Gate Agent) and ' + r.sec.length + ' Security. Flight ' + (r.flight ? 'SPA' + r.flight : 'not found') + '.' + (notes.length ? ' ' + notes.join(' ') : '') + skipped + emptyBoxes;
+  var emptyBoxes = (!airPool.length || !onPool.length || !secPool.length) ? ' Fill the role boxes to assign roles.' : '';
+  status.textContent = 'Found ' + r.cc.length + ' Cabin Crew (' + gates.length + ' Gate Agent) and ' + r.sec.length + ' Security. Flight ' + flight + '.' + (notes.length ? ' ' + notes.join(' ') : '') + skipped + emptyBoxes + (reroll ? ' Roles re-rolled.' : '');
   brRender();
 }
 
@@ -6424,13 +6452,13 @@ else enforceLogin();
   </div>
   <div style="border:1px solid rgba(148,180,212,.15);border-radius:12px;padding:14px;margin-bottom:16px">
     <div style="font-weight:700;margin-bottom:8px">📥 Fill from big briefing sheet</div>
-    <div class="form-group" style="margin-bottom:8px"><label>Paste the whole briefing sheet</label><textarea id="br-paste" rows="6" placeholder="Paste the whole sheet here"></textarea></div>
+    <div class="form-group" style="margin-bottom:8px"><label>Paste the whole briefing sheet</label><textarea id="br-paste" rows="6" placeholder="Paste the whole sheet here" oninput="brPasted()"></textarea></div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
-      <div class="form-group" style="flex:1;min-width:200px"><label>Airport roles (one per line, include Gate Agent)</label><textarea id="br-role-air" rows="5"></textarea></div>
-      <div class="form-group" style="flex:1;min-width:200px"><label>Onboard roles (one per line, Economy roles go to Gate Agents)</label><textarea id="br-role-onb" rows="5"></textarea></div>
-      <div class="form-group" style="flex:1;min-width:200px"><label>Security roles (one per line)</label><textarea id="br-role-sec" rows="5"></textarea></div>
+      <div class="form-group" style="flex:1;min-width:200px"><label>Airport roles (one per line, include Gate Agent)</label><textarea id="br-role-air" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
+      <div class="form-group" style="flex:1;min-width:200px"><label>Onboard roles (one per line, Economy roles go to Gate Agents)</label><textarea id="br-role-onb" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
+      <div class="form-group" style="flex:1;min-width:200px"><label>Security roles (one per line)</label><textarea id="br-role-sec" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
     </div>
-    <button class="roles-tab-btn active" onclick="brFillFromSheet()">📥 Fill from sheet</button>
+    <button class="roles-tab-btn active" onclick="brGenerate(true)">🎲 Generate roles</button>
     <div id="br-fill-status" style="font-size:.82rem;color:var(--text2);margin-top:8px"></div>
   </div>
   <div style="border:1px solid rgba(148,180,212,.15);border-radius:12px;padding:14px;margin-bottom:16px">
