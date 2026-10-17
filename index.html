@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.42</span>
+      <span class="topbar-badge">v1.0.43</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6017,14 +6017,17 @@ function brRestorePaste() {
   g('br-paste').value = saved;
   brPasted();
 }
+var BR_DEFAULT_ROLES = {
+  "air": "Premium Lounge Attendant\nCustomer Service Assistant\nInvestor Lounge Attendant\nGate Agent\nGate Agent 2",
+  "onb": "Investor Whole, Arm/Disarm L1 & R1\nFirst Whole, Arm/Disarm L2 & R2\nBusiness Whole, Arm/Disarm L3 & R3\nEconomy CPT & MID, Arm/Disarm L4\nEconomy FO, Arm/Disarm R4",
+  "sec": "Runway Inspection\nDeboard Usher\nArrival Airport Checks"
+};
 function brRestoreRoles() {
-  try {
-    var saved = JSON.parse(localStorage.getItem('spa_br_roles') || 'null');
-    if (!saved) return;
-    if (g('br-role-air')) g('br-role-air').value = saved.air || '';
-    if (g('br-role-onb')) g('br-role-onb').value = saved.onb || '';
-    if (g('br-role-sec')) g('br-role-sec').value = saved.sec || '';
-  } catch (e) {}
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem('spa_br_roles') || '{}') || {}; } catch (e) {}
+  if (g('br-role-air')) g('br-role-air').value = saved.air || BR_DEFAULT_ROLES.air;
+  if (g('br-role-onb')) g('br-role-onb').value = saved.onb || BR_DEFAULT_ROLES.onb;
+  if (g('br-role-sec')) g('br-role-sec').value = saved.sec || BR_DEFAULT_ROLES.sec;
 }
 // build the assignments: use roles already written on the sheet, otherwise generate them
 function brGenerate(reroll) {
