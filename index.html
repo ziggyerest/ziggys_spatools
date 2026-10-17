@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.33</span>
+      <span class="topbar-badge">v1.0.34</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5902,7 +5902,7 @@ function applyBriefingLocks() {
 }
 
 // ── RANDOM PICKER + BIG BRIEFING SHEET ──
-var BIG_BRIEFING_URL = '';  // paste the big briefing sheet link here
+var BIG_BRIEFING_URL = 'https://discord.com/channels/709581352768634920/1560508959012556820/1561000852578111501';  // big briefing sheet (everyone's roles)
 function rpPick() {
   var users = (g('rp-users').value || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
   var tasks = (g('rp-tasks').value || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
