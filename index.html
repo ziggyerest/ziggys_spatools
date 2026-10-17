@@ -847,7 +847,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.26</span>
+      <span class="topbar-badge">v1.0.29</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5716,6 +5716,71 @@ function applyRoleLocks() {
   }
 }
 
+// ── CO-HOST QOL: search + remember last sub-tab ──
+function chSearch(q) {
+  var pg = document.getElementById('page-cohost');
+  if (!pg) return;
+  q = (q || '').trim().toLowerCase();
+  var tabs = pg.querySelector('.roles-tab-row');
+  var panels = [].slice.call(pg.querySelectorAll('.roletab'));
+  if (!q) {
+    panels.forEach(function (p) {
+      p.style.display = '';
+      p.querySelectorAll('.rc, .s-block').forEach(function (c) { c.style.display = ''; });
+    });
+    if (tabs) tabs.style.display = '';
+    return;
+  }
+  if (tabs) tabs.style.display = 'none';
+  panels.forEach(function (p) {
+    var hits = 0;
+    p.querySelectorAll('.rc, .s-block').forEach(function (c) {
+      var match = c.textContent.toLowerCase().indexOf(q) !== -1;
+      c.style.display = match ? '' : 'none';
+      if (match) hits++;
+    });
+    p.style.display = hits ? 'block' : 'none';
+  });
+}
+var _selCH_orig = selCH;
+selCH = function (name, btn) {
+  localStorage.setItem('spa_ch_tab', name);
+  return _selCH_orig(name, btn);
+};
+var _showPage_orig = showPage;
+showPage = function (p, btn) {
+  var r = _showPage_orig(p, btn);
+  if (p === 'cohost') chRestoreTab();
+  return r;
+};
+function chRestoreTab() {
+  var n = localStorage.getItem('spa_ch_tab');
+  if (!n || n === 'general') return;
+  var b = document.querySelector('#page-cohost .roles-tab-row button[onclick*="selCH(\'' + n + '\'"]');
+  if (b) b.click();
+}
+
+// ── COPY ALL GENERAL TRIVIA (15s after a question, 5s after an answer) ──
+function copyGeneralTrivia(btn) {
+  var panel = document.getElementById('ch-trivia');
+  if (!panel) return;
+  var on = false, parts = [];
+  [].slice.call(panel.querySelectorAll('.rs-title, .rc')).forEach(function (el) {
+    if (el.classList.contains('rs-title')) { on = el.textContent.indexOf('General Trivia') !== -1; return; }
+    if (!on) return;
+    var label = (el.querySelector('.rc-label') || {}).textContent || '';
+    var text = (el.querySelector('.rc-text') || {}).textContent || '';
+    if (!text.trim()) return;
+    parts.push(text.trim());
+    parts.push(/^Q\d+/.test(label.trim()) ? '!wait 15' : '!wait 5');
+  });
+  if (parts.length && parts[parts.length - 1].indexOf('!wait') === 0) parts.pop();
+  cpText(parts.join(' | '));
+  var old = btn.textContent;
+  btn.textContent = '✓ Copied!';
+  setTimeout(function () { btn.textContent = old; }, 1500);
+}
+
 // ── CO-HOST AIRPORT (fills [AIRPORT] in the Co-Host tab) ──
 function applyCohostAirport() {
   var pg = document.getElementById('page-cohost');
@@ -5751,6 +5816,7 @@ else enforceLogin();
     <label>Airport we are at</label>
     <input id="cohost-airport" placeholder="e.g. Punta Cana" oninput="applyCohostAirport()">
   </div>
+  <div style="margin-bottom:12px"><input id="ch-search" placeholder="Search everything on this tab (e.g. trivia, upgrade, :ann)" oninput="chSearch(this.value)" style="width:100%;max-width:520px"></div>
   <div class="roles-tab-row" style="flex-wrap:wrap">
     <button class="roles-tab-btn active" onclick="selCH('general',this)">📋 General</button>
     <button class="roles-tab-btn" onclick="selCH('questions',this)">❓ Questions</button>
@@ -5923,6 +5989,7 @@ else enforceLogin();
       </div>
     </div><div>
       <div class="rs"><div class="rs-title">🌍 General Trivia (40)</div>
+    <button class="roles-tab-btn" style="margin-bottom:12px" onclick="copyGeneralTrivia(this)">📋 Copy all general trivia</button>
         <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q1</div><div class="rc-text rc-cmd">:ann Trivia time! What is the capital of Australia?</div></div>
         <div class="rc" onclick="rcopy(this)"><div class="rc-label">Answer</div><div class="rc-text rc-cmd">:ann Answer: Canberra</div></div>
 <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q2</div><div class="rc-text rc-cmd">:ann How many continents are there on Earth?</div></div>
@@ -5966,7 +6033,6 @@ else enforceLogin();
 <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q21</div><div class="rc-text rc-cmd">:ann How many strings does a standard guitar have?</div></div>
         <div class="rc" onclick="rcopy(this)"><div class="rc-label">Answer</div><div class="rc-text rc-cmd">:ann Answer: 6</div></div>
 <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q22</div><div class="rc-text rc-cmd">:ann What is the chemical name for water?</div></div>
-        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Answer</div><div class="rc-text rc-cmd">:ann Answer: Dihydrogen monoxide (H2O)</div></div>
 <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q23</div><div class="rc-text rc-cmd">:ann Which element has the atomic number 1?</div></div>
         <div class="rc" onclick="rcopy(this)"><div class="rc-label">Answer</div><div class="rc-text rc-cmd">:ann Answer: Hydrogen</div></div>
 <div class="rc" onclick="rcopy(this)"><div class="rc-label">Q24</div><div class="rc-text rc-cmd">:ann What is the currency of Japan?</div></div>
