@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.47</span>
+      <span class="topbar-badge">v1.0.49</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6119,7 +6119,7 @@ function brGenerate(reroll) {
     g('br-cc-onboard').value = onPool.length ? res.onb.join('\n')
       : r.cc.map(function (id) { return '<@' + id + '> | [Insert roles]'; }).join('\n');
     if (airPool.length && res.noAir) notes.push(res.noAir + ' Cabin Crew have no airport role (add more to the Airport box).');
-    if (airPool.length && !res.gates) notes.push('No Gate Agent was given out (add Gate Agent to the Airport box).');
+    if (airPool.length && r.cc.length && !res.gates) notes.push('No Gate Agent was given out (add Gate Agent to the Airport box).');
     if (!airPool.length || !onPool.length) notes.push('Fill the Airport and Onboard boxes to assign Cabin Crew roles.');
     msg = 'Found ' + ccCount + ' Cabin Crew (' + res.gates + ' Gate Agent).';
   }
@@ -6130,12 +6130,12 @@ function brGenerate(reroll) {
     g('br-sec-roles').value = r.secRoles.join('\n');
     msg += ' ' + r.secRoles.length + ' Security roles taken from the sheet.';
   } else {
+    // Security: people are picked in a random order, and each gets the next role in the box (no repeats until it runs out)
     var secPool = brLinesOf('br-role-sec');
-    var secSlots = brShuffle(secPool.slice());
     g('br-sy').value = r.sec.length;
     g('br-sec-roles').value = brShuffle(r.sec.slice()).map(function (id, n) {
-      return secSlots.length ? '<@' + id + '> • *Security* → *' + secSlots[n % secSlots.length] + '*'
-                             : '<@' + id + '> • *Role* → *Roles*';
+      return secPool.length ? '<@' + id + '> • *Security* → *' + secPool[n % secPool.length] + '*'
+                            : '<@' + id + '> • *Role* → *Roles*';
     }).join('\n');
     msg += ' ' + r.sec.length + ' Security.';
     if (!secPool.length && r.sec.length) notes.push('Fill the Security box to assign Security roles.');
