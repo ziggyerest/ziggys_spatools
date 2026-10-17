@@ -847,7 +847,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.29</span>
+      <span class="topbar-badge">v1.0.30</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5760,7 +5760,7 @@ function chRestoreTab() {
   if (b) b.click();
 }
 
-// ── COPY ALL GENERAL TRIVIA (15s after a question, 5s after an answer) ──
+// ── COPY ALL GENERAL TRIVIA (10s after a question, 5s after an answer) ──
 function copyGeneralTrivia(btn) {
   var panel = document.getElementById('ch-trivia');
   if (!panel) return;
@@ -5772,7 +5772,7 @@ function copyGeneralTrivia(btn) {
     var text = (el.querySelector('.rc-text') || {}).textContent || '';
     if (!text.trim()) return;
     parts.push(text.trim());
-    parts.push(/^Q\d+/.test(label.trim()) ? '!wait 15' : '!wait 5');
+    parts.push(/^Q\d+/.test(label.trim()) ? '!wait 10' : '!wait 5');
   });
   if (parts.length && parts[parts.length - 1].indexOf('!wait') === 0) parts.pop();
   cpText(parts.join(' | '));
