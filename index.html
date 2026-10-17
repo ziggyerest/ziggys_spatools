@@ -836,6 +836,8 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
 .main-nav button.locked{opacity:.4;cursor:not-allowed}
 .main-nav button.locked::after{content:' \\1F512';font-size:.7em}
 
+.roles-tab-btn.locked{opacity:.4;cursor:not-allowed}
+.roles-tab-btn.locked::after{content:' 🔒'}
 </style>
 </head>
 <body>
@@ -847,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.31</span>
+      <span class="topbar-badge">v1.0.33</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -862,6 +864,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
       <button onclick="showPage('fleet',this)">🛩️ Fleet</button>
       <button onclick="showPage('charts',this)">🗺️ Charts</button>
       <button onclick="showPage('cohost',this)">🎤 Co-Host</button>
+      <button onclick="showPage('briefing',this)">📋 Briefing</button>
       <button onclick="showPage('suggest',this)">💡 Suggestions</button>
   </nav>
 </div>
@@ -5497,6 +5500,7 @@ initGreetings();
 initCC();
 loadState();
 applyCohostAirport();
+brRender();
 update();
 renderRecent();
 
@@ -5669,7 +5673,7 @@ async function enforceLogin() {
   }
   msg.textContent = 'Checking access…'; btn.style.display = 'none'; setAuthVisible(true);
   const ok = await checkDiscordAccess();
-  if (ok) { await fetchDiscordName(getDiscordToken()); applyRoleLocks(); setAuthVisible(false); }
+  if (ok) { await fetchDiscordName(getDiscordToken()); applyRoleLocks(); applyBriefingLocks(); setAuthVisible(false); }
   else {
     msg.textContent = 'Could not confirm access. Make sure you are in the SPA server, then log in again to approve your roles.';
     btn.style.display = ''; btn.textContent = 'Log in with Discord';
@@ -5783,6 +5787,138 @@ function copyGeneralTrivia(btn) {
   var old = btn.textContent;
   btn.textContent = '✓ Copied!';
   setTimeout(function () { btn.textContent = old; }, 1500);
+}
+
+// ── BRIEFING SHEETS ──
+var BR_WIDE = ['Airbus A330', 'Airbus A350', 'Boeing 787-9'];
+function selBR(name, btn) {
+  if (BR_LOCKED[name]) { g('toast').textContent = 'Locked: requires the ' + BR_LOCKED[name] + ' role'; showToast(); return; }
+  document.querySelectorAll('#page-briefing .br-panel').forEach(function (p) {
+    p.style.display = (p.id === 'br-' + name) ? '' : 'none';
+  });
+  document.querySelectorAll('#page-briefing .roles-tab-row button').forEach(function (b) {
+    b.classList.toggle('active', b === btn);
+  });
+  brRender();
+}
+function brFlight() { var r = (g('br-route').value || '').trim(); return r ? 'SPA' + r : 'SPA[ROUTE]'; }
+function brHost() { return (g('br-host').value || '').trim() || '[USERNAME]'; }
+function brQuote(text, fallback) {
+  var lines = (text || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+  return lines.length ? lines.map(function (l) { return '> ' + l; }).join('\n') : fallback;
+}
+function brCount(n, fmt) {
+  var out = [];
+  for (var i = 1; i <= n; i++) out.push(fmt(i));
+  return out.length ? out.join('\n') : '> ' + '[none yet]';
+}
+function brRender() {
+  var ccOut = g('br-cc-out'), secOut = g('br-sec-out');
+  if (ccOut) ccOut.value = brCCOut();
+  if (secOut) secOut.value = brSecOut();
+}
+function brSecOut() {
+  var n = parseInt(g('br-sy').value, 10) || 0;
+  var roles = brQuote(g('br-sec-roles').value, brCount(n, function (i) { return '> @user • *Role* → *Roles*'; }));
+  return [
+    '**<:SPASecurityAgent:1092230147131846676> | Safety & Security Briefing Sheet**',
+    '*For flight ' + brFlight() + ', hosted by ' + brHost() + '*',
+    '',
+    '-# All allocated Safety & Security members have been assigned roles by their Security Sergeant, which can be found below; please follow these roles unless instructed otherwise. Be respectful, professional, and listen to your Security Sergeant at all times.',
+    '',
+    '<:SPAAirportPatrol:1092229929950781451> **Role Assignments**',
+    roles,
+    '',
+    '*If you have any questions, do not hesitate to ask me (your Sergeant).*',
+    '',
+    '*Signed, <@1327108083281035325>*',
+    '<:SPA:795664970800824360> **south**pacific.'
+  ].join('\n');
+}
+function brCCOut() {
+  var plane = g('br-plane').value;
+  var wide = BR_WIDE.indexOf(plane) !== -1 ? 'Widebody' : 'Narrowbody';
+  var n = parseInt(g('br-cc-count').value, 10) || 0;
+  var airport = brQuote(g('br-cc-airport').value, brCount(n, function (i) { return '> @CC' + i + ' | [Role]'; }));
+  var onboard = brQuote(g('br-cc-onboard').value, brCount(n, function (i) { return '> @CC' + i + ' | [Insert roles]'; }));
+  return [
+    '<:SPACabinCrew:925881098762866698> | **Cabin Crew Briefing Sheet**',
+    '> *Greetings, Cabin Crew! Your briefing sheet for this flight has been posted. Your arming & disarming scripts have also been provided in addition to your assigned roles.*',
+    '> ',
+    '> *Please pay close attention to your assigned roles, so we can facilitate a smooth flight for everyone. If you\'re not assigned an on-board role, remain at your airport role until boarding is completed.*',
+    '',
+    '<:SPAOperations:1028766648389349526> | **Flight Details**',
+    '> *Flight Host: ' + brHost() + '*',
+    '> *Callsign: ' + brFlight() + '*',
+    '> *Aircraft: ' + plane + ' | ' + wide + '*',
+    '',
+    '🔒 **Arming Roleplay**',
+    brQuote(g('br-cc-arm').value, '> [Arming script]'),
+    '',
+    '🔓 **Disarming Roleplay**',
+    brQuote(g('br-cc-disarm').value, '> [Disarming script]'),
+    '',
+    '<:SPAUpperManagement:1028766645696606280> | **Airport Roles**',
+    airport,
+    '',
+    '✈️ | **Onboard Roles**',
+    onboard,
+    '',
+    '**Signed, <@1327108083281035325>**',
+    '<:SPA:795664970800824360> **south**pacific.'
+  ].join('\n');
+}
+
+// ── BRIEFING ROLE LOCKS ──
+var BR_GATES = {
+  cc:  { label: 'Cabin Crew',        ids: ['1194303157388451950'] },
+  sec: { label: 'Safety & Security', ids: ['1194303260719337599'] }
+};
+var BR_LOCKED = {};
+function applyBriefingLocks() {
+  var bypass = ALL_ACCESS_IDS.indexOf(localStorage.getItem('spa_discord_id')) !== -1;
+  var roles = [];
+  try { roles = JSON.parse(localStorage.getItem('spa_discord_roles') || '[]'); } catch (e) {}
+  Object.keys(BR_GATES).forEach(function (k) {
+    var gt = BR_GATES[k];
+    var ok = bypass || gt.ids.some(function (id) { return roles.indexOf(id) !== -1; });
+    BR_LOCKED[k] = ok ? null : gt.label;
+  });
+  var btns = [].slice.call(document.querySelectorAll('#page-briefing .roles-tab-row button'));
+  btns.forEach(function (b) {
+    var m = (b.getAttribute('onclick') || '').match(/selBR\('(\w+)'/);
+    if (!m) return;
+    var lock = BR_LOCKED[m[1]];
+    b.classList.toggle('locked', !!lock);
+    b.title = lock ? 'Locked: requires the ' + lock + ' role' : '';
+  });
+  var open = btns.filter(function (b) {
+    var mm = (b.getAttribute('onclick') || '').match(/selBR\('(\w+)'/);
+    return mm && !BR_LOCKED[mm[1]];
+  });
+  var pick = open.filter(function (b) { return b.classList.contains('active'); })[0] || open[0];
+  if (pick) pick.click();
+  else document.querySelectorAll('#page-briefing .br-panel').forEach(function (p) { p.style.display = 'none'; });
+}
+
+// ── RANDOM PICKER + BIG BRIEFING SHEET ──
+var BIG_BRIEFING_URL = '';  // paste the big briefing sheet link here
+function rpPick() {
+  var users = (g('rp-users').value || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+  var tasks = (g('rp-tasks').value || '').split('\n').map(function (s) { return s.trim(); }).filter(Boolean);
+  if (!users.length || !tasks.length) { g('rp-out').value = 'Add at least one user and one task.'; return; }
+  var shuffled = users.slice();
+  for (var i = shuffled.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = shuffled[i]; shuffled[i] = shuffled[j]; shuffled[j] = t;
+  }
+  g('rp-out').value = tasks.map(function (task, n) {
+    return task + ' → ' + (shuffled[n] || '(nobody left)');
+  }).join('\n');
+}
+function rpOpenBriefing() {
+  if (!BIG_BRIEFING_URL) { g('toast').textContent = 'Big briefing sheet link not set yet'; showToast(); return; }
+  window.open(BIG_BRIEFING_URL, '_blank');
 }
 
 // ── CO-HOST AIRPORT (fills [AIRPORT] in the Co-Host tab) ──
@@ -6158,6 +6294,53 @@ else enforceLogin();
 </div><!-- /page-cohost -->
 
 <!-- ═══════════════════════  SUGGESTIONS  ═══════════════════════ -->
+<div id="page-briefing" class="page" style="max-width:1000px">
+  <div style="margin-bottom:14px">
+    <div style="font-size:1.2rem;font-weight:700;letter-spacing:-.01em">📋 Briefing Sheets</div>
+    <div style="font-size:.8rem;color:var(--text3)">Fill in the details, then copy the sheet into Discord.</div>
+  </div>
+  <div class="form-row" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+    <div class="form-group" style="flex:1;min-width:200px"><label>Host's username</label><input id="br-host" placeholder="e.g. Ziggy" oninput="brRender()"></div>
+    <div class="form-group" style="flex:1;min-width:160px"><label>Route ID</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2)">SPA</span><input id="br-route" placeholder="1452" oninput="brRender()"></div></div>
+  </div>
+  <div style="border:1px solid rgba(148,180,212,.15);border-radius:12px;padding:14px;margin-bottom:16px">
+    <div style="font-weight:700;margin-bottom:8px">🎲 Random picker</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div class="form-group" style="flex:1;min-width:200px"><label>Users (one per line)</label><textarea id="rp-users" rows="5"></textarea></div>
+      <div class="form-group" style="flex:1;min-width:200px"><label>Tasks (one per line)</label><textarea id="rp-tasks" rows="5"></textarea></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+      <button class="roles-tab-btn active" onclick="rpPick()">🎲 Pick randomly</button>
+      <button class="roles-tab-btn" onclick="cpText(g('rp-out').value)">📋 Copy results</button>
+      <button class="roles-tab-btn" onclick="rpOpenBriefing()">📄 Open big briefing sheet</button>
+    </div>
+    <textarea id="rp-out" rows="4" readonly style="margin-top:10px"></textarea>
+  </div>
+  <div class="roles-tab-row" style="flex-wrap:wrap;margin-bottom:14px">
+    <button class="roles-tab-btn active" onclick="selBR('cc',this)">🧳 Cabin Crew</button>
+    <button class="roles-tab-btn" onclick="selBR('sec',this)">🛡️ Security</button>
+  </div>
+
+  <div id="br-cc" class="br-panel">
+    <div class="form-row" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+      <div class="form-group" style="flex:1;min-width:160px"><label>Number of Cabin Crew</label><input id="br-cc-count" type="number" min="0" placeholder="0" oninput="brRender()"></div>
+      <div class="form-group" style="flex:2;min-width:220px"><label>Plane</label><select id="br-plane" onchange="brRender()"><option>Airbus A220</option><option>Airbus A318</option><option>Airbus A319</option><option>Airbus A320</option><option>Airbus A321neo</option><option>Airbus A330</option><option>Airbus A350</option><option>Boeing 737-MAX8</option><option>Boeing 787-9</option></select></div>
+    </div>
+    <div class="form-group" style="margin-bottom:12px"><label>Arming script</label><textarea id="br-cc-arm" rows="3" oninput="brRender()"></textarea></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Disarming script</label><textarea id="br-cc-disarm" rows="3" oninput="brRender()"></textarea></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Airport roles (one per line, e.g. @CC1 | Gate Agent)</label><textarea id="br-cc-airport" rows="4" oninput="brRender()"></textarea></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Onboard roles (one per line, e.g. @CC1 | Lounge)</label><textarea id="br-cc-onboard" rows="4" oninput="brRender()"></textarea></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Sheet</label><textarea id="br-cc-out" rows="16" readonly style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
+    <button class="roles-tab-btn active" onclick="cpText(g('br-cc-out').value)">📋 Copy Cabin Crew sheet</button>
+  </div>
+
+  <div id="br-sec" class="br-panel" style="display:none">
+    <div class="form-group" style="max-width:240px;margin-bottom:12px"><label>Number of SY</label><input id="br-sy" type="number" min="0" placeholder="0" oninput="brRender()"></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Role assignments (one per line, e.g. @user • Security Agent → Runway Inspection, Deboard Usher)</label><textarea id="br-sec-roles" rows="5" oninput="brRender()"></textarea></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Sheet</label><textarea id="br-sec-out" rows="14" readonly style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
+    <button class="roles-tab-btn active" onclick="cpText(g('br-sec-out').value)">📋 Copy Security sheet</button>
+  </div>
+</div>
 <div id="page-suggest" class="page" style="max-width:900px">
   <div class="roles-hero">
     <div class="roles-hero-inner">
