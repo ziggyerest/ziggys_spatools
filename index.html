@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.43</span>
+      <span class="topbar-badge">v1.0.44</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5791,7 +5791,7 @@ function copyGeneralTrivia(btn) {
 }
 
 // ── BRIEFING SHEETS ──
-var BR_WIDE = ['Airbus A330', 'Airbus A350', 'Boeing 787-9'];
+var BR_WIDE = ['Airbus A330', 'Airbus A350', 'Boeing 777-300ER', 'Boeing 787-9'];
 function selBR(name, btn) {
   if (BR_LOCKED[name]) { g('toast').textContent = 'Locked: requires the ' + BR_LOCKED[name] + ' role'; showToast(); return; }
   document.querySelectorAll('#page-briefing .br-panel').forEach(function (p) {
@@ -6095,6 +6095,16 @@ function brGenerate(reroll) {
     if (!secPool.length && r.sec.length) notes.push('Fill the Security box to assign Security roles.');
   }
 
+  var allIds = [];
+  r.cc.concat(r.sec).forEach(function (id) { allIds.push(id); });
+  (r.ccAir.concat(r.ccOnb, r.secRoles)).forEach(function (l) { var m = l.match(/<@!?(\d+)>/); if (m) allIds.push(m[1]); });
+  var uniq = allIds.filter(function (id, i) { return allIds.indexOf(id) === i; });
+  g('rp-users').value = uniq.map(function (id) { return '<@' + id + '>'; }).join('\n');
+  var roleNames = [];
+  ['br-role-air', 'br-role-onb', 'br-role-sec'].forEach(function (b) {
+    brLinesOf(b).forEach(function (x) { if (roleNames.indexOf(x) === -1) roleNames.push(x); });
+  });
+  g('rp-tasks').value = roleNames.join('\n');
   var skipped = r.roleMentions.length ? ' Skipped ' + r.roleMentions.length + ' role mention(s), so check those by hand.' : '';
   status.textContent = msg + ' Flight ' + flight + '.' + (notes.length ? ' ' + notes.join(' ') : '') + skipped + (reroll ? ' Roles re-rolled.' : '');
   brRender();
@@ -6102,18 +6112,130 @@ function brGenerate(reroll) {
 
 // ── ARMING / DISARMING SCRIPTS BY AIRCRAFT TYPE ──
 var BR_SCRIPTS = {
-  "Airbus A350": {
+  "Airbus A220": {
+    "arm": [
+      "-removes key lock and stores away-",
+      "-pushes lock lever up-",
+      "-checks if green light appears to confirm door locked-"
+    ],
+    "disarm": [
+      "-turns key lock on key hole-",
+      "-pushes lock lever down-",
+      "-checks if red light appears to confirm door unlocked-"
+    ]
+  },
+  "Airbus A318": {
+    "arm": [
+      "-removes safety pin with red flag and stores away-",
+      "-pushes arming control lever down-",
+      "-ensures the indicator reads 'armed'-"
+    ],
+    "disarm": [
+      "-lifts arming control lever fully up-",
+      "-ensures the indicator reads 'disarmed'-",
+      "-installs safety pin with the red flag-"
+    ]
+  },
+  "Airbus A319": {
+    "arm": [
+      "-removes safety pin with red flag and stores away-",
+      "-pushes arming control lever down-",
+      "-ensures the indicator reads 'armed'-"
+    ],
+    "disarm": [
+      "-lifts arming control lever fully up-",
+      "-ensures the indicator reads 'disarmed'-",
+      "-installs safety pin with the red flag-"
+    ]
+  },
+  "Airbus A320": {
+    "arm": [
+      "-removes safety pin with red flag and stores away-",
+      "-pushes arming control lever down-",
+      "-ensures the indicator reads 'armed'-"
+    ],
+    "disarm": [
+      "-lifts arming control lever fully up-",
+      "-ensures the indicator reads 'disarmed'-",
+      "-installs safety pin with the red flag-"
+    ]
+  },
+  "Airbus A321neo": {
+    "arm": [
+      "-removes safety pin with red flag and stores away-",
+      "-pushes arming control lever down-",
+      "-ensures the indicator reads 'armed'-"
+    ],
+    "disarm": [
+      "-lifts arming control lever fully up-",
+      "-ensures the indicator reads 'disarmed'-",
+      "-installs safety pin with the red flag-"
+    ]
+  },
+  "Airbus A330": {
     "arm": [
       "-slides open protective cover-",
       "-removes safety pin with red streamer-",
-      "-changes arming lever mode to \"armed\"-",
+      "-changes arming lever mode to 'armed'-",
       "-closes protective cover-"
     ],
     "disarm": [
       "-slides open protective cover-",
-      "-changes arming lever mode to \"disarmed\"-",
+      "-changes arming lever mode to 'disarmed'-",
       "-inserts safety pin with red streamer-",
       "-closes protective cover-"
+    ]
+  },
+  "Airbus A350": {
+    "arm": [
+      "-slides open protective cover-",
+      "-removes safety pin with red streamer-",
+      "-changes arming lever mode to 'armed'-",
+      "-closes protective cover-"
+    ],
+    "disarm": [
+      "-slides open protective cover-",
+      "-changes arming lever mode to 'disarmed'-",
+      "-inserts safety pin with red streamer-",
+      "-closes protective cover-"
+    ]
+  },
+  "Boeing 737-MAX8": {
+    "arm": [
+      "-unclicks & places red flag across window-",
+      "-crouches onto floor towards door-",
+      "-detaches girt bar from hooks-",
+      "-inserts girt bar into floor brackets-"
+    ],
+    "disarm": [
+      "-crouches onto floor towards door-",
+      "-detaches girt bar from floor brackets-",
+      "-stows girt bar into hooks-",
+      "-unclicks & places red flag to normal position-"
+    ]
+  },
+  "Boeing 777-300ER": {
+    "arm": [
+      "-opens access cover, moves the mode selector to 'automatic' position-",
+      "-crouches onto floor towards door-",
+      "-checks the girt bar indicator flag viewing windows are yellow-"
+    ],
+    "disarm": [
+      "-opens access cover, moves the mode selector to 'manual' position-",
+      "-crouches onto floor towards door-",
+      "-checks the girt bar indicator flag viewing windows are black-"
+    ]
+  },
+  "Boeing 787-9": {
+    "arm": [
+      "-pulls safety lever-",
+      "-rotates arming control lever to the right-",
+      "-pulls down the door lock lever-"
+    ],
+    "disarm": [
+      "-pulls up the door lock lever-",
+      "-pulls safety lever-",
+      "-rotates the arming control to the left-"
     ]
   }
 };
@@ -6538,7 +6660,7 @@ else enforceLogin();
   <div id="br-cc" class="br-panel">
     <div class="form-row" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
       <div class="form-group" style="flex:1;min-width:160px"><label>Number of Cabin Crew</label><input id="br-cc-count" type="number" min="0" placeholder="0" oninput="brRender()"></div>
-      <div class="form-group" style="flex:2;min-width:220px"><label>Plane</label><select id="br-plane" onchange="brApplyScripts()"><option>Airbus A220</option><option>Airbus A318</option><option>Airbus A319</option><option>Airbus A320</option><option>Airbus A321neo</option><option>Airbus A330</option><option>Airbus A350</option><option>Boeing 737-MAX8</option><option>Boeing 787-9</option></select></div>
+      <div class="form-group" style="flex:2;min-width:220px"><label>Plane</label><select id="br-plane" onchange="brApplyScripts()"><option>Airbus A220</option><option>Airbus A318</option><option>Airbus A319</option><option>Airbus A320</option><option>Airbus A321neo</option><option>Airbus A330</option><option>Airbus A350</option><option>Boeing 737-MAX8</option><option>Boeing 777-300ER</option><option>Boeing 787-9</option></select></div>
     </div>
     <div class="form-group" style="margin-bottom:12px"><label>Arming script</label><textarea id="br-cc-arm" rows="3" oninput="brRender()"></textarea></div>
     <div class="form-group" style="margin-bottom:12px"><label>Disarming script</label><textarea id="br-cc-disarm" rows="3" oninput="brRender()"></textarea></div>
