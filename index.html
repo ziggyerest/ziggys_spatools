@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.60</span>
+      <span class="topbar-badge">v1.0.61</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6104,7 +6104,7 @@ function brAssignCC(people, airPool, onPool, manager) {
   var order = brShuffle(people.slice());
   if (manager && order.indexOf(manager) === -1) order.push(manager);
   var total = order.length;
-  var crewOK = total >= 3;
+  var wholeOK = total >= 2 && total <= 3;   // Whole roles only on 2-3 crew flights
 
   var airOf = {}, onOf = {};
   var gateCount = Math.min(gateAir.length, total);
@@ -6159,14 +6159,18 @@ function brAssignCC(people, airPool, onPool, manager) {
   classes.forEach(function (c) {
     var ids = classPeople[c];
     if (ids.length === 1) {
-      onOf[ids[0]] = (crewOK && roleFor(c, 'Whole')) || roleFor(c, 'CPT') || roleFor(c, 'FO') || '[Insert roles]';
+      onOf[ids[0]] = (wholeOK && roleFor(c, 'Whole')) || roleFor(c, 'CPT') || roleFor(c, 'FO') || roleFor(c, 'Mid') || '[Insert roles]';
     } else if (ids.length >= 2) {
       onOf[ids[0]] = roleFor(c, 'CPT') || '[Insert roles]';
       onOf[ids[1]] = roleFor(c, 'FO') || roleFor(c, 'Mid') || '[Insert roles]';
     }
   });
-  var dest = onPool.filter(function (x) { return /destination/i.test(x); })[0] || '[Insert roles]';
-  remaining.forEach(function (id) { onOf[id] = dest; });
+  // everyone is accommodated: leftovers are Destination Crew, or a single role from the box if there is no Destination Crew
+  var dest = onPool.filter(function (x) { return /destination/i.test(x); })[0] || null;
+  var spare = onPool.filter(function (x) { return !/whole/i.test(x); });
+  remaining.forEach(function (id, n) {
+    onOf[id] = dest || (spare.length ? spare[n % spare.length] : '[Insert roles]');
+  });
 
   return {
     air: order.filter(function (id) { return airOf[id]; }).map(function (id) { return '<@' + id + '> | ' + airOf[id]; }),
