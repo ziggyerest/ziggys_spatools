@@ -853,7 +853,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.79</span>
+      <span class="topbar-badge">v1.0.80</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6153,13 +6153,12 @@ function brAssignCC(people, airPool, onPool, manager) {
   };
 
   // seats: CPT for every class, then FO for every class, then MID for every class
-  // class by class: each class gets its CPT, then FO, then MID, before the next class.
-  // Premium classes come first, Economy last (Gate Agents are taken from Economy below).
+  // every ticked class gets a CPT before any class gets an FO, then every class gets an MID.
+  // Premium classes first, Economy last in each round (Gate Agents take the first Economy seats below).
   var seats = [];
-  var fillOrder = classes.filter(function (c) { return c !== 'Economy'; })
-    .concat(classes.filter(function (c) { return c === 'Economy'; }));
-  fillOrder.forEach(function (c) {
-    ['CPT', 'FO', 'MID'].forEach(function (pos) {
+  var roundOrder = classes.filter(function (c) { return c !== 'Economy'; }).concat(['Economy']).filter(function (c) { return classes.indexOf(c) !== -1; });
+  ['CPT', 'FO', 'MID'].forEach(function (pos) {
+    roundOrder.forEach(function (c) {
       var r = roleFor(c, pos);
       if (r) seats.push({ c: c, role: r });
     });
