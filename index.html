@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.68</span>
+      <span class="topbar-badge">v1.0.70</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6255,7 +6255,9 @@ function brGenerate(reroll) {
   });
   g('rp-tasks').value = roleNames.join('\n');
   var skipped = r.roleMentions.length ? ' Skipped ' + r.roleMentions.length + ' role mention(s), so check those by hand.' : '';
-  status.textContent = msg + ' Flight ' + flight + '.' + (notes.length ? ' ' + notes.join(' ') : '') + skipped + (reroll ? ' Roles re-rolled.' : '');
+  var dep = brDeparture((g('br-route').value || '').trim());
+  var seatNote = brSeatNote(ccCount, g('br-plane').value, dep);
+  status.textContent = msg + ' Flight ' + flight + '.' + seatNote + (notes.length ? ' ' + notes.join(' ') : '') + skipped + (reroll ? ' Roles re-rolled.' : '');
   brRender();
 }
 
@@ -6393,6 +6395,236 @@ function brApplyScripts() {
   g('br-cc-arm').value = sc ? sc.arm.join('\n') : '';
   g('br-cc-disarm').value = sc ? sc.disarm.join('\n') : '';
   brRender();
+}
+
+// ── AIRCRAFT SEAT DATA (Fleet tab + Briefing checks) ──
+var SEATS = {
+ "Airbus A220-300": {
+  "grounded": false,
+  "note": "",
+  "variants": [
+   {
+    "name": "Standard",
+    "cockpit": 2,
+    "cc": 4,
+    "premium": "Investors/First/Business 15",
+    "economy": 72,
+    "pax": 87,
+    "staff": 6
+   }
+  ]
+ },
+ "Airbus A318": {
+  "grounded": false,
+  "note": "Double jumpseats could only occupy one cabin crew.",
+  "variants": [
+   {
+    "name": "Standard",
+    "cockpit": 2,
+    "cc": 6,
+    "premium": "Investor/First/Business 16",
+    "economy": 40,
+    "pax": 56,
+    "staff": 8
+   }
+  ]
+ },
+ "Airbus A319": {
+  "grounded": true,
+  "note": "Grounded and not for use. Image to be added, aircraft is still in development.",
+  "variants": [
+   {
+    "name": "Standard",
+    "cockpit": 2,
+    "cc": 6,
+    "premium": "Investor/First/Business 16",
+    "economy": 60,
+    "pax": 76,
+    "staff": 8
+   }
+  ]
+ },
+ "Airbus A320-231": {
+  "grounded": false,
+  "note": "",
+  "variants": [
+   {
+    "name": "A320-214",
+    "cockpit": 2,
+    "cc": 6,
+    "premium": "Investors/First/Business 16",
+    "economy": 102,
+    "pax": 118,
+    "staff": 8
+   }
+  ]
+ },
+ "Airbus A321neo": {
+  "grounded": false,
+  "note": "",
+  "variants": [
+   {
+    "name": "Standard",
+    "cockpit": 2,
+    "cc": 7,
+    "premium": "Investors/First/Business 24",
+    "economy": 126,
+    "pax": 150,
+    "staff": 9
+   }
+  ]
+ },
+ "Airbus A330-941neo": {
+  "grounded": true,
+  "note": "Grounded and not for use.",
+  "variants": [
+   {
+    "name": "Standard",
+    "cockpit": 4,
+    "cc": 13,
+    "premium": "Investors/First 24, Business 16",
+    "economy": 130,
+    "pax": 170,
+    "staff": 17
+   }
+  ]
+ },
+ "Airbus A350-900": {
+  "grounded": false,
+  "note": "Do not use at Mark Neris due to rendering issues. No seats in the cabin between doors L3 and L4.",
+  "variants": [
+   {
+    "name": "Standard",
+    "cockpit": 2,
+    "cc": 14,
+    "premium": "Investor/First 20, Business 21",
+    "economy": 99,
+    "pax": 140,
+    "staff": 16
+   }
+  ]
+ },
+ "Boeing 737 MAX 8": {
+  "grounded": false,
+  "note": "Do not use in Punta Cana or Southwest Regional. Staff/passengers who join after insertion will be stuck on infinite load.",
+  "variants": [
+   {
+    "name": "MAX",
+    "cockpit": 2,
+    "cc": 8,
+    "premium": "Investor 4, First/Business 12",
+    "economy": 108,
+    "pax": 124,
+    "staff": 10
+   },
+   {
+    "name": "ECO livery",
+    "cockpit": 2,
+    "cc": 8,
+    "premium": "Investor/First/Business 20",
+    "economy": 108,
+    "pax": 128,
+    "staff": 10
+   }
+  ]
+ },
+ "Boeing 747-400": {
+  "grounded": true,
+  "note": "Grounded and not for use YET. Real time updates in #status-tracker under 'Information'.",
+  "variants": [
+   {
+    "name": "Standard",
+    "cockpit": 2,
+    "cc": 19,
+    "premium": "Investors 12, First 24, Business 22",
+    "economy": 105,
+    "pax": "163 + 11 lavatory seats",
+    "staff": 21
+   }
+  ]
+ },
+ "Boeing 787-9 Dreamliner": {
+  "grounded": false,
+  "note": "The cabin between L3 and L4 does not contain any passenger seats. Available for all passengers.",
+  "variants": [
+   {
+    "name": "Standard",
+    "cockpit": 2,
+    "cc": 10,
+    "premium": "Investors 6, First 11, Business 14",
+    "economy": 56,
+    "pax": 87,
+    "staff": 11
+   },
+   {
+    "name": "Executive livery",
+    "cockpit": 2,
+    "cc": 0,
+    "premium": "Investors 37 + 3 bathroom + 2 bedroom 1 + 2 bedroom 2 (44)",
+    "economy": 0,
+    "pax": 44,
+    "staff": 2,
+    "note": "Economy passengers strictly prohibited. Fragile, will fling easily at taxiway junctions. Private/alliance/special flights only."
+   }
+  ]
+ },
+ "Boeing 777-300ER": {
+  "grounded": true,
+  "note": "Grounded and not for use.",
+  "variants": [
+   {
+    "name": "Standard",
+    "cockpit": 2,
+    "cc": 10,
+    "premium": "Investors 12, First 30, Business 21",
+    "economy": 144,
+    "pax": 207,
+    "staff": 12
+   }
+  ]
+ }
+};
+var BR_PLANE_KEY = {"Airbus A220": "Airbus A220-300", "Airbus A318": "Airbus A318", "Airbus A319": "Airbus A319", "Airbus A320": "Airbus A320-231", "Airbus A321neo": "Airbus A321neo", "Airbus A330": "Airbus A330-941neo", "Airbus A350": "Airbus A350-900", "Boeing 737-MAX8": "Boeing 737 MAX 8", "Boeing 777-300ER": "Boeing 777-300ER", "Boeing 787-9": "Boeing 787-9 Dreamliner"};
+function fleetAddSeats() {
+  var rows = document.querySelectorAll('#page-fleet tbody tr');
+  rows.forEach(function (tr) {
+    var first = tr.querySelector('td');
+    if (!first) return;
+    var name = first.textContent.trim();
+    var d = SEATS[name];
+    if (!d) return;
+    var cards = d.variants.map(function (v) {
+      var note = v.note || d.note || '';
+      return '<div style="margin-top:8px;padding:10px 12px;border:1px solid #1a3456;border-radius:10px;background:#0a1a30">'
+        + (d.variants.length > 1 ? '<div style="font-weight:700;color:#fff;margin-bottom:6px">' + v.name + '</div>' : '')
+        + '<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px;font-size:.78rem;color:#9bb8d4">'
+        + '<span>Cockpit: ' + v.cockpit + '</span><span>Cabin crew jumpseats: ' + v.cc + '</span>'
+        + '<span>Premium: ' + v.premium + '</span><span>Economy: ' + v.economy + '</span>'
+        + '<span>Passengers: ' + v.pax + '</span><span>Staff: ' + v.staff + '</span>'
+        + '</div>'
+        + (note ? '<div style="margin-top:6px;font-size:.74rem;color:#f0b429">' + note + '</div>' : '')
+        + '</div>';
+    }).join('');
+    first.innerHTML = name + '<details style="margin-top:6px"><summary style="cursor:pointer;color:#2196f3;font-size:.74rem;font-weight:700">Seats</summary>' + cards + '</details>';
+  });
+}
+document.addEventListener('DOMContentLoaded', fleetAddSeats);
+
+// briefing checks against the seat data
+function brDeparture(flight) {
+  if (!flight || typeof ROUTES === 'undefined') return '';
+  for (var ap in ROUTES) { if (ROUTES[ap].routes && ROUTES[ap].routes['SPA' + flight]) return ROUTES[ap].icao; }
+  return '';
+}
+function brSeatNote(ccCount, plane, dep) {
+  var d = SEATS[BR_PLANE_KEY[plane]];
+  if (!d) return '';
+  var v = d.variants[0];
+  var out = ' ' + plane + ': ' + v.staff + ' staff seats.';
+  if (ccCount > v.staff) out += ' WARNING: ' + ccCount + ' Cabin Crew but only ' + v.staff + ' staff seats.';
+  if (d.grounded) out += ' WARNING: this aircraft is grounded.';
+  if (plane === 'Boeing 737-MAX8' && (dep === 'MDPC' || dep === 'KABY')) out += ' WARNING: do not use the 737-8MAX at Punta Cana or Southwest Regional.';
+  return out;
 }
 
 // ── CO-HOST AIRPORT (fills [AIRPORT] in the Co-Host tab) ──
