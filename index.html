@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.70</span>
+      <span class="topbar-badge">v1.0.71</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5793,6 +5793,7 @@ function copyGeneralTrivia(btn) {
 // ── BRIEFING SHEETS ──
 var BR_WIDE = ['Airbus A330', 'Airbus A350', 'Boeing 777-300ER', 'Boeing 787-9'];
 function selBR(name, btn) {
+  if (name === 'manual') brManualRender();
   if (BR_LOCKED[name]) { g('toast').textContent = 'Locked: requires the ' + BR_LOCKED[name] + ' role'; showToast(); return; }
   document.querySelectorAll('#page-briefing .br-panel').forEach(function (p) {
     p.style.display = (p.id === 'br-' + name) ? '' : 'none';
@@ -6016,6 +6017,27 @@ function brRoleBoxChanged() {
 function brTickAll() {
   ['br-cls-business', 'br-cls-first', 'br-cls-investor'].forEach(function (id) { g(id).checked = true; });
   brRoleBoxChanged();
+}
+function brManualRender() {
+  var out = g('br-man-out');
+  if (!out) return;
+  var t = g('br-man-type').value;
+  var txt;
+  if (t === 'cc') {
+    var n = parseInt(g('br-cc-count').value, 10) || 0;
+    var air = brCount(n, function (i) { return '> @CC' + i + ' | [Airport role]'; });
+    var onb = brCount(n, function (i) { return '> @CC' + i + ' | [Onboard role]'; });
+    txt = brCCOut().replace(/(<:SPAUpperManagement[^\n]*\n)[\s\S]*?(\n\*\*Signed)/, function (m, a, b) {
+      return a + air + '\n\n✈️ | **Onboard Roles**\n' + onb + b;
+    });
+  } else {
+    var sn = parseInt(g('br-sy').value, 10) || 0;
+    var roles = brCount(sn, function () { return '> <@user> • *[Title]* → *[Roles]*'; });
+    txt = brSecOut().replace(/(<:SPAAirportPatrol[^\n]*\n)[\s\S]*?(\n\n\*If you)/, function (m, a, b) {
+      return a + roles + b;
+    });
+  }
+  out.value = txt;
 }
 function brResetRoles() {
   g('br-role-air').value = BR_DEFAULT_ROLES.air;
@@ -7008,6 +7030,7 @@ else enforceLogin();
   <div class="roles-tab-row" style="flex-wrap:wrap;margin-bottom:14px">
     <button class="roles-tab-btn active" onclick="selBR('cc',this)">🧳 Cabin Crew</button>
     <button class="roles-tab-btn" onclick="selBR('sec',this)">🛡️ Security</button>
+    <button class="roles-tab-btn" onclick="selBR('manual',this)">📝 Manual template</button>
   </div>
 
   <div class="form-row" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
@@ -7053,6 +7076,12 @@ else enforceLogin();
     <button class="roles-tab-btn active" onclick="cpText(g('br-cc-out').value)">📋 Copy Cabin Crew sheet</button>
   </div>
 
+  <div id="br-manual" class="br-panel" style="display:none">
+    <div class="form-group" style="max-width:260px;margin-bottom:12px"><label>Template type</label><select id="br-man-type" onchange="brManualRender()"><option value="cc">Cabin Crew</option><option value="sec">Security</option></select></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Template (fill in the roles, then copy)</label><textarea id="br-man-out" rows="20" style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
+    <button class="roles-tab-btn active" onclick="cpText(g('br-man-out').value)">📋 Copy template</button>
+    <button class="roles-tab-btn" onclick="brManualRender()">↺ Refresh template</button>
+  </div>
   <div id="br-sec" class="br-panel" style="display:none">
     <div class="form-group" style="max-width:240px;margin-bottom:12px"><label>Number of SY</label><input id="br-sy" type="number" min="0" placeholder="0" oninput="brRender()"></div>
     <div class="form-group" style="margin-bottom:12px"><label>Role assignments (one per line, e.g. @user • Security Agent → Runway Inspection, Deboard Usher)</label><textarea id="br-sec-roles" rows="5" oninput="brRender()"></textarea></div>
