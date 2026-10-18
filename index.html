@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.74</span>
+      <span class="topbar-badge">v1.0.75</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6033,8 +6033,7 @@ function brTickAll() {
   brRoleBoxChanged();
 }
 function brManualRender() {
-  var out = g('br-man-out');
-  if (!out) return;
+  if (!g('br-man-cc')) return;
   // Cabin Crew part: one line per person from the pasted sheet, roles left for you to fill in
   var ids = [];
   if (BR_PARSED) {
@@ -6061,7 +6060,8 @@ function brManualRender() {
     return a + roles + b;
   });
 
-  out.value = cc + '\n\n----------------------------------------\n\n' + sec;
+  g('br-man-cc').value = cc;
+  g('br-man-sec').value = sec;
 }
 function brResetRoles() {
   g('br-role-air').value = BR_DEFAULT_ROLES.air;
@@ -7077,8 +7077,10 @@ else enforceLogin();
     <div id="br-fill-status" style="font-size:.82rem;color:var(--text2);margin-top:8px"></div>
   </div>
   <div id="br-manual" class="br-panel">
-    <div class="form-group" style="margin-bottom:12px"><label>Full sheet (Cabin Crew and Security). Fill in the roles, then copy.</label><textarea id="br-man-out" rows="20" style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
-    <button class="roles-tab-btn active" onclick="cpText(g('br-man-out').value)">📋 Copy template</button>
+    <div class="form-group" style="margin-bottom:12px"><label>Cabin Crew sheet (fill in the roles, then copy)</label><textarea id="br-man-cc" rows="16" style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
+    <button class="roles-tab-btn active" onclick="cpText(g('br-man-cc').value)">📋 Copy Cabin Crew sheet</button>
+    <div class="form-group" style="margin:16px 0 12px"><label>Security sheet (fill in the roles, then copy)</label><textarea id="br-man-sec" rows="12" style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
+    <button class="roles-tab-btn active" onclick="cpText(g('br-man-sec').value)">📋 Copy Security sheet</button>
     <button class="roles-tab-btn" onclick="brManualRender()">↺ Refresh template</button>
   </div>
   <div style="border:1px solid rgba(148,180,212,.15);border-radius:12px;padding:14px;margin-bottom:16px">
