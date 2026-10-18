@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.72</span>
+      <span class="topbar-badge">v1.0.73</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6035,34 +6035,33 @@ function brTickAll() {
 function brManualRender() {
   var out = g('br-man-out');
   if (!out) return;
-  var t = g('br-man-type').value;
-  var txt;
-  if (t === 'cc') {
-    var ids = [];
-    if (BR_PARSED) {
-      ids = BR_PARSED.cc.slice();
-      (BR_PARSED.ccAir.concat(BR_PARSED.ccOnb)).forEach(function (l) {
-        var m = l.match(/<@!?(\d+)>/); if (m && ids.indexOf(m[1]) === -1) ids.push(m[1]);
-      });
-    }
-    var n = ids.length || parseInt(g('br-cc-count').value, 10) || 0;
-    var air = ids.length ? ids.map(function (id) { return '> <@' + id + '> | [Airport role]'; }).join('\n')
-                         : brCount(n, function (i) { return '> @CC' + i + ' | [Airport role]'; });
-    var onb = ids.length ? ids.map(function (id) { return '> <@' + id + '> | [Onboard role]'; }).join('\n')
-                         : brCount(n, function (i) { return '> @CC' + i + ' | [Onboard role]'; });
-    txt = brCCOut().replace(/(<:SPAUpperManagement[^\n]*\n)[\s\S]*?(\n\*\*Signed)/, function (m, a, b) {
-      return a + air + '\n\n✈️ | **Onboard Roles**\n' + onb + b;
-    });
-  } else {
-    var sids = BR_PARSED ? BR_PARSED.sec : [];
-    var sn = parseInt(g('br-sy').value, 10) || 0;
-    var roles = sids.length ? sids.map(function (id) { return '> <@' + id + '> • *[Title]* → *[Roles]*'; }).join('\n')
-                            : brCount(sn, function () { return '> <@user> • *[Title]* → *[Roles]*'; });
-    txt = brSecOut().replace(/(<:SPAAirportPatrol[^\n]*\n)[\s\S]*?(\n\n\*If you)/, function (m, a, b) {
-      return a + roles + b;
+  // Cabin Crew part: one line per person from the pasted sheet, roles left for you to fill in
+  var ids = [];
+  if (BR_PARSED) {
+    ids = BR_PARSED.cc.slice();
+    (BR_PARSED.ccAir.concat(BR_PARSED.ccOnb)).forEach(function (l) {
+      var m = l.match(/<@!?(\d+)>/); if (m && ids.indexOf(m[1]) === -1) ids.push(m[1]);
     });
   }
-  out.value = txt;
+  var n = ids.length || parseInt(g('br-cc-count').value, 10) || 0;
+  var air = ids.length ? ids.map(function (id) { return '> <@' + id + '> | [Airport role]'; }).join('\n')
+                       : brCount(n, function (i) { return '> @CC' + i + ' | [Airport role]'; });
+  var onb = ids.length ? ids.map(function (id) { return '> <@' + id + '> | [Onboard role]'; }).join('\n')
+                       : brCount(n, function (i) { return '> @CC' + i + ' | [Onboard role]'; });
+  var cc = brCCOut().replace(/(<:SPAUpperManagement[^\n]*\n)[\s\S]*?(\n\*\*Signed)/, function (m, a, b) {
+    return a + air + '\n\n✈️ | **Onboard Roles**\n' + onb + b;
+  });
+
+  // Security part: one line per person from the pasted sheet, roles left for you to fill in
+  var sids = BR_PARSED ? BR_PARSED.sec : [];
+  var sn = parseInt(g('br-sy').value, 10) || 0;
+  var roles = sids.length ? sids.map(function (id) { return '> <@' + id + '> • *[Title]* → *[Roles]*'; }).join('\n')
+                          : brCount(sn, function () { return '> <@user> • *[Title]* → *[Roles]*'; });
+  var sec = brSecOut().replace(/(<:SPAAirportPatrol[^\n]*\n)[\s\S]*?(\n\n\*If you)/, function (m, a, b) {
+    return a + roles + b;
+  });
+
+  out.value = cc + '\n\n----------------------------------------\n\n' + sec;
 }
 function brResetRoles() {
   g('br-role-air').value = BR_DEFAULT_ROLES.air;
@@ -7105,8 +7104,7 @@ else enforceLogin();
   </div>
 
   <div id="br-manual" class="br-panel">
-    <div class="form-group" style="max-width:260px;margin-bottom:12px"><label>Template type</label><select id="br-man-type" onchange="brManualRender()"><option value="cc">Cabin Crew</option><option value="sec">Security</option></select></div>
-    <div class="form-group" style="margin-bottom:12px"><label>Template (fill in the roles, then copy)</label><textarea id="br-man-out" rows="20" style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Full sheet (Cabin Crew and Security). Fill in the roles, then copy.</label><textarea id="br-man-out" rows="20" style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
     <button class="roles-tab-btn active" onclick="cpText(g('br-man-out').value)">📋 Copy template</button>
     <button class="roles-tab-btn" onclick="brManualRender()">↺ Refresh template</button>
   </div>
