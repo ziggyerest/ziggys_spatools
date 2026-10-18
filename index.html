@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.71</span>
+      <span class="topbar-badge">v1.0.72</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5793,14 +5793,27 @@ function copyGeneralTrivia(btn) {
 // ── BRIEFING SHEETS ──
 var BR_WIDE = ['Airbus A330', 'Airbus A350', 'Boeing 777-300ER', 'Boeing 787-9'];
 function selBR(name, btn) {
-  if (name === 'manual') brManualRender();
+  document.querySelectorAll('#br-top-row button').forEach(function (b) { b.classList.toggle('active', b === btn); });
+  var auto = name === 'auto';
+  document.getElementById('br-auto-row').style.display = auto ? '' : 'none';
+  if (name === 'manual') {
+    document.getElementById('br-manual').style.display = '';
+    document.getElementById('br-cc').style.display = 'none';
+    document.getElementById('br-sec').style.display = 'none';
+    localStorage.setItem('spa_br_tab', 'manual');
+  } else {
+    document.getElementById('br-manual').style.display = 'none';
+    var first = document.querySelector('#br-auto-row button.active') || document.querySelector('#br-auto-row button');
+    var key = (first && (first.getAttribute('onclick') || '').match(/selBRAuto\('(\w+)'/)) || [0, 'cc'];
+    selBRAuto(key[1], first);
+    localStorage.setItem('spa_br_tab', 'auto');
+  }
+}
+function selBRAuto(name, btn) {
   if (BR_LOCKED[name]) { g('toast').textContent = 'Locked: requires the ' + BR_LOCKED[name] + ' role'; showToast(); return; }
-  document.querySelectorAll('#page-briefing .br-panel').forEach(function (p) {
-    p.style.display = (p.id === 'br-' + name) ? '' : 'none';
-  });
-  document.querySelectorAll('#page-briefing .roles-tab-row button').forEach(function (b) {
-    b.classList.toggle('active', b === btn);
-  });
+  document.querySelectorAll('#br-auto-row button').forEach(function (b) { b.classList.toggle('active', b === btn); });
+  document.getElementById('br-cc').style.display = name === 'cc' ? '' : 'none';
+  document.getElementById('br-sec').style.display = name === 'sec' ? '' : 'none';
   brRender();
 }
 function brFlight() { var r = (g('br-route').value || '').trim(); return r ? 'SPA' + r : 'SPA[ROUTE]'; }
@@ -5886,7 +5899,7 @@ function applyBriefingLocks() {
     var ok = bypass || gt.ids.some(function (id) { return roles.indexOf(id) !== -1; });
     BR_LOCKED[k] = ok ? null : gt.label;
   });
-  var btns = [].slice.call(document.querySelectorAll('#page-briefing .roles-tab-row button'));
+  var btns = [].slice.call(document.querySelectorAll('#br-auto-row button'));
   btns.forEach(function (b) {
     var m = (b.getAttribute('onclick') || '').match(/selBR\('(\w+)'/);
     if (!m) return;
@@ -6004,6 +6017,7 @@ function brPasted() {
     if (r.disarm.length) g('br-cc-disarm').value = r.disarm.join('\n');
   }
   brGenerate(false);
+  brManualRender();
 }
 // role boxes: save, then regenerate shortly after typing stops
 function brRoleBoxChanged() {
@@ -6024,15 +6038,26 @@ function brManualRender() {
   var t = g('br-man-type').value;
   var txt;
   if (t === 'cc') {
-    var n = parseInt(g('br-cc-count').value, 10) || 0;
-    var air = brCount(n, function (i) { return '> @CC' + i + ' | [Airport role]'; });
-    var onb = brCount(n, function (i) { return '> @CC' + i + ' | [Onboard role]'; });
+    var ids = [];
+    if (BR_PARSED) {
+      ids = BR_PARSED.cc.slice();
+      (BR_PARSED.ccAir.concat(BR_PARSED.ccOnb)).forEach(function (l) {
+        var m = l.match(/<@!?(\d+)>/); if (m && ids.indexOf(m[1]) === -1) ids.push(m[1]);
+      });
+    }
+    var n = ids.length || parseInt(g('br-cc-count').value, 10) || 0;
+    var air = ids.length ? ids.map(function (id) { return '> <@' + id + '> | [Airport role]'; }).join('\n')
+                         : brCount(n, function (i) { return '> @CC' + i + ' | [Airport role]'; });
+    var onb = ids.length ? ids.map(function (id) { return '> <@' + id + '> | [Onboard role]'; }).join('\n')
+                         : brCount(n, function (i) { return '> @CC' + i + ' | [Onboard role]'; });
     txt = brCCOut().replace(/(<:SPAUpperManagement[^\n]*\n)[\s\S]*?(\n\*\*Signed)/, function (m, a, b) {
       return a + air + '\n\n✈️ | **Onboard Roles**\n' + onb + b;
     });
   } else {
+    var sids = BR_PARSED ? BR_PARSED.sec : [];
     var sn = parseInt(g('br-sy').value, 10) || 0;
-    var roles = brCount(sn, function () { return '> <@user> • *[Title]* → *[Roles]*'; });
+    var roles = sids.length ? sids.map(function (id) { return '> <@' + id + '> • *[Title]* → *[Roles]*'; }).join('\n')
+                            : brCount(sn, function () { return '> <@user> • *[Title]* → *[Roles]*'; });
     txt = brSecOut().replace(/(<:SPAAirportPatrol[^\n]*\n)[\s\S]*?(\n\n\*If you)/, function (m, a, b) {
       return a + roles + b;
     });
@@ -7027,10 +7052,13 @@ else enforceLogin();
     <div style="font-size:1.2rem;font-weight:700;letter-spacing:-.01em">📋 Briefing Sheets</div>
     <div style="font-size:.8rem;color:var(--text3)">Fill in the details, then copy the sheet into Discord.</div>
   </div>
-  <div class="roles-tab-row" style="flex-wrap:wrap;margin-bottom:14px">
-    <button class="roles-tab-btn active" onclick="selBR('cc',this)">🧳 Cabin Crew</button>
-    <button class="roles-tab-btn" onclick="selBR('sec',this)">🛡️ Security</button>
-    <button class="roles-tab-btn" onclick="selBR('manual',this)">📝 Manual template</button>
+  <div id="br-top-row" class="roles-tab-row" style="flex-wrap:wrap;margin-bottom:10px">
+    <button class="roles-tab-btn active" onclick="selBR('manual',this)">📝 Manual</button>
+    <button class="roles-tab-btn" onclick="selBR('auto',this)">⚙️ Automatic</button>
+  </div>
+  <div id="br-auto-row" class="roles-tab-row" style="flex-wrap:wrap;margin-bottom:14px;display:none">
+    <button class="roles-tab-btn active" onclick="selBRAuto('cc',this)">🧳 Cabin Crew</button>
+    <button class="roles-tab-btn" onclick="selBRAuto('sec',this)">🛡️ Security</button>
   </div>
 
   <div class="form-row" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
@@ -7063,7 +7091,7 @@ else enforceLogin();
     <textarea id="rp-out" rows="4" readonly style="margin-top:10px"></textarea>
   </div>
 
-  <div id="br-cc" class="br-panel">
+  <div id="br-cc" class="br-panel" style="display:none">
     <div class="form-row" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
       <div class="form-group" style="flex:1;min-width:160px"><label>Number of Cabin Crew</label><input id="br-cc-count" type="number" min="0" placeholder="0" oninput="brRender()"></div>
       <div class="form-group" style="flex:2;min-width:220px"><label>Plane</label><select id="br-plane" onchange="brApplyScripts()"><option>Airbus A220</option><option>Airbus A318</option><option>Airbus A319</option><option>Airbus A320</option><option>Airbus A321neo</option><option>Airbus A330</option><option>Airbus A350</option><option>Boeing 737-MAX8</option><option>Boeing 777-300ER</option><option>Boeing 787-9</option></select></div>
@@ -7076,7 +7104,7 @@ else enforceLogin();
     <button class="roles-tab-btn active" onclick="cpText(g('br-cc-out').value)">📋 Copy Cabin Crew sheet</button>
   </div>
 
-  <div id="br-manual" class="br-panel" style="display:none">
+  <div id="br-manual" class="br-panel">
     <div class="form-group" style="max-width:260px;margin-bottom:12px"><label>Template type</label><select id="br-man-type" onchange="brManualRender()"><option value="cc">Cabin Crew</option><option value="sec">Security</option></select></div>
     <div class="form-group" style="margin-bottom:12px"><label>Template (fill in the roles, then copy)</label><textarea id="br-man-out" rows="20" style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
     <button class="roles-tab-btn active" onclick="cpText(g('br-man-out').value)">📋 Copy template</button>
