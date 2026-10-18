@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.76</span>
+      <span class="topbar-badge">v1.0.77</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5792,23 +5792,6 @@ function copyGeneralTrivia(btn) {
 
 // ── BRIEFING SHEETS ──
 var BR_WIDE = ['Airbus A330', 'Airbus A350', 'Boeing 777-300ER', 'Boeing 787-9'];
-function selBR(name, btn) {
-  document.querySelectorAll('#br-top-row button').forEach(function (b) { b.classList.toggle('active', b === btn); });
-  var auto = name === 'auto';
-  document.getElementById('br-auto-row').style.display = auto ? '' : 'none';
-  if (name === 'manual') {
-    document.getElementById('br-manual').style.display = '';
-    document.getElementById('br-cc').style.display = 'none';
-    document.getElementById('br-sec').style.display = 'none';
-    localStorage.setItem('spa_br_tab', 'manual');
-  } else {
-    document.getElementById('br-manual').style.display = 'none';
-    var first = document.querySelector('#br-auto-row button.active') || document.querySelector('#br-auto-row button');
-    var key = (first && (first.getAttribute('onclick') || '').match(/selBRAuto\('(\w+)'/)) || [0, 'cc'];
-    selBRAuto(key[1], first);
-    localStorage.setItem('spa_br_tab', 'auto');
-  }
-}
 function selBRAuto(name, btn) {
   if (BR_LOCKED[name]) { g('toast').textContent = 'Locked: requires the ' + BR_LOCKED[name] + ' role'; showToast(); return; }
   document.querySelectorAll('#br-auto-row button').forEach(function (b) { b.classList.toggle('active', b === btn); });
@@ -6017,7 +6000,6 @@ function brPasted() {
     if (r.disarm.length) g('br-cc-disarm').value = r.disarm.join('\n');
   }
   brGenerate(false);
-  brManualRender();
 }
 // role boxes: save, then regenerate shortly after typing stops
 function brRoleBoxChanged() {
@@ -6031,37 +6013,6 @@ function brRoleBoxChanged() {
 function brTickAll() {
   ['br-cls-business', 'br-cls-first', 'br-cls-investor'].forEach(function (id) { g(id).checked = true; });
   brRoleBoxChanged();
-}
-function brManualRender() {
-  if (!g('br-man-cc')) return;
-  // Cabin Crew part: one line per person from the pasted sheet, roles left for you to fill in
-  var ids = [];
-  if (BR_PARSED) {
-    ids = BR_PARSED.cc.slice();
-    (BR_PARSED.ccAir.concat(BR_PARSED.ccOnb)).forEach(function (l) {
-      var m = l.match(/<@!?(\d+)>/); if (m && ids.indexOf(m[1]) === -1) ids.push(m[1]);
-    });
-  }
-  var n = ids.length || parseInt(g('br-cc-count').value, 10) || 0;
-  var air = ids.length ? ids.map(function (id) { return '> <@' + id + '> | [Airport role]'; }).join('\n')
-                       : brCount(n, function (i) { return '> @CC' + i + ' | [Airport role]'; });
-  var onb = ids.length ? ids.map(function (id) { return '> <@' + id + '> | [Onboard role]'; }).join('\n')
-                       : brCount(n, function (i) { return '> @CC' + i + ' | [Onboard role]'; });
-  var cc = brCCOut().replace(/(<:SPAUpperManagement[^\n]*\n)[\s\S]*?(\n\*\*Signed)/, function (m, a, b) {
-    return a + air + '\n\n✈️ | **Onboard Roles**\n' + onb + b;
-  });
-
-  // Security part: one line per person from the pasted sheet, roles left for you to fill in
-  var sids = BR_PARSED ? BR_PARSED.sec : [];
-  var sn = parseInt(g('br-sy').value, 10) || 0;
-  var roles = sids.length ? sids.map(function (id) { return '> <@' + id + '> • *[Title]* → *[Roles]*'; }).join('\n')
-                          : brCount(sn, function () { return '> <@user> • *[Title]* → *[Roles]*'; });
-  var sec = brSecOut().replace(/(<:SPAAirportPatrol[^\n]*\n)[\s\S]*?(\n\n\*If you)/, function (m, a, b) {
-    return a + roles + b;
-  });
-
-  g('br-man-cc').value = cc;
-  g('br-man-sec').value = sec;
 }
 function brResetRoles() {
   g('br-role-air').value = BR_DEFAULT_ROLES.air;
@@ -7051,11 +7002,7 @@ else enforceLogin();
     <div style="font-size:1.2rem;font-weight:700;letter-spacing:-.01em">📋 Briefing Sheets</div>
     <div style="font-size:.8rem;color:var(--text3)">Fill in the details, then copy the sheet into Discord.</div>
   </div>
-  <div id="br-top-row" class="roles-tab-row" style="flex-wrap:wrap;margin-bottom:10px">
-    <button class="roles-tab-btn active" onclick="selBR('manual',this)">📝 Manual</button>
-    <button class="roles-tab-btn" onclick="selBR('auto',this)">⚙️ Automatic</button>
-  </div>
-  <div id="br-auto-row" class="roles-tab-row" style="flex-wrap:wrap;margin-bottom:14px;display:none">
+  <div id="br-auto-row" class="roles-tab-row" style="flex-wrap:wrap;margin-bottom:14px">
     <button class="roles-tab-btn active" onclick="selBRAuto('cc',this)">🧳 Cabin Crew</button>
     <button class="roles-tab-btn" onclick="selBRAuto('sec',this)">🛡️ Security</button>
   </div>
@@ -7076,13 +7023,6 @@ else enforceLogin();
     <button class="roles-tab-btn" onclick="brResetRoles()">↺ Reset role boxes to defaults</button>
     <div id="br-fill-status" style="font-size:.82rem;color:var(--text2);margin-top:8px"></div>
   </div>
-  <div id="br-manual" class="br-panel">
-    <div class="form-group" style="margin-bottom:12px"><label>Cabin Crew sheet (fill in the roles, then copy)</label><textarea id="br-man-cc" rows="16" style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
-    <button class="roles-tab-btn active" onclick="cpText(g('br-man-cc').value)">📋 Copy Cabin Crew sheet</button>
-    <div class="form-group" style="margin:16px 0 12px"><label>Security sheet (fill in the roles, then copy)</label><textarea id="br-man-sec" rows="12" style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
-    <button class="roles-tab-btn active" onclick="cpText(g('br-man-sec').value)">📋 Copy Security sheet</button>
-    <button class="roles-tab-btn" onclick="brManualRender()">↺ Refresh template</button>
-  </div>
   <div style="border:1px solid rgba(148,180,212,.15);border-radius:12px;padding:14px;margin-bottom:16px">
     <div style="font-weight:700;margin-bottom:8px">🎲 Random picker</div>
     <div style="display:flex;gap:12px;flex-wrap:wrap">
@@ -7097,7 +7037,7 @@ else enforceLogin();
     <textarea id="rp-out" rows="4" readonly style="margin-top:10px"></textarea>
   </div>
 
-  <div id="br-cc" class="br-panel" style="display:none">
+  <div id="br-cc" class="br-panel">
     <div class="form-row" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
       <div class="form-group" style="flex:1;min-width:160px"><label>Number of Cabin Crew</label><input id="br-cc-count" type="number" min="0" placeholder="0" oninput="brRender()"></div>
       <div class="form-group" style="flex:2;min-width:220px"><label>Plane</label><select id="br-plane" onchange="brApplyScripts()"><option>Airbus A220</option><option>Airbus A318</option><option>Airbus A319</option><option>Airbus A320</option><option>Airbus A321neo</option><option>Airbus A330</option><option>Airbus A350</option><option>Boeing 737-MAX8</option><option>Boeing 777-300ER</option><option>Boeing 787-9</option></select></div>
