@@ -849,7 +849,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.77</span>
+      <span class="topbar-badge">v1.0.78</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5884,14 +5884,14 @@ function applyBriefingLocks() {
   });
   var btns = [].slice.call(document.querySelectorAll('#br-auto-row button'));
   btns.forEach(function (b) {
-    var m = (b.getAttribute('onclick') || '').match(/selBR\('(\w+)'/);
+    var m = (b.getAttribute('onclick') || '').match(/selBRAuto\('(\w+)'/);
     if (!m) return;
     var lock = BR_LOCKED[m[1]];
     b.classList.toggle('locked', !!lock);
     b.title = lock ? 'Locked: requires the ' + lock + ' role' : '';
   });
   var open = btns.filter(function (b) {
-    var mm = (b.getAttribute('onclick') || '').match(/selBR\('(\w+)'/);
+    var mm = (b.getAttribute('onclick') || '').match(/selBRAuto\('(\w+)'/);
     return mm && !BR_LOCKED[mm[1]];
   });
   var pick = open.filter(function (b) { return b.classList.contains('active'); })[0] || open[0];
