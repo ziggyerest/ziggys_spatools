@@ -838,6 +838,10 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
 
 .roles-tab-btn.locked{opacity:.4;cursor:not-allowed}
 .roles-tab-btn.locked::after{content:' 🔒'}
+
+/* tick boxes on the Briefing tab: show a clear tick when checked */
+#page-briefing input[type=checkbox]{ -webkit-appearance:checkbox; appearance:auto; width:16px; height:16px; margin:0 6px 0 0; accent-color:#2196f3; cursor:pointer; background:#0a1a30; border:1px solid #2a5a8a; vertical-align:middle; }
+#page-briefing label:has(input[type=checkbox]){ display:inline-flex; align-items:center; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -849,7 +853,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.78</span>
+      <span class="topbar-badge">v1.0.79</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
