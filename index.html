@@ -853,7 +853,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.82</span>
+      <span class="topbar-badge">v1.0.83</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -869,6 +869,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
       <button onclick="showPage('charts',this)">🗺️ Charts</button>
       <button onclick="showPage('cohost',this)">🎤 Co-Host</button>
       <button onclick="showPage('briefing',this)">📋 Briefing</button>
+      <button onclick="showPage('atc',this)">🗼 ATC</button>
       <button onclick="showPage('suggest',this)">💡 Suggestions</button>
   </nav>
 </div>
@@ -7087,6 +7088,80 @@ else enforceLogin();
     <div class="form-group" style="margin-bottom:12px"><label>Sheet</label><textarea id="br-sec-out" rows="14" readonly style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
     <button class="roles-tab-btn active" onclick="cpText(g('br-sec-out').value)">📋 Copy Security sheet</button>
   </div>
+</div>
+<div id="page-atc" class="page" style="max-width:900px">
+  <div style="font-size:1.2rem;font-weight:700;letter-spacing:-.01em;margin-bottom:4px">🗼 Air Traffic Control</div>
+  <div style="font-size:.8rem;color:var(--text3);margin-bottom:16px">Click any line to copy it. Communications are in English, and letters are always spelt with the phonetic alphabet.</div>
+  <div class="s-section"><h3>ATC Info</h3>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Naming format: GCXXXX [-] Username [-] Air Traffic Controller [-] Languages</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Uniform: regular Ground Crew uniform with the green Ground Crew vest. Must be worn at all times.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">After briefing, teleport to the Ground Manager like all Ground Crew. If the airport has a tower, enter it once your regular GC tasks are done (walk into the door).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Other Ground Crew tasks are only allowed when free from ATC, and ONLY with the Ground Manager's permission.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Role: get the Captain's aircraft to the destination safely. Use the airport chart for the route. Announcements use :scriptchat atc (script). If there is no Ground Manager with ATC certification, a trusted Ground Crew member or ATC runs the Ground Communications.</div></div>
+</div>
+  <div class="s-section"><h3>Phonetic Alphabet</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">A = Alpha</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">B = Bravo</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">C = Charlie</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">D = Delta</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">E = Echo</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">F = Foxtrot</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">G = Golf</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">H = Hotel</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">I = India</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">J = Juliett</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">K = Kilo</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">L = Lima</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">M = Mike</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">N = November</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">O = Oscar</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">P = Papa</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Q = Quebec</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">R = Romeo</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">S = Sierra</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">T = Tango</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">U = Uniform</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">V = Victor</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">W = Whiskey</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">X = X-ray</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Y = Yankee</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Z = Zulu</div></div>
+</div>
+  <div class="s-section"><h3>Squawk Codes</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">0000, 7777, 7500, 7600: Never to be used. Reserved for military transponders or forbidden emergency roleplays.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">0001 - 7776: Commercial aviation squawk codes. Can be used by all commercial aircraft during a flight.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">7700: Emergency only. Alerts ATC that the aircraft has an emergency.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Any abuse of codes can lead to consequences. Passengers may know some of these codes.</div></div>
+</div>
+  <div class="s-section"><h3>Standard Taxi Instruction Types</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Push tail left/right: Sub-instruction for pushback. Decides which side the tail goes.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Taxi to: Where and how to taxi. Includes the taxi route the Captain must follow.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Hold position (of): Aircraft must stop immediately or at a taxi point. High priority issues only, such as someone standing or something blocking the route.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Hold short of: Aircraft will not line up on the runway yet. Only when the host says so, for non-urgent aircraft issues.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Line up and wait: Aircraft taxis onto the runway but does not take off.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Cleared for takeoff: Clearance for the aircraft to take off.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">All instructions are in the ATC document. Leaking any part of it is strictly prohibited.</div></div>
+</div>
+  <div class="s-section"><h3>Airport Charts (standard taxi routes)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Each chart shows the taxiways, gates and runways for ATC and the Flight Deck. Check the chart for runway direction.</div></div>
+</div>
+<div class="s-section"><h3>London Heathrow (LHR)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Quebec Lima to 27. (You may also take a taxiway like Quebec 1, 2, 3, 4, Charlie, Hotel or Romeo and make a left on Lima to enter the RW.)</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: Any of the exits to Alpha to the ramp.</div></div>
+</div>
+<div class="s-section"><h3>Mark Neris International (MNI / KMNI)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Bravo Charlie Foxtrot to 09.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: B/B6 Lima Echo Delta to the ramp.</div></div>
+</div>
+<div class="s-section"><h3>Punta Cana International (PUJ / MDPC)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Victor Sierra to 36.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: Any exit Yankee to the ramp.</div></div>
+</div>
+<div class="s-section"><h3>Southwest Regional (ABY / KABY)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Uniform Hotel Kilo Bravo to ? (chart text unclear, check the chart).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: Any exit to Lima to the ramp.</div></div>
+</div>
+<div class="s-section"><h3>Summit Peak Regional (BJC / KBJC)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Bravo, Bravo 1, to 19.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: Lima 2, Lima, Papa 1, Papa, to the ramp.</div></div>
+</div>
+<div class="s-section"><h3>Paine Field International (KPAE)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Charlie Alpha Alpha 1 to 16.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: Any exit, Hotel, any B1, B2, B3, B4, Bravo to the ramp.</div></div>
+</div>
+<div class="s-section"><h3>Ronald Reagan (DCA / KDCA)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Juliett, Echo to Runway 01.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: Bravo [X], Bravo, Papa to the ramp.</div></div>
+</div>
 </div>
 <div id="page-suggest" class="page" style="max-width:900px">
   <div class="roles-hero">
