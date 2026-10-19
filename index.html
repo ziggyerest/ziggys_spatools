@@ -853,7 +853,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.80</span>
+      <span class="topbar-badge">v1.0.81</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6034,7 +6034,7 @@ function brRestorePaste() {
 }
 var BR_DEFAULT_ROLES = {
   "air": "Premium Lounge Attendant\nCustomer Service Assistant\nInvestor Lounge Attendant\nGate Agent\nGate Agent 2",
-  "onb": "Investor CPT\nInvestor FO\nInvestor MID\nFirst Class CPT\nFirst Class FO\nFirst Class MID\nBusiness CPT\nBusiness FO\nBusiness MID\nEconomy CPT\nEconomy FO\nEconomy MID\nDestination Crew",
+  "onb": "Investor CPT\nInvestor FO\nInvestor MID\nFirst Class CPT\nFirst Class FO\nFirst Class MID\nBusiness CPT\nBusiness FO\nBusiness MID\nEconomy CPT\nEconomy FO\nEconomy MID\nInvestor Whole\nFirst Class Whole\nBusiness Whole\nEconomy Whole",
   "sec": "Arrival Airport Checks\nDeboard Usher\nRunway Inspection\nBus Escort (if needed)\nAir Marshal"
 };
 function brRestoreRoles() {
@@ -6105,8 +6105,10 @@ function brAssignSEC(people, pool) {
 // Cabin Crew assignment, matched to the sheets:
 //  - Economy: up to two people, Gate Agents first, CPT then FO
 //  - one Premium class per flight (Investor, First Class or Business, whichever is in the box): up to two people, CPT then FO
-//  - a class with only one person gets its Whole role (only when there are 3+ crew, counting the CC Manager)
-//  - everyone else is Destination Crew
+//  - a class with only one person gets its Whole role, if the box has one
+//  - with six or more crew, the CPT person of a two-person class also does MID
+//  - anyone without a seat stays on airport roles only (no onboard line), as on the sheets
+//  - each onboard person gets a door pair in order: Arm/Disarm L1 & R1, L2 & R2, ...
 //  - airport roles: Gate Agents take the Gate Agent slots, the lead takes a lounge role, the rest take unique airport roles
 function brAssignCC(people, airPool, onPool, manager) {
   var isGate = function (x) { return /gate agent/i.test(x); };
@@ -6117,7 +6119,6 @@ function brAssignCC(people, airPool, onPool, manager) {
   var order = brShuffle(people.slice());
   if (manager && order.indexOf(manager) === -1) order.push(manager);
   var total = order.length;
-  var wholeOK = total >= 2 && total <= 3;   // Whole roles only on 2-3 crew flights
 
   var airOf = {}, onOf = {};
   var gateCount = Math.min(gateAir.length, total);
@@ -6136,7 +6137,7 @@ function brAssignCC(people, airPool, onPool, manager) {
   });
 
   // onboard: Economy plus every ticked premium class that is in the box
-  var classOf = function (x) { var m = x.match(/^(.+?)\s+(CPT|FO|MID)\b/i); return m ? m[1].trim() : null; };
+  var classOf = function (x) { var m = x.match(/^(.+?)\s+(CPT|FO|MID|Whole)\b/i); return m ? m[1].trim() : null; };
   var clsBox = { 'Investor': 'br-cls-investor', 'First Class': 'br-cls-first', 'Business': 'br-cls-business' };
   var classes = ['Economy'].concat(['Investor', 'First Class', 'Business'].filter(function (c) {
     var box = document.getElementById(clsBox[c]);
@@ -6157,7 +6158,7 @@ function brAssignCC(people, airPool, onPool, manager) {
   // Premium classes first, Economy last in each round (Gate Agents take the first Economy seats below).
   var seats = [];
   var roundOrder = classes.filter(function (c) { return c !== 'Economy'; }).concat(['Economy']).filter(function (c) { return classes.indexOf(c) !== -1; });
-  ['CPT', 'FO', 'MID'].forEach(function (pos) {
+  ['CPT', 'FO'].forEach(function (pos) {
     roundOrder.forEach(function (c) {
       var r = roleFor(c, pos);
       if (r) seats.push({ c: c, role: r });
@@ -6178,18 +6179,38 @@ function brAssignCC(people, airPool, onPool, manager) {
     if (seats.length) { var s = seats.shift(); onOf[id] = s.role; placed[id] = true; }
   });
 
-  // anyone still without a seat: Destination Crew, or a spare single role from the box
-  var dest = onPool.filter(function (x) { return /destination/i.test(x); })[0] || null;
-  var spare = onPool.filter(function (x) { return !/destination/i.test(x); });
-  remaining.filter(function (id) { return !placed[id]; }).forEach(function (id, n) {
-    onOf[id] = dest || (spare.length ? spare[n % spare.length] : '[Insert roles]');
+  // a class with exactly one person gets its Whole role, if the box has one
+  var perClass = {};
+  Object.keys(onOf).forEach(function (id) {
+    var c = classOf(onOf[id]);
+    if (c) perClass[c] = (perClass[c] || []).concat([id]);
   });
+  Object.keys(perClass).forEach(function (c) {
+    if (perClass[c].length === 1) {
+      var w = roleFor(c, 'Whole');
+      if (w) onOf[perClass[c][0]] = w;
+    }
+  });
+  // with six or more crew, the CPT person of a two-person class also does MID
+  if (total >= 6) {
+    Object.keys(perClass).forEach(function (c) {
+      if (perClass[c].length === 2 && roleFor(c, 'MID')) {
+        var cpt = perClass[c].filter(function (id) { return /\bCPT\b/i.test(onOf[id]); })[0];
+        if (cpt) onOf[cpt] = onOf[cpt] + ' & MID';
+      }
+    });
+  }
 
+  // onboard lines get door pairs in order; anyone without a seat stays on airport roles only
+  var onboardIds = order.filter(function (id) { return onOf[id]; });
   return {
     air: order.filter(function (id) { return airOf[id]; }).map(function (id) { return '<@' + id + '> | ' + airOf[id]; }),
-    onb: order.filter(function (id) { return onOf[id]; }).map(function (id) { return '<@' + id + '> | ' + onOf[id]; }),
+    onb: onboardIds.map(function (id, i) {
+      return '<@' + id + '> | ' + onOf[id] + ', Arm/Disarm L' + (i + 1) + ' & R' + (i + 1);
+    }),
     gates: gates.length,
     noAir: order.filter(function (id) { return !airOf[id]; }).length,
+    noOnb: order.length - onboardIds.length,
     classes: classes
   };
 }
@@ -6226,6 +6247,7 @@ function brGenerate(reroll) {
     if (airPool.length && res.noAir) notes.push(res.noAir + ' Cabin Crew have no airport role (add more to the Airport box).');
     if (airPool.length && r.cc.length && !res.gates) notes.push('No Gate Agent was given out (add Gate Agent to the Airport box).');
     if (!airPool.length || !onPool.length) notes.push('Fill the Airport and Onboard boxes to assign Cabin Crew roles.');
+    if (res.noOnb) notes.push(res.noOnb + ' Cabin Crew ' + (res.noOnb === 1 ? 'is' : 'are') + ' on airport roles only (no onboard seat).');
     msg = 'Found ' + ccCount + ' Cabin Crew (' + res.gates + ' Gate Agent).' + (r.ccManager ? ' CC Manager is on standby to step in.' : '')
       + ' Classes: ' + res.classes.join(', ') + '.';
   }
