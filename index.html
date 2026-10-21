@@ -853,7 +853,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.88</span>
+      <span class="topbar-badge">v1.0.89</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -870,6 +870,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
       <button onclick="showPage('cohost',this)">🎤 Co-Host</button>
       <button onclick="showPage('briefing',this)">📋 Briefing</button>
       <button onclick="showPage('atc',this)">🗼 ATC</button>
+      <button onclick="showPage('routeinfo',this)">🧭 Route Info</button>
       <button onclick="showPage('suggest',this)">💡 Suggestions</button>
   </nav>
 </div>
@@ -6657,6 +6658,97 @@ function brSeatNote(ccCount, plane, dep) {
 }
 
 setInterval(function () { applyCohostAirport(); }, 30000);
+// ── ROUTE INFO (route list + seat data + ATC taxi routes) ──
+var ATC_CHARTS = {
+ "London Heathrow": {
+  "icao": "EGLL",
+  "dep": "Quebec Lima to 27 (you may also take a taxiway like Quebec 1, 2, 3, 4, Charlie, Hotel or Romeo and make a left on Lima to enter the RW)",
+  "arr": "Any of the exits to Alpha to the ramp"
+ },
+ "Mark Neris": {
+  "icao": "KMNI",
+  "dep": "Bravo Charlie Foxtrot to 09",
+  "arr": "B/B6 Lima Echo Delta to the ramp"
+ },
+ "Punta Cana": {
+  "icao": "MDPC",
+  "dep": "Victor Sierra to 36",
+  "arr": "Any exit Yankee to the ramp"
+ },
+ "Southwest Regional": {
+  "icao": "KABY",
+  "dep": "Uniform Hotel Kilo Bravo to ? (check the chart)",
+  "arr": "Any exit to Lima to the ramp"
+ },
+ "Summit Peak": {
+  "icao": "KBJC",
+  "dep": "Bravo, Bravo 1, to 19",
+  "arr": "Lima 2, Lima, Papa 1, Papa, to the ramp"
+ },
+ "Paine Field": {
+  "icao": "KPAE",
+  "dep": "Charlie Alpha Alpha 1 to 16",
+  "arr": "Any exit, Hotel, any B1, B2, B3, B4, Bravo to the ramp"
+ },
+ "Ronald Reagan": {
+  "icao": "KDCA",
+  "dep": "Juliett, Echo to Runway 01",
+  "arr": "Bravo [X], Bravo, Papa to the ramp"
+ }
+};
+var AC_TOKEN_SEAT = [['A318','Airbus A318'],['A319','Airbus A319'],['A320','Airbus A320-231'],['A321','Airbus A321neo'],['A330','Airbus A330-941neo'],['A350','Airbus A350-900'],['A220','Airbus A220-300'],['737','Boeing 737 MAX 8'],['777','Boeing 777-300ER'],['787','Boeing 787-9 Dreamliner']];
+function routeFind(rid) {
+  var key = 'SPA' + rid;
+  for (var ap in ROUTES) { var r = ROUTES[ap].routes && ROUTES[ap].routes[key]; if (r) return { key: key, dep: ap, r: r }; }
+  return null;
+}
+function routeRows(rid) {
+  var f = routeFind(rid);
+  if (!f) return null;
+  var r = f.r, dep = f.dep;
+  var destName = r.dest.replace(/\s*\[.*\]\s*$/, '');
+  var destIcao = (r.dest.match(/\[(.*?)\]/) || [])[1] || '';
+  var rows = [
+    ['Flight number', f.key],
+    ['Departure', dep + ' [' + ROUTES[dep].icao + ']'],
+    ['Destination', destName + (destIcao ? ' [' + destIcao + ']' : '')],
+    ['Aircraft', r.ac]
+  ];
+  var seatKey = null;
+  AC_TOKEN_SEAT.forEach(function (t) { if (!seatKey && r.ac && r.ac.indexOf(t[0]) !== -1) seatKey = t[1]; });
+  if (seatKey && SEATS[seatKey]) {
+    var d = SEATS[seatKey], v = d.variants[0];
+    rows.push(['Seat type', seatKey + ' (' + v.name + ')']);
+    rows.push(['Cockpit seats', String(v.cockpit)]);
+    rows.push(['Cabin crew jumpseats', String(v.cc)]);
+    rows.push(['Premium seats', v.premium]);
+    rows.push(['Economy seats', String(v.economy)]);
+    rows.push(['Passengers', String(v.pax)]);
+    rows.push(['Staff seats', String(v.staff)]);
+    if (d.grounded) rows.push(['WARNING', 'This aircraft is grounded and not for use.']);
+    var note = v.note || d.note || '';
+    if (note) rows.push(['Aircraft notes', note]);
+  } else {
+    rows.push(['Seat data', 'No seat data for this aircraft type yet.']);
+  }
+  var dc = ATC_CHARTS[dep];
+  rows.push(['Departure taxi route', dc ? dc.dep : 'No chart in the ATC training for ' + dep + '.']);
+  var ac2 = ATC_CHARTS[destName];
+  rows.push(['Arrival taxi route', ac2 ? ac2.arr : 'No chart in the ATC training for ' + destName + '.']);
+  return rows;
+}
+function renderRouteInfo() {
+  var out = g('ri-out'); if (!out) return;
+  var rid = (g('ri-route').value || '').replace(/\D/g, '');
+  if (!rid) { out.innerHTML = 'Enter a route ID.'; out.dataset.txt = ''; return; }
+  var rows = routeRows(rid);
+  if (!rows) { out.innerHTML = 'SPA' + rid + ' is not in the route list.'; out.dataset.txt = ''; return; }
+  out.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:.84rem">' + rows.map(function (x) {
+    return '<tr style="border-bottom:1px solid #1a3456"><td style="padding:7px 10px;color:#7fa6c9;width:200px;vertical-align:top">' + x[0] + '</td><td style="padding:7px 10px;color:' + (x[0] === 'WARNING' ? '#f0b429' : '#e8f1ff') + '">' + x[1] + '</td></tr>';
+  }).join('') + '</table>';
+  out.dataset.txt = rows.map(function (x) { return x[0] + ': ' + x[1]; }).join('\n');
+}
+function copyRouteInfo() { var t = g('ri-out').dataset.txt; if (t) cpText(t); }
 // ── CO-HOST AIRPORT (fills [AIRPORT] in the Co-Host tab) ──
 // minutes until the next XX:50 (this PC's clock)
 function minsToXX50() {
@@ -7189,6 +7281,13 @@ else enforceLogin();
 <div class="s-section"><h3>Ronald Reagan (DCA / KDCA)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Juliett, Echo to Runway 01.</div></div>
 <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: Bravo [X], Bravo, Papa to the ramp.</div></div>
 </div>
+</div>
+<div id="page-routeinfo" class="page" style="max-width:900px">
+  <div style="font-size:1.2rem;font-weight:700;margin-bottom:4px">🧭 Route Info</div>
+  <div style="font-size:.8rem;color:var(--text3);margin-bottom:14px">Type a route ID to see everything about that route.</div>
+  <div class="form-group" style="max-width:240px;margin-bottom:12px"><label>Route ID</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2)">SPA</span><input id="ri-route" placeholder="220" oninput="renderRouteInfo()"></div></div>
+  <div id="ri-out" style="border:1px solid #1a3456;border-radius:12px;background:#0a1a30;padding:6px 4px;min-height:60px">Enter a route ID.</div>
+  <button class="roles-tab-btn active" style="margin-top:12px" onclick="copyRouteInfo()">📋 Copy route info</button>
 </div>
 <div id="page-suggest" class="page" style="max-width:900px">
   <div class="roles-hero">
