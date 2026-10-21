@@ -853,7 +853,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.89</span>
+      <span class="topbar-badge">v1.0.90</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6702,35 +6702,42 @@ function routeFind(rid) {
   for (var ap in ROUTES) { var r = ROUTES[ap].routes && ROUTES[ap].routes[key]; if (r) return { key: key, dep: ap, r: r }; }
   return null;
 }
-function routeRows(rid) {
+function riSeatRows(key, rows) {
+  var d = SEATS[key];
+  if (!d) return;
+  rows.push(['Seat data for', key]);
+  d.variants.forEach(function (v) {
+    var label = d.variants.length > 1 ? v.name + ': ' : '';
+    rows.push([label + 'Cockpit seats', String(v.cockpit)]);
+    rows.push([label + 'Cabin crew jumpseats', String(v.cc)]);
+    rows.push([label + 'Premium seats', v.premium]);
+    rows.push([label + 'Economy seats', String(v.economy)]);
+    rows.push([label + 'Passengers', String(v.pax)]);
+    rows.push([label + 'Staff seats', String(v.staff)]);
+    var note = v.note || d.note || '';
+    if (note) rows.push([label + 'Notes', note]);
+  });
+  if (d.grounded) rows.push(['WARNING', 'This aircraft is grounded and not for use.']);
+}
+function routeRows(rid, acOverride) {
   var f = routeFind(rid);
   if (!f) return null;
   var r = f.r, dep = f.dep;
   var destName = r.dest.replace(/\s*\[.*\]\s*$/, '');
   var destIcao = (r.dest.match(/\[(.*?)\]/) || [])[1] || '';
+  var depIcao = ROUTES[dep].icao;
   var rows = [
     ['Flight number', f.key],
-    ['Departure', dep + ' [' + ROUTES[dep].icao + ']'],
+    ['Departure', dep + ' [' + depIcao + ']'],
     ['Destination', destName + (destIcao ? ' [' + destIcao + ']' : '')],
-    ['Aircraft', r.ac]
+    ['Aircraft (route)', r.ac]
   ];
-  var seatKey = null;
-  AC_TOKEN_SEAT.forEach(function (t) { if (!seatKey && r.ac && r.ac.indexOf(t[0]) !== -1) seatKey = t[1]; });
-  if (seatKey && SEATS[seatKey]) {
-    var d = SEATS[seatKey], v = d.variants[0];
-    rows.push(['Seat type', seatKey + ' (' + v.name + ')']);
-    rows.push(['Cockpit seats', String(v.cockpit)]);
-    rows.push(['Cabin crew jumpseats', String(v.cc)]);
-    rows.push(['Premium seats', v.premium]);
-    rows.push(['Economy seats', String(v.economy)]);
-    rows.push(['Passengers', String(v.pax)]);
-    rows.push(['Staff seats', String(v.staff)]);
-    if (d.grounded) rows.push(['WARNING', 'This aircraft is grounded and not for use.']);
-    var note = v.note || d.note || '';
-    if (note) rows.push(['Aircraft notes', note]);
-  } else {
-    rows.push(['Seat data', 'No seat data for this aircraft type yet.']);
-  }
+  var ft = calcFlightTime(depIcao, destIcao);
+  rows.push(['Estimated flight time', ft ? (ft.h + ' h ' + ft.m + ' min (about ' + ft.dist + ' km)') : 'Unknown, no coordinates for ' + destIcao]);
+  var seatKey = acOverride || null;
+  if (!seatKey) AC_TOKEN_SEAT.forEach(function (t) { if (!seatKey && r.ac && r.ac.indexOf(t[0]) !== -1) seatKey = t[1]; });
+  if (seatKey && SEATS[seatKey]) riSeatRows(seatKey, rows);
+  else rows.push(['Seat data', 'No seat data for this aircraft type yet.']);
   var dc = ATC_CHARTS[dep];
   rows.push(['Departure taxi route', dc ? dc.dep : 'No chart in the ATC training for ' + dep + '.']);
   var ac2 = ATC_CHARTS[destName];
@@ -6740,13 +6747,35 @@ function routeRows(rid) {
 function renderRouteInfo() {
   var out = g('ri-out'); if (!out) return;
   var rid = (g('ri-route').value || '').replace(/\D/g, '');
+  var acSel = g('ri-ac') ? g('ri-ac').value : '';
   if (!rid) { out.innerHTML = 'Enter a route ID.'; out.dataset.txt = ''; return; }
-  var rows = routeRows(rid);
+  var rows = routeRows(rid, acSel);
   if (!rows) { out.innerHTML = 'SPA' + rid + ' is not in the route list.'; out.dataset.txt = ''; return; }
   out.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:.84rem">' + rows.map(function (x) {
     return '<tr style="border-bottom:1px solid #1a3456"><td style="padding:7px 10px;color:#7fa6c9;width:200px;vertical-align:top">' + x[0] + '</td><td style="padding:7px 10px;color:' + (x[0] === 'WARNING' ? '#f0b429' : '#e8f1ff') + '">' + x[1] + '</td></tr>';
   }).join('') + '</table>';
   out.dataset.txt = rows.map(function (x) { return x[0] + ': ' + x[1]; }).join('\n');
+}
+// weather for the departure and destination airports of the route (Open-Meteo, same source as the Flight Tool)
+async function riWeatherFor(icao) {
+  var c = ICAO_COORDS[icao];
+  if (!c) return icao + ': no coordinates';
+  try {
+    var res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + c[0] + '&longitude=' + c[1] + '&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m&temperature_unit=celsius&wind_speed_unit=kmh&timezone=auto');
+    var cur = (await res.json()).current;
+    var tc = Math.round(cur.temperature_2m);
+    return icao + ': ' + tc + '°C / ' + Math.round(tc * 9 / 5 + 32) + '°F, ' + wmoDesc(cur.weather_code) + ', wind ' + Math.round(cur.wind_speed_10m) + ' km/h ' + degToDir(cur.wind_direction_10m);
+  } catch (e) { return icao + ': weather unavailable'; }
+}
+async function riCheckWeather() {
+  var out = g('ri-wx');
+  var rid = (g('ri-route').value || '').replace(/\D/g, '');
+  var f = rid ? routeFind(rid) : null;
+  if (!f) { out.textContent = 'Enter a valid route ID first.'; return; }
+  var destIcao = (f.r.dest.match(/\[(.*?)\]/) || [])[1] || '';
+  out.textContent = 'Fetching weather...';
+  var lines = await Promise.all([riWeatherFor(ROUTES[f.dep].icao), riWeatherFor(destIcao)]);
+  out.innerHTML = lines.map(function (l) { return '<div style="padding:4px 2px">' + l + '</div>'; }).join('');
 }
 function copyRouteInfo() { var t = g('ri-out').dataset.txt; if (t) cpText(t); }
 // ── CO-HOST AIRPORT (fills [AIRPORT] in the Co-Host tab) ──
@@ -7286,8 +7315,11 @@ else enforceLogin();
   <div style="font-size:1.2rem;font-weight:700;margin-bottom:4px">🧭 Route Info</div>
   <div style="font-size:.8rem;color:var(--text3);margin-bottom:14px">Type a route ID to see everything about that route.</div>
   <div class="form-group" style="max-width:240px;margin-bottom:12px"><label>Route ID</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2)">SPA</span><input id="ri-route" placeholder="220" oninput="renderRouteInfo()"></div></div>
+  <div class="form-group" style="max-width:320px;margin-bottom:12px"><label>Aircraft (leave on route aircraft, or pick one)</label><select id="ri-ac" onchange="renderRouteInfo()"><option value="">Use route aircraft</option><option>Airbus A220-300</option><option>Airbus A318</option><option>Airbus A319</option><option>Airbus A320-231</option><option>Airbus A321neo</option><option>Airbus A330-941neo</option><option>Airbus A350-900</option><option>Boeing 737 MAX 8</option><option>Boeing 777-300ER</option><option>Boeing 787-9 Dreamliner</option></select></div>
   <div id="ri-out" style="border:1px solid #1a3456;border-radius:12px;background:#0a1a30;padding:6px 4px;min-height:60px">Enter a route ID.</div>
   <button class="roles-tab-btn active" style="margin-top:12px" onclick="copyRouteInfo()">📋 Copy route info</button>
+  <button class="roles-tab-btn" style="margin-top:12px" onclick="riCheckWeather()">🌤️ Check weather</button>
+  <div id="ri-wx" style="margin-top:8px;font-size:.84rem;color:#9bb8d4"></div>
 </div>
 <div id="page-suggest" class="page" style="max-width:900px">
   <div class="roles-hero">
