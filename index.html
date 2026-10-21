@@ -853,7 +853,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.83</span>
+      <span class="topbar-badge">v1.0.85</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6656,15 +6656,37 @@ function brSeatNote(ccCount, plane, dep) {
   return out;
 }
 
+setInterval(function () { applyCohostAirport(); }, 30000);
 // ── CO-HOST AIRPORT (fills [AIRPORT] in the Co-Host tab) ──
+// minutes until the next XX:50 (this PC's clock)
+function minsToXX50() {
+  var m = new Date().getMinutes();
+  return m < 50 ? 50 - m : 110 - m;
+}
+function applyCohostRoute() {
+  var rid = (g('cohost-route').value || '').replace(/\D/g, '');
+  if (!rid || typeof ROUTES === 'undefined') return;
+  var key = 'SPA' + rid;
+  for (var ap in ROUTES) {
+    var r = ROUTES[ap].routes && ROUTES[ap].routes[key];
+    if (r) {
+      g('cohost-airport').value = ap;
+      g('cohost-dest').value = r.dest.replace(/\s*\[.*\]\s*$/, '');
+      applyCohostAirport();
+      return;
+    }
+  }
+}
 function applyCohostAirport() {
   var pg = document.getElementById('page-cohost');
   if (!pg) return;
   var inp = document.getElementById('cohost-airport');
   var v = inp ? inp.value.trim() : '';
+  var dInp = document.getElementById('cohost-dest');
+  var dest = dInp ? dInp.value.trim() : '';
   pg.querySelectorAll('.rc-text, .s-text').forEach(function (el) {
     if (el.dataset.tpl === undefined) el.dataset.tpl = el.textContent;
-    el.textContent = el.dataset.tpl.replace(/\[AIRPORT\]/g, v || '[AIRPORT]');
+    el.textContent = el.dataset.tpl.replace(/\[AIRPORT\]/g, v || '[AIRPORT]').replace(/\[DESTINATION\]/g, dest || '[DESTINATION]').replace(/\[X\]/g, String(minsToXX50()));
   });
 }
 
@@ -6687,9 +6709,10 @@ else enforceLogin();
     </div>
   </div>
 
-  <div class="form-group" style="max-width:360px;margin-bottom:14px">
-    <label>Airport we are at</label>
-    <input id="cohost-airport" placeholder="e.g. Punta Cana" oninput="applyCohostAirport()">
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+    <div class="form-group" style="max-width:200px"><label>Route ID</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2)">SPA</span><input id="cohost-route" placeholder="220" oninput="applyCohostRoute()"></div></div>
+    <div class="form-group" style="max-width:280px"><label>Departure (airport we are at)</label><input id="cohost-airport" placeholder="e.g. Punta Cana" oninput="applyCohostAirport()"></div>
+    <div class="form-group" style="max-width:280px"><label>Destination</label><input id="cohost-dest" placeholder="e.g. Nassau" oninput="applyCohostAirport()"></div>
   </div>
   <div style="margin-bottom:12px"><input id="ch-search" placeholder="Search everything on this tab (e.g. trivia, upgrade, :ann)" oninput="chSearch(this.value)" style="width:100%;max-width:520px"></div>
   <div class="roles-tab-row" style="flex-wrap:wrap">
