@@ -853,7 +853,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.90</span>
+      <span class="topbar-badge">v1.0.91</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -4923,101 +4923,321 @@ function showSSRole(role, btn) {
 // GREETINGS
 const GREETINGS = {
   "Lounge (Investor)": [
-    {l:"Full welcome",        t:"Welcome to the Investor Lounge! I'm [NAME] and I'll be taking care of you today. Make yourself comfortable — just let me know if there's anything you need."},
-    {l:"Bar service",         t:"Hello and welcome to the Investor Lounge! My name is [NAME] and I will be serving you today. May I interest you in a warm towel or beverage?"},
-    {l:"Table service",       t:"Hey! I'm [NAME] today — take a seat and get comfy. Can I get you a drink and a warm towel?"},
-    {l:"Allergy check",       t:"Wonderful! Do you have any food allergies that we need to be aware of?"},
-    {l:"Order ready",         t:"Here is your order! Please do not hesitate to ask me if you have any further concerns."},
-    {l:"Farewell",            t:"Hope you enjoyed your time here! Boarding's about to start — follow me to the gate."},
+    {
+      "l": "Full welcome",
+      "t": "Hello and welcome to the Investor Lounge! My name is [NAME] and I'll be looking after you today. Please make yourself comfortable, and let me know if you need anything."
+    },
+    {
+      "l": "Bar service",
+      "t": "Hello and welcome to the Investor Lounge! My name is [NAME] and I'll be serving you today. May I offer you a drink or a warm towel?"
+    },
+    {
+      "l": "Table service",
+      "t": "Welcome! I'm [NAME] and I'll be looking after your table today. Can I get you a drink or a warm towel while you settle in?"
+    },
+    {
+      "l": "Allergy check",
+      "t": "Before I take your order, do you have any food allergies I should know about?"
+    },
+    {
+      "l": "Order ready",
+      "t": "Here is your order! Please let me know if there's anything else I can get for you."
+    },
+    {
+      "l": "Farewell",
+      "t": "I hope you enjoyed your time in the lounge! Boarding will start shortly, so please follow me to the gate when you're ready."
+    }
   ],
   "Lounge (Premium)": [
-    {l:"Full welcome",        t:"Welcome to the Premium Lounge! I'm [NAME] and I'll be looking after you today — make yourself at home!"},
-    {l:"Bar service",         t:"Hello and welcome to the Premium Lounge! My name is [NAME] and I will be serving you today. Could I interest you in a warm towel or beverage?"},
-    {l:"Table service",       t:"Welcome! I'm [NAME] today — can I get you a drink and a warm towel while you wait?"},
-    {l:"Allergy check",       t:"Wonderful! Do you have any food allergies that we need to be aware of?"},
-    {l:"Order ready",         t:"Here is your order! Please do not hesitate to ask me if you have any further concerns."},
+    {
+      "l": "Full welcome",
+      "t": "Welcome to the Premium Lounge! I'm [NAME] and I'll be looking after you today. Please make yourself at home, and let me know if you need anything."
+    },
+    {
+      "l": "Bar service",
+      "t": "Hello and welcome to the Premium Lounge! My name is [NAME] and I'll be serving you today. May I offer you a drink or a warm towel?"
+    },
+    {
+      "l": "Table service",
+      "t": "Welcome! I'm [NAME] and I'll be looking after your table today. Can I get you a drink or a warm towel while you wait?"
+    },
+    {
+      "l": "Allergy check",
+      "t": "Before I take your order, do you have any food allergies I should know about?"
+    },
+    {
+      "l": "Order ready",
+      "t": "Here is your order! Please let me know if there's anything else I can get for you."
+    }
   ],
   "Pre-Flight Service": [
-    {l:"Your greeting",       t:"Hello and welcome aboard! My name is [NAME] and I will be serving you today. May I interest you in a drink before we take off?"},
-    {l:"Standard PM",         t:"Welcome onboard! Before we embark on our journey, may I interest you in a refreshing beverage to begin your travels?"},
-    {l:"Private flight PM",   t:"Greetings, welcome on-board this South Pacific Airways Private Flight! May I interest you in a beverage and a warm towel before we depart?"},
-    {l:"After serving",       t:"Enjoy!"},
+    {
+      "l": "Your greeting",
+      "t": "Hello and welcome aboard! My name is [NAME] and I'll be serving you today. May I offer you a drink before we depart?"
+    },
+    {
+      "l": "Standard PM",
+      "t": "Welcome aboard! Before we set off, may I offer you a refreshing drink to start your journey?"
+    },
+    {
+      "l": "Private flight PM",
+      "t": "Welcome aboard this South Pacific Airways private flight! May I offer you a drink and a warm towel before we depart?"
+    },
+    {
+      "l": "After serving",
+      "t": "Enjoy!"
+    }
   ],
   "Cruising Service": [
-    {l:"Your greeting",       t:"Hello and welcome to the skies! My name is [NAME] and I will be serving you today. Please note that we currently only have Water and Orange Juice available. May I get you a drink? You may order a maximum of 3 items."},
-    {l:"Standard PM",         t:"Hey! I'm [NAME], your flight attendant today. Just a heads up — we've only got Water and Orange Juice available right now. Want either?"},
-    {l:"After serving",       t:"Enjoy!"},
-    {l:"No response follow-up",t:"Hey! Just checking in — we've only got Water and OJ on today. Want one?"},
+    {
+      "l": "Your greeting",
+      "t": "Hello and welcome! My name is [NAME] and I'll be your flight attendant today. Please take a look at our menu and let me know what you'd like. You can order up to 3 items."
+    },
+    {
+      "l": "Standard PM",
+      "t": "Hi, I'm [NAME], your flight attendant today. Would you like something to drink?"
+    },
+    {
+      "l": "Stock note",
+      "t": "Just so you know, we currently have Water and Orange Juice available."
+    },
+    {
+      "l": "After serving",
+      "t": "Enjoy!"
+    },
+    {
+      "l": "No response follow-up",
+      "t": "Hi, just checking in. Would you still like something to drink?"
+    }
   ],
   "Warm Towels": [
-    {l:"Standard PM",         t:"Welcome to the skies! May I offer you a warm towel for freshening up before meal service?"},
-    {l:"Private flight",      t:"Now that you are able to relax, may I offer you a beverage of your choice followed by a warm towel to enjoy?"},
-    {l:"After giving",        t:"Here is your warm towel! Please let me know if there is anything else I can assist you with."},
+    {
+      "l": "Standard PM",
+      "t": "Welcome! May I offer you a warm towel to freshen up before your meal service?"
+    },
+    {
+      "l": "Private flight",
+      "t": "Now that you're settled in, may I offer you a warm towel and a drink of your choice?"
+    },
+    {
+      "l": "After giving",
+      "t": "Here is your warm towel! Let me know if there's anything else I can get you."
+    }
   ],
   "Boarding": [
-    {l:"Short",               t:"Welcome aboard!"},
-    {l:"Extended",            t:"Welcome aboard! Have a pleasant flight!"},
-    {l:"Formal",              t:"Good day! Welcome aboard! We are delighted to have you with us today."},
-    {l:"Private flight",      t:"Greetings, dear passenger! Welcome aboard our A320 Executive. On behalf of today's flight crew, we wish you a pleasant flight!"},
+    {
+      "l": "Short",
+      "t": "Welcome aboard!"
+    },
+    {
+      "l": "Extended",
+      "t": "Welcome aboard! Have a pleasant flight!"
+    },
+    {
+      "l": "Formal",
+      "t": "Good day, and welcome aboard! We are delighted to have you with us today."
+    },
+    {
+      "l": "Private flight",
+      "t": "Welcome aboard this South Pacific Airways private flight! On behalf of today's crew, we wish you a pleasant journey."
+    }
   ],
   "Gate Agent": [
-    {l:"Opening greeting",    t:"Hey, welcome! I'm [NAME] on the gate — what can I help you with?"},
-    {l:"Max amenities",       t:"I am sorry, but passengers are only permitted a maximum of 3 amenities. Is there anything else I can help you with?"},
-    {l:"Freecam offer",       t:"While you wait, want a freecam to have a look around? I can sort that for you!"},
+    {
+      "l": "Opening greeting",
+      "t": "Hello and welcome to the gate! My name is [NAME], what can I help you with?"
+    },
+    {
+      "l": "Max amenities",
+      "t": "I'm sorry, passengers can receive a maximum of 3 amenities. Is there anything else I can help you with?"
+    },
+    {
+      "l": "Freecam offer",
+      "t": "While you wait, would you like a freecam so you can look around?"
+    }
   ],
   "Customer Service (CSA)": [
-    {l:"Standard greeting",   t:"Hey, welcome! I'm [NAME] — is there anything I can help you with today?"},
-    {l:"How to join staff",   t:"Great question! If you are looking to join the South Pacific Airways team, you will need to join our Communications server on Discord. From there, head over to the #careers channel where you will find all the open positions and their application forms. Feel free to apply for whichever role interests you - we would love to have you!"},
-    {l:"Upgrade info",        t:"Yeah of course! Just give me a sec and I'll get that sorted once check-in opens for your class."},
-    {l:"Cannot help",         t:"Hmm, that's a bit out of my hands — let me grab someone who can help you out with that!"},
+    {
+      "l": "Standard greeting",
+      "t": "Hello and welcome! My name is [NAME], your customer service assistant today. Is there anything I can help you with?"
+    },
+    {
+      "l": "How to join staff",
+      "t": "Great question! To join the South Pacific Airways team, join our Communications server on Discord and head to the #careers channel, where you'll find the open positions and application forms. We'd love to have you!"
+    },
+    {
+      "l": "Upgrade info",
+      "t": "Of course! Give me a moment and I'll sort that out once check-in opens for your class."
+    },
+    {
+      "l": "Cannot help",
+      "t": "I'm afraid that's outside what I can help with. Let me get someone who can assist you."
+    }
   ],
   "Deboarding": [
-    {l:"Standard",            t:"Goodbye! Thank you for flying with South Pacific Airways!"},
-    {l:"Short",               t:"Farewell! Thank you for choosing SPA!"},
-    {l:"Warm",                t:"It was a pleasure having you aboard. Safe travels, and we hope to see you again soon!"},
-    {l:"Private flight",      t:"A warm welcome to [destination]! We hope you enjoyed this Private Flight on-board our A320 Executive and wish to see you again soon."},
+    {
+      "l": "Standard",
+      "t": "Goodbye! Thank you for flying with South Pacific Airways!"
+    },
+    {
+      "l": "Short",
+      "t": "Farewell, and thank you for choosing SPA!"
+    },
+    {
+      "l": "Warm",
+      "t": "It was a pleasure having you on board. Safe travels, and we hope to see you again soon!"
+    },
+    {
+      "l": "Private flight",
+      "t": "Thank you for joining us on this South Pacific Airways private flight. We hope you enjoyed it, and we look forward to welcoming you back to [destination]!"
+    }
   ],
   "Butler (Private Flight)": [
-    {l:"Entrance greeting",   t:"Hey, welcome! I'm [NAME] and I'll be with you throughout this private flight. Can I walk you over to check-in?"},
-    {l:"Escort offer",        t:"Great! Please allow me to escort you to the check-in desk. May I take your luggage for your convenience?"},
-    {l:"No escort",           t:"No worries! Please let me know if you need any assistance checking in."},
-    {l:"Tour start",          t:"Now that you are checked-in, may I escort you to our state-of-the-art shops and lounges before we board the aircraft?"},
-    {l:"Shop intro",          t:"So this is [SHOP NAME] — feel free to have a browse!"},
-    {l:"Lounge escort",       t:"Hope you liked the tour! Follow me to the lounge and you can chill out before boarding."},
-    {l:"Gate escort",         t:"As boarding will be commencing shortly, please follow me to the gate."},
+    {
+      "l": "Entrance greeting",
+      "t": "Hello and welcome! My name is [NAME] and I'll be with you throughout your private flight. May I walk you over to check-in?"
+    },
+    {
+      "l": "Escort offer",
+      "t": "Of course. Please allow me to escort you to the check-in desk. May I take your luggage?"
+    },
+    {
+      "l": "No escort",
+      "t": "No problem at all. Just let me know if you need any help checking in."
+    },
+    {
+      "l": "Tour start",
+      "t": "Now that you're checked in, may I show you our shops and lounges before we board?"
+    },
+    {
+      "l": "Shop intro",
+      "t": "This is [SHOP NAME], feel free to have a browse!"
+    },
+    {
+      "l": "Lounge escort",
+      "t": "I hope you enjoyed the tour! Follow me to the lounge, where you can relax before boarding."
+    },
+    {
+      "l": "Gate escort",
+      "t": "Boarding will begin shortly, so please follow me to the gate."
+    }
   ],
   "Airport Police / Security": [
-    {l:"TSA scanner",         t:"Hey, welcome to [AIRPORT NAME]! I'm [NAME] — go ahead and step through the scanner and wait on the other side."},
-    {l:"Suspicious item",     t:"[SECURITY NOTICE] - We have detected a suspicious item in your inventory. We need to ask you to step aside please."},
-    {l:"Gate boarding",       t:"Flight's boarding at Gate [##] now — keep it moving please!"},
-    {l:"No ticket denial",    t:"Sorry, can't let you through without a ticket — head to check-in and they'll sort you out!"},
-    {l:"Line cutter warning", t:"Excuse me, please return to the back of the queue. Cutting in line is not permitted."},
-    {l:"PTA welcome",         t:"Hey! I'm [NAME], your transport agent today. Where do you want to be dropped off? Just a heads up — boarding starts at XX:11."},
-    {l:"PFO greeting",        t:"Hey! I'm [NAME], the security officer on this flight. Great to have you on board — let me know if you need anything at all."},
-    {l:"Air Marshal to CC",   t:"Greetings cabin crew. I will be your air marshal for this flight and will closely monitor this flight. If you need assistance, feel free to contact me."},
-    {l:"ID inspection opener",t:"Greetings. I have decided to run a quick inspection on you. I will ask you a few questions and take a look at your ID. We will now begin."},
-    {l:"Travel reason",       t:"What is your reason for traveling today?"},
-    {l:"Flown before",        t:"Have you flown with South Pacific Airways before?"},
-    {l:"Length of stay",      t:"How long are you planning to stay in [destination]?"},
-    {l:"Active chatter",      t:"Did you notice anything suspicious?"},
+    {
+      "l": "TSA scanner",
+      "t": "Hello and welcome to [AIRPORT NAME]! My name is [NAME]. Please step through the scanner and wait for further instructions."
+    },
+    {
+      "l": "Suspicious item",
+      "t": "We've detected a suspicious item in your inventory. Please step aside for me."
+    },
+    {
+      "l": "Gate boarding",
+      "t": "Your flight is boarding at Gate [##] now. Please keep moving, thank you!"
+    },
+    {
+      "l": "No ticket denial",
+      "t": "I'm sorry, I can't let you through without a ticket. Please head to check-in and they'll help you."
+    },
+    {
+      "l": "Line cutter warning",
+      "t": "Excuse me, please return to the back of the queue. Cutting in line isn't permitted."
+    },
+    {
+      "l": "PTA welcome",
+      "t": "Hello! My name is [NAME], your transport agent today. Where would you like to be dropped off? Boarding starts at XX:11."
+    },
+    {
+      "l": "PFO greeting",
+      "t": "Hello! My name is [NAME], the security officer on this flight. Welcome on board, and please let me know if you need anything."
+    },
+    {
+      "l": "Air Marshal to CC",
+      "t": "Greetings, cabin crew. I'm your air marshal for this flight and will be monitoring it closely. Please contact me if you need any assistance."
+    },
+    {
+      "l": "ID inspection opener",
+      "t": "Good day. I'd like to run a quick inspection. I'll ask you a few questions and check your ID. Shall we begin?"
+    },
+    {
+      "l": "Travel reason",
+      "t": "What is the reason for your travel today?"
+    },
+    {
+      "l": "Flown before",
+      "t": "Have you flown with South Pacific Airways before?"
+    },
+    {
+      "l": "Length of stay",
+      "t": "How long are you planning to stay in [destination]?"
+    },
+    {
+      "l": "Active chatter",
+      "t": "Did you notice anything suspicious?"
+    }
   ],
   "Paramedic": [
-    {l:"Initial approach",    t:"Hey, I'm [NAME] — the paramedic on board today. You don't look too well, are you alright? Mind if I check on you for a sec?"},
-    {l:"Signs and symptoms",  t:"How are you feeling right now? Any pain, dizziness, trouble breathing, nausea — anything like that?"},
-    {l:"Allergies",           t:"Do you have any allergies to any medications, foods, or anything else?"},
-    {l:"Medications",         t:"Are you taking any medications currently?"},
-    {l:"Past history",        t:"Do you have any previous medical conditions or surgeries?"},
-    {l:"Last oral intake",    t:"What did you last eat or drink, and when?"},
-    {l:"Events leading up",   t:"Finally, what were you doing when your [issue here] started?"},
-    {l:"HR check",            t:"Is your heart rate high, low, or normal?"},
-    {l:"BP check",            t:"Is your blood pressure high, low, or normal?"},
-    {l:"RR check",            t:"Are you breathing too fast or too slowly, or are you breathing at a normal rate?"},
-    {l:"Temp check",          t:"Is your temperature too high or low?"},
-    {l:"Unconscious check",   t:"Can you hear me?"},
-    {l:"Pain scale",          t:"On a scale of 0-10, how much pain are you feeling?"},
-    {l:"Blood test",          t:"Are there any abnormalities in the blood test?"},
-    {l:"Treatment done",      t:"All done! Give me a shout if anything changes or you need me again."},
-  ],
+    {
+      "l": "Initial approach",
+      "t": "Hello, I'm [NAME], the paramedic on board today. You don't look too well. Are you alright? May I check on you for a moment?"
+    },
+    {
+      "l": "Signs and symptoms",
+      "t": "How are you feeling right now? Do you have any pain, dizziness, trouble breathing or nausea?"
+    },
+    {
+      "l": "Allergies",
+      "t": "Do you have any allergies to medication, food or anything else?"
+    },
+    {
+      "l": "Medications",
+      "t": "Are you currently taking any medication?"
+    },
+    {
+      "l": "Past history",
+      "t": "Do you have any previous medical conditions or surgeries?"
+    },
+    {
+      "l": "Last oral intake",
+      "t": "What did you last eat or drink, and when?"
+    },
+    {
+      "l": "Events leading up",
+      "t": "What were you doing when your [issue here] started?"
+    },
+    {
+      "l": "HR check",
+      "t": "Is your heart rate high, low or normal?"
+    },
+    {
+      "l": "BP check",
+      "t": "Is your blood pressure high, low or normal?"
+    },
+    {
+      "l": "RR check",
+      "t": "Are you breathing too fast, too slowly, or at a normal rate?"
+    },
+    {
+      "l": "Temp check",
+      "t": "Is your temperature too high or too low?"
+    },
+    {
+      "l": "Unconscious check",
+      "t": "Can you hear me?"
+    },
+    {
+      "l": "Pain scale",
+      "t": "On a scale of 0 to 10, how much pain are you in?"
+    },
+    {
+      "l": "Blood test",
+      "t": "Are there any abnormalities in the blood test?"
+    },
+    {
+      "l": "Treatment done",
+      "t": "All done! Let me know if anything changes or if you need me again."
+    }
+  ]
 };
 
 let curGreet = Object.keys(GREETINGS)[0];
