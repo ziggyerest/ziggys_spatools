@@ -855,7 +855,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.1</span>
+      <span class="topbar-badge">v1.1.2</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -7212,6 +7212,7 @@ async function permAuto(fromChange) {
     var r = numeric
       ? await sb.from('tool_permissions').select('*').eq('discord_id', raw).maybeSingle()
       : await sb.from('tool_permissions').select('*').eq('username', raw).maybeSingle();
+    if (r.error) { permMsg('Could not read permissions: ' + r.error.message); return; }
     if (r.data) {
       permBuildBoxes(r.data.access);
       if (r.data.username) g('perm-name').value = r.data.username;
