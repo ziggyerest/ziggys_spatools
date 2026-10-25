@@ -855,7 +855,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.2</span>
+      <span class="topbar-badge">v1.1.3</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5907,7 +5907,7 @@ async function enforceLogin() {
   }
   msg.textContent = 'Checking access…'; btn.style.display = 'none'; setAuthVisible(true);
   const ok = await checkDiscordAccess();
-  if (ok) { await fetchDiscordName(getDiscordToken()); await loadMyAccess(); applyRoleLocks(); applyBriefingLocks(); setAuthVisible(false); }
+  if (ok) { await fetchDiscordName(getDiscordToken()); await recordLogin(); await loadMyAccess(); applyRoleLocks(); applyBriefingLocks(); setAuthVisible(false); }
   else {
     msg.textContent = 'Could not confirm access. Make sure you are in the SPA server, then log in again to approve your roles.';
     btn.style.display = ''; btn.textContent = 'Log in with Discord';
@@ -7269,6 +7269,30 @@ async function supabaseLogin() {
     if (r.error) g('auth-msg').textContent = r.error.message;
   } catch (e) { window.location.href = discordLoginURL(); }
 }
+async function recordLogin() {
+  var id = localStorage.getItem('spa_discord_id');
+  if (!id) return;
+  try {
+    await permClient().from('tool_users').upsert({ discord_id: id, username: localStorage.getItem('spa_discord_name') || null, last_login: new Date().toISOString() });
+  } catch (e) {}
+}
+async function permListAll() {
+  try {
+    var sb = permClient();
+    var pid = await permCheck();
+    if (!pid) { permMsg('Sign in with Discord (admin) first.'); return; }
+    var u = await sb.from('tool_users').select('*').order('last_login', { ascending: false });
+    if (u.error) { permMsg('Could not read users: ' + u.error.message); return; }
+    var a = await sb.from('tool_permissions').select('discord_id,access');
+    var acc = {};
+    (a.data || []).forEach(function (row) { acc[row.discord_id] = row.access || []; });
+    g('perm-list').innerHTML = '<div style="font-size:.8rem;color:var(--text2);margin-bottom:6px">' + (u.data || []).length + ' past users</div>' + (u.data || []).map(function (row) {
+      var when = row.last_login ? new Date(row.last_login).toLocaleString() : '';
+      return '<div style="padding:6px 8px;border-bottom:1px solid #1a3456;font-size:.82rem;cursor:pointer" onclick="permPick(\'' + row.discord_id + '\')">' + (row.username || '(no name)') + ' · ' + row.discord_id + ' · last login ' + when + ' · tabs: ' + ((acc[row.discord_id] || []).join(', ') || 'none saved') + '</div>';
+    }).join('') || 'No past users yet.';
+    permMsg('');
+  } catch (e) { permMsg(e.message); }
+}
 async function loadMyAccess() {
   PERM_ACCESS = null;
   var id = localStorage.getItem('spa_discord_id');
@@ -7844,6 +7868,7 @@ else enforceLogin();
   <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
     <button class="roles-tab-btn active" onclick="permSave()">💾 Save</button>
     <button class="roles-tab-btn" onclick="permLoad()">↺ Refresh list</button>
+    <button class="roles-tab-btn" onclick="permListAll()">👥 Show all past users</button>
   </div>
   <div id="perm-msg" style="margin-top:10px;font-size:.82rem;color:var(--text2)"></div>
   <div id="perm-list" style="margin-top:14px"></div>
