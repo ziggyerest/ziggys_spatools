@@ -843,6 +843,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
 /* tick boxes on the Briefing tab: show a clear tick when checked */
 #page-briefing input[type=checkbox]{ -webkit-appearance:checkbox; appearance:auto; width:16px; height:16px; margin:0 6px 0 0; accent-color:#2196f3; cursor:pointer; background:#0a1a30; border:1px solid #2a5a8a; vertical-align:middle; }
 #page-briefing label:has(input[type=checkbox]){ display:inline-flex; align-items:center; cursor:pointer; }
+#page-permissions input[type=checkbox]{ -webkit-appearance:checkbox; appearance:auto; width:18px; height:18px; margin:0; accent-color:#2196f3; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -854,7 +855,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.0</span>
+      <span class="topbar-badge">v1.1.1</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -7201,6 +7202,29 @@ async function permLoad() {
     permMsg('');
   } catch (e) { permMsg(e.message); }
 }
+async function permAuto(fromChange) {
+  var raw = (g('perm-user').value || '').trim();
+  var numeric = /^\d{15,20}$/.test(raw);
+  if (!raw || (!numeric && !fromChange)) return;
+  if (!numeric && raw.length < 2) return;
+  try {
+    var sb = permClient();
+    var r = numeric
+      ? await sb.from('tool_permissions').select('*').eq('discord_id', raw).maybeSingle()
+      : await sb.from('tool_permissions').select('*').eq('username', raw).maybeSingle();
+    if (r.data) {
+      permBuildBoxes(r.data.access);
+      if (r.data.username) g('perm-name').value = r.data.username;
+      if (!numeric) g('perm-user').value = r.data.discord_id;
+      permMsg('Loaded ' + r.data.discord_id + '. Change the tabs and press Save.');
+    } else if (numeric) {
+      permBuildBoxes([]);
+      permMsg('New user: tick their tabs and press Save.');
+    } else {
+      permMsg('No saved user with that username. Enter their Discord user ID.');
+    }
+  } catch (e) { permMsg(e.message); }
+}
 async function permPick(id) {
   try {
     var r = await permClient().from('tool_permissions').select('*').eq('discord_id', id).maybeSingle();
@@ -7811,7 +7835,7 @@ else enforceLogin();
   <div style="font-size:.8rem;color:var(--text3);margin-bottom:14px">Admin only. Changes are saved to the database, and the database checks that only the admin account can make them.</div>
   <div style="margin-bottom:12px"><button class="roles-tab-btn active" onclick="permSignIn()">Sign in with Discord (admin)</button> <span id="perm-who" style="font-size:.82rem;color:var(--text2)"></span></div>
   <div style="display:flex;gap:12px;flex-wrap:wrap">
-    <div class="form-group" style="flex:1;min-width:220px"><label>Discord user ID or username</label><input id="perm-user" placeholder="e.g. 1327108083281035325"></div>
+    <div class="form-group" style="flex:1;min-width:220px"><label>Discord user ID or username</label><input id="perm-user" placeholder="e.g. 1327108083281035325" oninput="permAuto(false)" onchange="permAuto(true)"></div>
     <div class="form-group" style="flex:1;min-width:220px"><label>Username (optional, shown in the list)</label><input id="perm-name" placeholder="e.g. ziggyerest"></div>
   </div>
   <div style="font-size:.8rem;color:var(--text2);margin:12px 0 6px">Tabs they can access:</div>
