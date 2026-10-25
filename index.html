@@ -854,7 +854,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.98</span>
+      <span class="topbar-badge">v1.0.99</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5848,14 +5848,16 @@ function discordLoginURL() {
 }
 // Saves the token when Discord sends the browser back here. Returns true if it did.
 function captureDiscordToken() {
-  const m = location.hash.match(/access_token=([^&]+)/);
+  // Supabase login returns the Discord token as provider_token; leave the address alone so Supabase can read it
+  const pt = location.hash.match(/provider_token=([^&]+)/);
+  const m = pt ? pt : location.hash.match(/access_token=([^&]+)/);
   if (!m) return false;
   const ex = location.hash.match(/expires_in=(\d+)/);
   const seconds = ex ? parseInt(ex[1], 10) : 604800;
   localStorage.setItem(DISCORD_TOKEN_KEY, m[1]);
   localStorage.setItem(DISCORD_EXPIRY_KEY, String(Date.now() + seconds * 1000));
   localStorage.setItem(DISCORD_VISITS_KEY, '0');
-  history.replaceState(null, '', location.pathname + location.search);
+  if (!pt) history.replaceState(null, '', location.pathname + location.search);
   return true;
 }
 function getDiscordToken() {
@@ -5904,7 +5906,7 @@ async function enforceLogin() {
   }
   msg.textContent = 'Checking access…'; btn.style.display = 'none'; setAuthVisible(true);
   const ok = await checkDiscordAccess();
-  if (ok) { await fetchDiscordName(getDiscordToken()); applyRoleLocks(); applyBriefingLocks(); setAuthVisible(false); }
+  if (ok) { await fetchDiscordName(getDiscordToken()); await loadMyAccess(); applyRoleLocks(); applyBriefingLocks(); setAuthVisible(false); }
   else {
     msg.textContent = 'Could not confirm access. Make sure you are in the SPA server, then log in again to approve your roles.';
     btn.style.display = ''; btn.textContent = 'Log in with Discord';
@@ -5935,6 +5937,11 @@ function applyRoleLocks() {
   ROLE_GATES.forEach(function (gt) {
     var ok = bypass || gt.ids.some(function (id) { return roles.indexOf(id) !== -1; });
     LOCKED[gt.page] = ok ? null : gt.label;
+  });
+  PERM_TABS.forEach(function (t) {
+    var denied = PERM_ACCESS && !bypass && PERM_ACCESS.indexOf(t[0]) === -1;
+    if (denied) LOCKED[t[0]] = LOCKED[t[0]] || t[1];
+    else if (!ROLE_GATES.some(function (gt) { return gt.page === t[0]; })) LOCKED[t[0]] = null;
   });
   var buttons = [].slice.call(document.querySelectorAll('.main-nav button'));
   buttons.forEach(function (b) {
@@ -7226,7 +7233,23 @@ function permNavVisibility() {
   var b = document.querySelector('button[data-admin-only="1"]');
   if (b) b.style.display = localStorage.getItem('spa_discord_id') === PERM_ADMIN_ID ? '' : 'none';
 }
-document.addEventListener('DOMContentLoaded', function () { permBuildBoxes([]); permNavVisibility(); });
+document.addEventListener('DOMContentLoaded', function () { try { permClient(); } catch (e) {} permBuildBoxes([]); permNavVisibility(); });
+var PERM_ACCESS = null;
+async function supabaseLogin() {
+  try {
+    var r = await permClient().auth.signInWithOAuth({ provider: 'discord', options: { scopes: 'identify guilds guilds.members.read', redirectTo: location.href.split('#')[0] } });
+    if (r.error) g('auth-msg').textContent = r.error.message;
+  } catch (e) { window.location.href = discordLoginURL(); }
+}
+async function loadMyAccess() {
+  PERM_ACCESS = null;
+  var id = localStorage.getItem('spa_discord_id');
+  if (!id || id === PERM_ADMIN_ID) return;
+  try {
+    var r = await permClient().from('tool_permissions').select('access').eq('discord_id', id).maybeSingle();
+    if (r.data && Array.isArray(r.data.access)) PERM_ACCESS = r.data.access;
+  } catch (e) {}
+}
 // ── CO-HOST AIRPORT (fills [AIRPORT] in the Co-Host tab) ──
 // minutes until the next XX:50 (this PC's clock)
 function minsToXX50() {
@@ -7810,7 +7833,7 @@ else enforceLogin();
 
   <div id="suggest-gate" class="rs" style="text-align:center;padding:26px 20px">
     <div id="gate-msg" style="color:var(--text2);margin-bottom:14px"></div>
-    <button id="gate-login" class="roles-tab-btn active" style="display:none" onclick="window.location.href=discordLoginURL()">Log in with Discord</button>
+    <button id="gate-login" class="roles-tab-btn active" style="display:none" onclick="supabaseLogin()">Log in with Discord</button>
     <button id="gate-logout" class="roles-tab-btn" style="display:none" onclick="discordSignOut()">Sign out</button>
   </div>
   <div id="suggest-main" style="display:none">
@@ -7836,7 +7859,7 @@ else enforceLogin();
   <div style="font-size:2.6rem">✈️</div>
   <div style="font-size:1.2rem;font-weight:800">SPA Flight Ops</div>
   <div id="auth-msg" style="color:var(--text2);max-width:420px">Checking access…</div>
-  <button id="auth-login" class="roles-tab-btn active" style="display:none;padding:10px 20px" onclick="window.location.href=discordLoginURL()">Log in with Discord</button>
+  <button id="auth-login" class="roles-tab-btn active" style="display:none;padding:10px 20px" onclick="supabaseLogin()">Log in with Discord</button>
 </div>
 
 </body>
