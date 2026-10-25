@@ -853,7 +853,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.95</span>
+      <span class="topbar-badge">v1.0.96</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6336,7 +6336,7 @@ function brAssignCC(people, airPool, onPool, manager) {
   var total = order.length;
 
   var airOf = {}, onOf = {};
-  var gateCount = Math.min(gateAir.length, total);
+  var gateCount = Math.min(gateAir.length, total >= 4 ? 2 : 1, total);
   var gates = order.slice(0, gateCount);
   var rest = order.slice(gateCount);
   gates.forEach(function (id, n) { airOf[id] = gateAir[n]; });
@@ -6362,37 +6362,33 @@ function brAssignCC(people, airPool, onPool, manager) {
     })[0] || null;
   };
 
-  // seats: CPT for every class, then FO for every class, then MID for every class
-  // every ticked class gets a CPT before any class gets an FO, then every class gets an MID.
-  // Premium classes first, Economy last in each round (Gate Agents take the first Economy seats below).
-  var seats = [];
-  var roundOrder = classes.filter(function (c) { return c !== 'Economy'; }).concat(['Economy']).filter(function (c) { return classes.indexOf(c) !== -1; });
-  // when only one or two people are left for premium seats, one premium class gets its CPT and FO together
-  var premiumClasses = classes.filter(function (c) { return c !== 'Economy'; });
-  var nonGateCount = order.length - gates.length;
-  if (premiumClasses.length && nonGateCount > 0 && nonGateCount <= 2) {
-    roundOrder = [brShuffle(premiumClasses.slice())[0], 'Economy'];
-  }
-  ['CPT', 'FO'].forEach(function (pos) {
-    roundOrder.forEach(function (c) {
-      var r = roleFor(c, pos);
-      if (r) seats.push({ c: c, role: r });
-    });
-  });
-
-  // Gate Agents take Economy seats first
+  // Premium and Economy only, as on the sheets:
+  // premium takes 2 people (1 on a 2-3 crew flight), economy takes up to 2 (Gate Agents first),
+  // a class with one person gets its Whole role, and anyone left over is Destination Crew.
   var placed = {};
-  var gateTake = gates.slice(0, seats.filter(function (s) { return s.c === 'Economy'; }).length);
-  gateTake.forEach(function (id) {
-    var k = seats.findIndex(function (s) { return s.c === 'Economy'; });
-    if (k !== -1) { onOf[id] = seats[k].role; seats.splice(k, 1); placed[id] = true; }
-  });
-
-  // everyone else takes the remaining seats in order
-  var remaining = order.filter(function (id) { return !placed[id]; });
-  remaining.forEach(function (id) {
-    if (seats.length) { var s = seats.shift(); onOf[id] = s.role; placed[id] = true; }
-  });
+  var P = total >= 4 ? 2 : 1;
+  var econTarget = Math.min(2, total - P);
+  var econPeople = gates.slice(0, Math.max(econTarget, 0));
+  econPeople.forEach(function (id) { placed[id] = true; });
+  var premPeople = [];
+  if (classes.indexOf('Premium') !== -1) {
+    premPeople = order.filter(function (id) { return !placed[id]; }).slice(0, P);
+    premPeople.forEach(function (id) { placed[id] = true; });
+  }
+  while (econPeople.length < econTarget) {
+    var nextE = order.filter(function (id) { return !placed[id]; })[0];
+    if (!nextE) break;
+    econPeople.push(nextE); placed[nextE] = true;
+  }
+  var assignClass = function (people, c) {
+    if (!people.length) return;
+    if (people.length === 1) { onOf[people[0]] = roleFor(c, 'Whole') || roleFor(c, 'CPT') || roleFor(c, 'FO') || '[Insert roles]'; return; }
+    onOf[people[0]] = roleFor(c, 'CPT') || '[Insert roles]';
+    onOf[people[1]] = roleFor(c, 'FO') || '[Insert roles]';
+  };
+  if (classes.indexOf('Economy') !== -1) assignClass(econPeople, 'Economy');
+  if (classes.indexOf('Premium') !== -1) assignClass(premPeople, 'Premium');
+  order.forEach(function (id) { if (!placed[id]) onOf[id] = 'Destination Crew'; });
 
   // a class with exactly one person gets its Whole role, if the box has one
   var perClass = {};
@@ -6420,12 +6416,18 @@ function brAssignCC(people, airPool, onPool, manager) {
   var onboardIds = order.filter(function (id) { return onOf[id]; });
   return {
     air: order.filter(function (id) { return airOf[id]; }).map(function (id) { return '<@' + id + '> | ' + airOf[id]; }),
-    onb: onboardIds.map(function (id, i) {
-      return '<@' + id + '> | ' + onOf[id] + ', Arm/Disarm L' + (i + 1) + ' & R' + (i + 1);
-    }),
+    onb: (function () {
+      var n = 0;
+      return onboardIds.map(function (id) {
+        if (onOf[id] === 'Destination Crew') return '<@' + id + '> | Destination Crew';
+        n++;
+        return '<@' + id + '> | ' + onOf[id] + ', Arm/Disarm L' + n + ' & R' + n;
+      });
+    })(),
     gates: gates.length,
     noAir: order.filter(function (id) { return !airOf[id]; }).length,
-    noOnb: order.length - onboardIds.length,
+    noOnb: 0,
+    destCount: order.filter(function (id) { return onOf[id] === 'Destination Crew'; }).length,
     classes: classes
   };
 }
@@ -6462,7 +6464,7 @@ function brGenerate(reroll) {
     if (airPool.length && res.noAir) notes.push(res.noAir + ' Cabin Crew have no airport role (add more to the Airport box).');
     if (airPool.length && r.cc.length && !res.gates) notes.push('No Gate Agent was given out (add Gate Agent to the Airport box).');
     if (!airPool.length || !onPool.length) notes.push('Fill the Airport and Onboard boxes to assign Cabin Crew roles.');
-    if (res.noOnb) notes.push(res.noOnb + ' Cabin Crew ' + (res.noOnb === 1 ? 'is' : 'are') + ' on airport roles only (no onboard seat).');
+    if (res.destCount) notes.push(res.destCount + ' Cabin Crew ' + (res.destCount === 1 ? 'is' : 'are') + ' on Destination Crew (more crew than onboard seats).');
     msg = 'Found ' + ccCount + ' Cabin Crew (' + res.gates + ' Gate Agent).' + (r.ccManager ? ' CC Manager is on standby to step in.' : '')
       + ' Classes: ' + res.classes.join(', ') + '.';
   }
