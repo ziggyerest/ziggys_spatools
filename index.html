@@ -854,7 +854,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.0.100</span>
+      <span class="topbar-badge">v1.1.0</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5950,6 +5950,9 @@ function applyRoleLocks() {
     var lock = LOCKED[m[1]];
     b.classList.toggle('locked', !!lock);
     b.title = lock ? 'Locked: requires the ' + lock + ' role' : '';
+    // tabs the access list does not include are removed from view completely
+    var permDenied = PERM_ACCESS && !bypass && PERM_TABS.some(function (t) { return t[0] === m[1]; }) && PERM_ACCESS.indexOf(m[1]) === -1;
+    if (!b.hasAttribute('data-admin-only')) b.style.display = permDenied ? 'none' : '';
   });
   var active = document.querySelector('.main-nav button.active');
   var am = active && (active.getAttribute('onclick') || '').match(/showPage\('(\w+)'/);
