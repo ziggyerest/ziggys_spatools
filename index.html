@@ -855,7 +855,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.3</span>
+      <span class="topbar-badge">v1.1.4</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6347,9 +6347,24 @@ function brAssignCC(people, airPool, onPool, manager) {
   var order = brShuffle(people.slice());
   if (manager && order.indexOf(manager) === -1) order.push(manager);
   var total = order.length;
+  // Cabin Crew Checklist tables for 1-4 crew (self-assign when there is no Cabin Manager)
+  var CHECKLIST = {
+    1: { air: ['Premium Lounge Attendant'], onb: [['Whole aircraft', 'Arm/Disarm L1']], gates: 0 },
+    2: { air: ['Premium Lounge Attendant', 'Gate Agent'], onb: [['Premium Whole', 'Arm/Disarm L1'], ['Economy Whole', 'Arm/Disarm R1']], gates: 1 },
+    3: { air: ['Premium Lounge Attendant', 'Gate Agent', 'Customer Service Assistant'], onb: [['Premium Whole', 'Arm/Disarm L1 & R1'], ['Economy CPT', 'Arm/Disarm L2'], ['Economy FO', 'Arm/Disarm R2']], gates: 1 },
+    4: { air: ['Premium Lounge Attendant', 'Gate Agent', 'Customer Service Assistant', 'Investor Lounge Attendant'], onb: [['Premium CPT', 'Arm/Disarm L1'], ['Economy CPT', 'Arm/Disarm L2'], ['Premium FO', 'Arm/Disarm R1'], ['Economy FO', 'Arm/Disarm R2']], gates: 1 }
+  };
+  if (CHECKLIST[total]) {
+    var T = CHECKLIST[total];
+    return {
+      air: T.air.map(function (r, i) { return '<@' + order[i] + '> | ' + r; }),
+      onb: T.onb.map(function (o, i) { return '<@' + order[i] + '> | ' + o[0] + ', ' + o[1]; }),
+      gates: T.gates, noAir: 0, noOnb: 0, destCount: 0, classes: ['Economy', 'Premium']
+    };
+  }
 
   var airOf = {}, onOf = {};
-  var gateCount = Math.min(gateAir.length, total >= 4 ? 2 : 1, total);
+  var gateCount = Math.min(gateAir.length, total >= 5 ? 2 : 1, total);
   var gates = order.slice(0, gateCount);
   var rest = order.slice(gateCount);
   gates.forEach(function (id, n) { airOf[id] = gateAir[n]; });
