@@ -855,7 +855,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.5</span>
+      <span class="topbar-badge">v1.1.7</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -2196,21 +2196,19 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
 
   <!-- ══════ AIR MARSHAL ══════ -->
   <div id="ss-marshal" class="ss-panel">
-    <div class="info-box"><b>Air Marshal Guide — Solo Safety & Security Edition</b><br>Wear Air Marshal uniform (NOT the Security Belt). Run <code>:delete-overhead</code>. Do NOT name yourself — keep the default blue name.</div>
-    <div class="info-box" style="margin-bottom:8px">Solo Safety &amp; Security Edition. This guide is for the Air Marshal role on every flight, as a solo officer.</div>
+    <div class="info-box"><b>Air Marshal Guide — Updated July 11th, 2026</b><br>Wear Air Marshal uniform (NOT the Security Belt). Run <code>:delete-overhead</code>. Do NOT name yourself — keep the default blue name.</div>
+    <div class="info-box" style="margin-bottom:8px">Updated July 11th, 2026. The procedure is different for Solo Security members, so use the solo guide if you are solo.</div>
     <div class="s-section"><h3>Introduction</h3>
-      <div class="info-box" style="margin-bottom:8px">The Air Marshal is held responsible for the safety of our passengers onboard. Any questions or concerns, contact a member of the Safety &amp; Security Leadership Team.</div>
+      <div class="info-box" style="margin-bottom:8px">The Air Marshal is held responsible for our passengers&#x27; safety onboard. Questions or concerns: contact a member of the Safety &amp; Security Leadership Team.</div>
     </div>
     <div class="s-section"><h3>Preparation</h3>
-      <div class="info-box" style="margin-bottom:8px">Wear the Air Marshal uniform. Do NOT wear the Security Belt, so you blend in with passengers. The Air Marshal uniform may clip out of the uniform GUI; it&#x27;s still there at the very bottom.</div>
+      <div class="info-box" style="margin-bottom:8px">Wear the Air Marshal uniform. Do NOT wear the Security Belt, so you blend in with passengers. The Air Marshal uniform may clip out of the uniform GUI; it&#x27;s still there, at the very bottom.</div>
       <div class="info-box" style="margin-bottom:8px">Do not name yourself. Keep the default blue display name. Run this to remove the SPA rank display over your avatar. The normal Suitcase item is optional.</div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:delete-overhead</div></div>
     </div>
-    <div class="s-section"><h3>Airport Duties &amp; Pre-Boarding Inspection</h3>
-      <div class="info-box" style="margin-bottom:8px">Act as an Airport Patrol officer until a few minutes before boarding (around :06). Do a runway inspection between :45 and :00 so you have time for Air Marshal duties.</div>
-    </div>
-    <div class="s-section"><h3>Pre-Boarding Aircraft Inspection</h3>
-      <div class="info-box" style="margin-bottom:8px">Teleport through the gate barrier onto the tarmac. Get a flashlight and walk around the aircraft, sending roleplay at each point. Send only 2-3 of the middle scripts, plus both radio codes. Finish inspecting and back inside the terminal by :09.</div>
+    <div class="s-section"><h3>Airport Duties &amp; Pre-Boarding Aircraft Inspection</h3>
+      <div class="info-box" style="margin-bottom:8px">Act as an Airport Patrol officer until the Cabin Crew &amp; First Officer Walk (around :06). Join them at the back of their walk and board with them to the aircraft, then split ways at the airstairs to start the pre-boarding inspection.</div>
+      <div class="info-box" style="margin-bottom:8px">Get a flashlight and walk around the aircraft, sending roleplay at points. Send only 2-3 of the middle scripts, plus both radio codes. Use :scriptchat sy for inspection roleplay.</div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me flashlight</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AIR MARSHAL] 10-41, beginning aircraft exterior inspection.</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -inspects door locking and arming mechanism-</div></div>
@@ -2221,38 +2219,42 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -inspects engine intake for any obstructions or damage-</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -checks engine housing-</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AIR MARSHAL] 10-42, the exterior of the aircraft is fully inspected.</div></div>
+      <div class="info-box" style="margin-bottom:8px">Once the inspection is complete, you may board the aircraft a couple of minutes before boarding starts.</div>
     </div>
     <div class="s-section"><h3>Boarding Duties</h3>
-      <div class="info-box" style="margin-bottom:8px">During preboarding (:10), seat all passengers who don&#x27;t own the preboarding pass or aren&#x27;t investors. You can teleport them to a seat at the gate. Once Investor class is called (XX:11), board with them so premium passengers are seated before economy boards.</div>
-      <div class="info-box" style="margin-bottom:8px">When boarding, greet the cabin crew and tell them you are the Air Marshal, using chat or the talk command.</div>
+      <div class="info-box" style="margin-bottom:8px">When boarding, greet the cabin crew and tell them you are the Air Marshal, using chat or the talk command:</div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Greetings cabin crew, I will be your air marshal for this flight and will closely monitor this flight. If you need assistance, feel free to contact me.</div></div>
     </div>
     <div class="s-section"><h3>Economy Boarding Procedure</h3>
       <div class="info-box" style="margin-bottom:8px">Before economy boards, make sure all premium passengers are seated. Close the curtains between premium and economy (if the aircraft has them), then announce:</div>
-      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AIR MARSHAL] All premium passengers are seated and the premium cabin is secure for economy boarding</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AIR MARSHAL] All premium passengers are seated and the premium cabin is secure for economy boarding.</div></div>
       <div class="info-box" style="margin-bottom:8px">When economy boarding starts, stand between the premium and economy entrances so economy passengers don&#x27;t enter premium and disrupt it.</div>
     </div>
     <div class="s-section"><h3>Jetway</h3>
       <div class="info-box" style="margin-bottom:8px">If the plane is connected to a jetway (economy passengers pass through premium to reach their cabin), make sure all curtains are open and premium passengers are seated, then make the announcement above. During economy boarding, walk up and down the premium cabin to make sure economy passengers go to their cabin safely.</div>
     </div>
     <div class="s-section"><h3>Seating Checks &amp; Final Secure</h3>
-      <div class="info-box" style="margin-bottom:8px">When everyone has boarded, check that all passengers are seated. Use :standlogs true and watch for anyone moving. Help the host and cabin crew seat passengers before pushback with :bring (USER). Check class with :viewtools (USER) so tickets match the seat.</div>
+      <div class="info-box" style="margin-bottom:8px">When everyone has boarded, check that all passengers are seated using :standlogs true, and watch for anyone moving. Help the host and cabin crew seat passengers before pushback with :bring (USER). Check tickets match their class with :viewtools (USER).</div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:standlogs true</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:bring (USER)</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:viewtools (USER)</div></div>
-      <div class="info-box" style="margin-bottom:8px">Once everyone is in the correct class, secure the cockpit door with these scripts:</div>
+      <div class="info-box" style="margin-bottom:8px">Once everyone is in the correct class, secure the cockpit door:</div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Checks the door to the Flight Deck is locked-</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Door locked and Flight Deck Secured-</div></div>
     </div>
     <div class="s-section"><h3>Seating Arrangement</h3>
-      <div class="info-box" style="margin-bottom:8px">Sit at the back of the economy cabin so you blend in and can see passengers. If the back row is full, sit in the furthest-back seat available. Do NOT sit in jump seats; they are for cabin crew, and you can&#x27;t observe passengers from there.</div>
+      <div class="info-box" style="margin-bottom:8px">Sit at the back of the economy cabin to blend in and keep an eye on passengers. If the back row is full, use the furthest-back seat available. Do NOT sit in jump seats; they are for cabin crew.</div>
+    </div>
+    <div class="s-section"><h3>Boarding to Cruising</h3>
+      <div class="info-box" style="margin-bottom:8px">Once boarding is complete and everyone is seated, start moderating as normal. This is peak time for trolling and exploiting.</div>
+      <div class="info-box" style="margin-bottom:8px">If a passenger is angry with staff or the airline, use :dm (user) to find out the problem and help solve it, to keep the flight calm.</div>
+      <div class="info-box" style="margin-bottom:8px">If a passenger makes fun of another passenger or staff, interrogate them as usual, warn them and ask them not to repeat it. If they repeat it, you have the right to kick or ban them. Collect evidence.</div>
     </div>
     <div class="s-section"><h3>Responsibilities During Cruising</h3>
-      <div class="info-box" style="margin-bottom:8px">Once cruising has started, you can leave your seat to do your tasks. Talk to passengers to keep the experience realistic: ask how their flight is going, help with basic questions, and do ID checks. As a solo officer, keep chatlogs open at all times, with true at the end for auto-refresh. Monitor chat for threats, and notify your Sergeant or the host if needed.</div>
-      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:chatlogs true</div></div>
+      <div class="info-box" style="margin-bottom:8px">Once cruising has begun, you may leave your seat. Engage passengers: ask how their flight is going, help with basic questions, and do ID checks. Watch chat regularly, inspect the lavatories, and observe the whole aircraft.</div>
     </div>
     <div class="s-section"><h3>Lavatory Inspection</h3>
-      <div class="info-box" style="margin-bottom:8px">Go into each lavatory and paste this into public chat:</div>
+      <div class="info-box" style="margin-bottom:8px">Go into all the lavatories and paste this into public chat:</div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Inspects Lavatory-</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Nothing odd here-</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Leaves Lavatory-</div></div>
@@ -2260,38 +2262,49 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AIR MARSHAL] All lavatories have been checked and secured.</div></div>
     </div>
     <div class="s-section"><h3>Cockpit Inspection</h3>
-      <div class="info-box" style="margin-bottom:8px">During the flight, walk to the front of the plane, inspect the Flight Deck and check on the crew. You can talk with them. Use this sequence:</div>
+      <div class="info-box" style="margin-bottom:8px">Walk to the front of the plane to inspect the Flight Deck and check on the crew. You can talk to them. Use:</div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Opens Door to Flight Deck-</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Shuts Door to Flight Deck-</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Checks Flights Deck-</div></div>
-      <div class="info-box" style="margin-bottom:8px">When you&#x27;re ready to leave, use:</div>
+      <div class="info-box" style="margin-bottom:8px">When you&#x27;re ready to leave:</div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Opens Flight Deck Door-</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Exits Flight Deck-</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Shuts Flight Deck Door-</div></div>
     </div>
     <div class="s-section"><h3>Inspecting Information (ID checks)</h3>
-      <div class="info-box" style="margin-bottom:8px">After the cockpit inspection, walk the aisles and inspect 2-3 passengers&#x27; IDs, asking travel-related questions. Pick passengers who are active in chat or were pointed out for trolling. Use :logs to see who was kicked or warned in the first part of the flight, and :chatlogs to see active chatters. Use :talk and :chatlogs true instead of normal chat, so passengers of all age groups can see your messages.</div>
+      <div class="info-box" style="margin-bottom:8px">After the cockpit inspection, walk the aisles and inspect 2-3 passengers&#x27; IDs, asking travel-related questions. Pick passengers who are active in chat or were pointed out for trolling. Use :logs to see who was kicked or warned earlier, and :chatlogs to see active chatters.</div>
+      <div class="info-box" style="margin-bottom:8px">Use :talk and :chatlogs true instead of normal chat, so passengers of all age groups can see you. If they don&#x27;t respond, use :dm [user] and skip the ID inspection.</div>
       <div class="info-box" style="margin-bottom:8px">Start with this, then ask 2-3 questions:</div>
-      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Greetings. I have decided to run a quick Inspection on you. I will ask you a few questions and take a look at your ID. We will now begin.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Greetings. I have decided to run a quick inspection on you. I will ask you a few questions and take a look at your ID. We will now begin.</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">What is your reason for traveling today?</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Have you flown with South Pacific Airways before?</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">How long are you planning to stay in (destination)?</div></div>
-      <div class="info-box" style="margin-bottom:8px">Then ask to see their ID, and use this roleplay in chat:</div>
+      <div class="info-box" style="margin-bottom:8px">Ask to see their ID, and use this roleplay in chat:</div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:talk -Takes ID-</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:talk -Inspects ID-</div></div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:talk -Hands ID back to passenger-</div></div>
       <div class="info-box" style="margin-bottom:8px">Thank the passenger and move on. Change up the questions for each passenger so it doesn&#x27;t look scripted. After 2-3 passengers, return to your seat.</div>
     </div>
+    <div class="s-section"><h3>Active Chatter Interrogation</h3>
+      <div class="info-box" style="margin-bottom:8px">Find an active passenger and ask them questions in public chat or with :dm. For example:</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Did you notice anything suspicious?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Where are you heading to?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Did you face any problem during your flight?</div></div>
+    </div>
+    <div class="s-section"><h3>Trollers Interrogation</h3>
+      <div class="info-box" style="margin-bottom:8px">If you notice trolling, such as passengers mocking others or spamming complaints, use :dm (user) and handle it. Focus on de-escalating, not making it bigger. If a warning is needed, give one, then kick or ban if necessary. Always collect evidence and a reason for your action.</div>
+    </div>
     <div class="s-section"><h3>End of Cruising</h3>
-      <div class="info-box" style="margin-bottom:8px">Before the aircraft is cleared to land, inspect the cockpit and all lavatories one last time. Check that all passengers are seated, then take your seat at the back of economy. Notify staff with:</div>
+      <div class="info-box" style="margin-bottom:8px">Right before the aircraft is cleared to land, inspect the cockpit and all lavatories one last time. Glance over the cabin to confirm everyone is seated, then take your seat at the back of economy. Notify staff:</div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff The Air Marshal Officer is now seated and confirms that the cabin is ready for descent. | :scriptchat sy [AIR MARSHAL] All passengers and staff are seated; the cabin is ready for descent.</div></div>
     </div>
     <div class="s-section"><h3>After Landing</h3>
-      <div class="info-box" style="margin-bottom:8px">Wait until the Cabin Manager allows cabin crew to disarm their doors. Then stand, find a position out of passengers&#x27; way, and inspect them leaving the aircraft. For AFK passengers or anyone refusing to move, use :bring (USER) to teleport them to the tarmac. When all passengers have left, the Air Marshal is expected to deboard. If you have a destination role as well (rare, when security staff are short), wait for the aircraft to park and anchor, then deboard at the top or bottom of the airstairs. If buses are used, head to the buses to set up bus escort as soon as possible.</div>
+      <div class="info-box" style="margin-bottom:8px">Wait until the Cabin Manager allows cabin crew to disarm their doors. Then stand, find a position out of passengers&#x27; way, and inspect them leaving the aircraft. For AFK passengers or anyone refusing to move, use :bring (USER) to teleport them to the tarmac.</div>
       <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:bring (USER)</div></div>
+      <div class="info-box" style="margin-bottom:8px">When all passengers have disembarked, the Air Marshal is expected to disembark. If you have a destination role (rare, when security is short), wait for the aircraft to park and anchor, then teleport to your Security Sergeant and prepare for it. If you have no destination role, disembark with the passengers.</div>
     </div>
     <div class="s-section"><h3>Conclusion</h3>
-      <div class="info-box" style="margin-bottom:8px">The Air Marshal role is now used on all flights. Thank you for your dedication to the Safety &amp; Security Department.</div>
+      <div class="info-box" style="margin-bottom:8px">Thank you for your dedication to the Safety &amp; Security Department.</div>
     </div>
   </div>
   <div id="ss-pta" class="ss-panel">
@@ -4535,9 +4548,23 @@ function buildSO() {
 // ═══════════════════════════════════════════════════════════════
 //  MAIN UPDATE
 // ═══════════════════════════════════════════════════════════════
+// flight paths per airport (from the Airport Charts PDF)
+var FLIGHT_PATHS = {"Summit Peak": [["Path A", ""], ["Path B", ""], ["Path C", "experienced only"], ["Path D", "experienced only"]], "Mark Neris": [["Path A", ""], ["Path B", ""]], "Punta Cana": [["Path A", "will be updated"], ["Path B", "will be updated"], ["Path C", "experienced only, will be updated"]], "London Heathrow": [["Path A", ""], ["Path B", ""], ["Path C", ""]], "Monbetsu Regional": [["Path A", ""], ["Path B", ""], ["Path C", "inoperable"], ["Path D", ""]], "Southwest Regional": [["Path A", ""], ["Path B", ""], ["Path C", ""]], "Mesa Gateway": [["Path A", ""], ["Path B", ""], ["Path C", ""], ["Path D", ""], ["Path E", ""], ["Path F", ""]], "Jackson Hole": [["Path A", ""], ["Path B", ""], ["Path C", ""], ["Path D", ""]]};
+var FP_NAME = { 'Monbetsu': 'Monbetsu Regional', 'Mesa Regional': 'Mesa Gateway' };
+function fillFlightPaths(airport) {
+  var sel = g('inp-path');
+  var list = sel && FLIGHT_PATHS[FP_NAME[airport] || airport];
+  if (!list) return;
+  var cur = sel.value;
+  sel.innerHTML = list.map(function (p) {
+    return '<option value="' + p[0] + '">' + p[0] + (p[1] ? ' (' + p[1] + ')' : '') + '</option>';
+  }).join('');
+  sel.value = list.some(function (p) { return p[0] === cur; }) ? cur : list[0][0];
+}
 function update() {
   const numStr = g('inp-rid').value.trim();
   curRoute = lookupRoute(numStr);
+  fillFlightPaths(curRoute && curRoute.airport);
 
   // Route header
   const hdr = g('route-hdr');
