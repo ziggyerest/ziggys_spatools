@@ -855,7 +855,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.16</span>
+      <span class="topbar-badge">v1.1.17</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -7281,7 +7281,13 @@ async function permAuto(fromChange) {
       permMsg('Loaded ' + r.data.discord_id + '. Change the tabs and press Save.');
     } else if (numeric) {
       permBuildBoxes([]);
-      permMsg('New user: tick their tabs and press Save.');
+      // no saved tabs for this ID: check the login history before calling them new
+      var h = await sb.from('tool_users').select('username,last_login').eq('discord_id', raw).maybeSingle();
+      if (h.data) {
+        permMsg('Used the tool before (last login ' + (h.data.last_login ? new Date(h.data.last_login).toLocaleString() : 'unknown') + ') but no tabs are saved for them yet. Tick their tabs and press Save.');
+      } else {
+        permMsg('No saved tabs or login history found for this ID. If they have logged in before, the database read policy may be blocking it: run the anyone-reads-access SQL.');
+      }
     } else {
       permMsg('No saved user with that username. Enter their Discord user ID.');
     }
