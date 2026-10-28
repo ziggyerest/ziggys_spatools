@@ -855,7 +855,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.17</span>
+      <span class="topbar-badge">v1.1.18</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6375,6 +6375,31 @@ function brAssignSEC(people, pool) {
   });
 }
 
+
+// Safety & Security briefing templates (normal and bus escort), one row per Security person
+var SY_TEMPLATE = {
+  normal: [
+    [['Security Agent',['Runway Inspection','Arrival Airport Checks','Deboard Usher']]],
+    [['Security Agent',['Runway Inspection','Deboard Usher']],['Airport Police',['Arrival Airport Checks','Deboard Usher']]],
+    [['Security Agent',['Arrival Airport Checks','Deboard Usher']],['Airport Police',['Arrival Airport Checks','Deboard Usher']],['Paramedic',['Runway Inspection','Deboard Usher']]],
+    [['Security Agent',['Arrival Airport Checks','Deboard Usher']],['Airport Police',['Arrival Airport Checks','Deboard Usher']],['Paramedic',['Runway Inspection','Deboard Usher']],['Airport Police',['Air Marshal']]]
+  ],
+  bus: [
+    [['Security Agent',['Runway Inspection','Arrival Airport Checks','Deboard Usher','Bus Escort']]],
+    [['Security Agent',['Runway Inspection','Deboard Usher']],['Airport Police',['Arrival Airport Checks','Deboard Usher','Bus Escort']]],
+    [['Security Agent',['Arrival Airport Checks','Deboard Usher']],['Airport Police',['Arrival Airport Checks','Deboard Usher','Bus Escort']],['Paramedic',['Runway Inspection','Deboard Usher']]],
+    [['Security Agent',['Arrival Airport Checks','Deboard Usher']],['Airport Police',['Arrival Airport Checks','Deboard Usher','Bus Escort']],['Paramedic',['Runway Inspection','Deboard Usher']],['Airport Police',['Air Marshal']]]
+  ]
+};
+function brSecTemplate(people, bus) {
+  var n = people.length;
+  if (!n) return [];
+  var rows = (bus ? SY_TEMPLATE.bus : SY_TEMPLATE.normal)[Math.min(n, 4) - 1];
+  return people.map(function (id, i) {
+    var row = rows[i % rows.length];
+    return '<@' + id + '> • *' + row[0] + '* → *' + row[1].join(', ') + '*';
+  });
+}
 // Cabin Crew assignment, matched to the sheets:
 //  - Economy: up to two people, Gate Agents first, CPT then FO
 //  - one Premium class per flight (Investor, First Class or Business, whichever is in the box): up to two people, CPT then FO
@@ -6399,6 +6424,7 @@ function brAssignCC(people, airPool, onPool, manager) {
     3: { air: ['Premium Lounge Attendant', 'Gate Agent', 'Customer Service Assistant'], onb: [['Premium Whole', 'Arm/Disarm L1 & R1'], ['Economy CPT', 'Arm/Disarm L2'], ['Economy FO', 'Arm/Disarm R2']], gates: 1 },
     4: { air: ['Premium Lounge Attendant', 'Gate Agent', 'Customer Service Assistant', 'Investor Lounge Attendant'], onb: [['Premium CPT', 'Arm/Disarm L1'], ['Economy CPT', 'Arm/Disarm L2'], ['Premium FO', 'Arm/Disarm R1'], ['Economy FO', 'Arm/Disarm R2']], gates: 1 }
   };
+  var AIRPORT_ORDER_7 = ['Premium Lounge Attendant','Gate Agent','Customer Service Assistant','Investor Lounge Attendant','Gate Agent','Premium Lounge - Table Service','Investor Lounge - Table Service'];
   if (CHECKLIST[total]) {
     var T = CHECKLIST[total];
     return {
@@ -6435,6 +6461,11 @@ function brAssignCC(people, airPool, onPool, manager) {
     })[0] || null;
   };
 
+  // 5-7 crew: airport roles follow the briefing templates
+  if (total >= 5 && total <= 7) {
+    order.forEach(function (id, i) { airOf[id] = AIRPORT_ORDER_7[i]; });
+    gates = order.filter(function (id) { return airOf[id] === 'Gate Agent'; });
+  }
   // Premium and Economy only, as on the sheets:
   // premium takes 2 people (1 on a 2-3 crew flight), economy takes up to 2 (Gate Agents first),
   // a class with one person gets its Whole role, and anyone left over is Destination Crew.
@@ -6549,11 +6580,9 @@ function brGenerate(reroll) {
     msg += ' ' + r.secRoles.length + ' Security roles taken from the sheet.';
   } else {
     // Security: rules in brAssignSEC
-    var secPool = brLinesOf('br-role-sec');
     g('br-sy').value = r.sec.length;
-    g('br-sec-roles').value = brAssignSEC(r.sec, secPool).join('\n');
+    g('br-sec-roles').value = brSecTemplate(r.sec, !!(g('br-bus') && g('br-bus').checked)).join('\n');
     msg += ' ' + r.sec.length + ' Security.';
-    if (!secPool.length && r.sec.length) notes.push('Fill the Security box to assign Security roles.');
   }
 
   var allIds = [];
@@ -7813,7 +7842,7 @@ else enforceLogin();
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
       <div class="form-group" style="flex:1;min-width:200px"><label>Airport roles (one per line, include Gate Agent)</label><textarea id="br-role-air" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
       <div class="form-group" style="flex:1;min-width:200px"><label>Onboard roles (one per line, Premium and Economy; Economy roles go to Gate Agents)</label><textarea id="br-role-onb" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
-      <div class="form-group" style="flex:1;min-width:200px"><label>Security roles (one per line)</label><textarea id="br-role-sec" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
+      <div class="form-group" style="flex:1;min-width:200px"><label>Security roles (one per line)</label><div style="font-size:.8rem;margin:4px 0"><label><input type="checkbox" id="br-bus" onchange="brGenerate(false)"> Bus escort on this flight</label></div><textarea id="br-role-sec" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
     </div>
     <button class="roles-tab-btn active" onclick="brGenerate(true)">🎲 Generate roles</button>
     <button class="roles-tab-btn" onclick="brResetRoles()">↺ Reset role boxes to defaults</button>
