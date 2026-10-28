@@ -855,7 +855,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.15</span>
+      <span class="topbar-badge">v1.1.16</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -7273,6 +7273,7 @@ async function permAuto(fromChange) {
       ? await sb.from('tool_permissions').select('*').eq('discord_id', raw).maybeSingle()
       : await sb.from('tool_permissions').select('*').eq('username', raw).maybeSingle();
     if (r.error) { permMsg('Could not read permissions: ' + r.error.message); return; }
+    window.PERM_LOADED_ID = r.data ? r.data.discord_id : (numeric ? raw : null);
     if (r.data) {
       permBuildBoxes(r.data.access);
       if (r.data.username) g('perm-name').value = r.data.username;
@@ -7309,6 +7310,13 @@ async function permSave() {
       if (!f.data) { permMsg('No saved user has that username yet. Enter their Discord user ID instead.'); return; }
       id = f.data.discord_id;
       if (!name) name = raw;
+    }
+    if (window.PERM_LOADED_ID !== id) {
+      permMsg('Loading their current tabs first...');
+      await permAuto(true);
+      if (window.PERM_LOADED_ID !== id) { permMsg('Could not load their tabs. Check the ID and try again.'); return; }
+      permMsg('Loaded their current tabs. Make your changes and press Save again.');
+      return;
     }
     var access = [].slice.call(document.querySelectorAll('#perm-boxes input:checked')).map(function (i) { return i.value; });
     var up = await sb.from('tool_permissions').upsert({ discord_id: id, username: name || null, access: access, updated_at: new Date().toISOString() });
