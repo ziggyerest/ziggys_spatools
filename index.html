@@ -790,7 +790,7 @@ input[type="checkbox"]{
 .wx-fetch:hover{background:rgba(59,130,246,.2);border-color:rgba(59,130,246,.4)}
 
 #inline-charts{display:none;margin-top:14px}
-#inline-charts.show{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:12px}
+#inline-charts.show{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
 .chart-card{
   border-radius:8px;overflow:hidden;
   border:1px solid var(--border);
@@ -855,7 +855,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.22</span>
+      <span class="topbar-badge">v1.1.23</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -4672,13 +4672,25 @@ function renderChartsPage() {
   const sel = g('chart-ap-sel').value;
   const el = g('charts-page');
   if (!sel || !CHARTS[sel]) { el.innerHTML=''; return; }
-  el.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:14px">` +
+  el.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">` +
     Object.entries(CHARTS[sel]).map(([n,b64])=>
       `<div class="chart-card"><img src="data:image/jpeg;base64,${b64}" alt="${n}" onclick="openModal(this.src)"><p>${n}</p></div>`
     ).join('') + '</div>';
 }
 
-function openModal(src) { g('modal-img').src=src; g('modal').classList.add('open'); }
+function openModal(src) {
+  // scale the chart up to fill the screen (small trimmed images would otherwise stay small)
+  const im = g('modal-img');
+  im.onload = function () {
+    const r = im.naturalWidth / im.naturalHeight;
+    const w = Math.min(window.innerWidth * 0.9, window.innerHeight * 0.9 * r);
+    im.style.width = w + 'px';
+    im.style.height = 'auto';
+  };
+  im.src = '';
+  im.src = src;
+  g('modal').classList.add('open');
+}
 function closeModal() { g('modal').classList.remove('open'); }
 
 // ═══════════════════════════════════════════════════════════════
