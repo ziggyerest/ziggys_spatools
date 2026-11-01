@@ -845,6 +845,54 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
 #page-briefing label:has(input[type=checkbox]){ display:inline-flex; align-items:center; cursor:pointer; }
 #page-permissions input[type=checkbox]{ -webkit-appearance:checkbox; appearance:auto; width:18px; height:18px; margin:0; accent-color:#2196f3; cursor:pointer; }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style id="ops-theme">
+/* Flight operations desk: dark slate, amber runway lights, square edges, one display face for headings */
+:root{
+  --bg:#0c131b; --bg2:#101a25; --panel:#131e2a; --panel2:#182636;
+  --border:#22344a; --border2:#2e4762;
+  --accent:#f2a93b; --accent2:#6fc3d6; --accent3:#9aa7b6;
+  --green:#6bd49a; --orange:#f2a93b; --red:#e66a5b;
+  --text:#e9eef4; --text2:#a3b3c4; --text3:#64788d;
+  --card:#131e2a; --hover:#1b2a3b;
+  --glow:rgba(242,169,59,.12); --glow2:rgba(111,195,214,.10);
+  --radius:4px; --radius2:6px;
+  --shadow:none; --shadow2:0 10px 30px rgba(0,0,0,.45);
+  --mono:'IBM Plex Mono', ui-monospace, monospace;
+}
+html,body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans', system-ui, sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.roles-hero-title,.ss-title{font-family:'Chakra Petch', 'IBM Plex Sans', sans-serif;letter-spacing:.01em}
+h3,.s-section h3,.rs-title,.info-box b{text-transform:none!important;letter-spacing:.005em!important;font-size:1.02rem!important}
+h3{font-size:1rem;font-weight:600;color:var(--text);margin:0 0 10px;padding-left:10px;border-left:2px solid var(--accent2)}
+label{color:var(--text2);font-size:.8rem;font-weight:500;letter-spacing:.01em;text-transform:none}
+input,select,textarea{background:var(--bg2);color:var(--text);border:1px solid var(--border2);border-radius:var(--radius);font-family:inherit;padding:8px 10px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+/* navigation: text tabs with a single amber rule for the active page */
+.main-nav button,.nav-btn{border-radius:0;border:0;background:transparent;color:var(--text2);padding:12px 14px;font-family:'IBM Plex Sans', sans-serif;font-weight:500;box-shadow:none}
+.main-nav button:hover{color:var(--text);background:transparent}
+.main-nav button.active{color:var(--accent);box-shadow:inset 0 -2px 0 var(--accent)}
+/* buttons */
+.roles-tab-btn,button.btn{border-radius:var(--radius);border:1px solid var(--border2);background:var(--panel2);color:var(--text);font-family:'IBM Plex Sans', sans-serif;font-weight:500;box-shadow:none;transition:border-color .15s,color .15s}
+.roles-tab-btn:hover{border-color:var(--accent2);color:var(--text)}
+.roles-tab-btn.active{border-color:var(--accent);color:var(--accent);background:var(--glow)}
+/* sections, blocks and notes */
+.s-section{border-radius:0;background:transparent;border:0;border-top:1px solid var(--border);padding:16px 0 14px;margin-bottom:6px}
+.s-block{border-radius:var(--radius);border:1px solid var(--border);background:var(--card);box-shadow:none;transition:border-color .15s;cursor:pointer}
+.s-block:hover{border-color:var(--accent);transform:none;box-shadow:none}
+.s-text,.pf-cmd{font-family:var(--mono);font-size:.82rem;color:var(--text)}
+.copy-hint{color:var(--text3);font-size:.7rem}
+.info-box{border-radius:var(--radius);background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent2);color:var(--text2);font-size:.86rem}
+.chart-card{border-radius:var(--radius);border:1px solid var(--border);transform:none}
+.chart-card:hover{transform:none;border-color:var(--accent)}
+.chart-card-label{background:var(--bg2);color:var(--text2);font-family:'IBM Plex Sans', sans-serif;font-weight:500}
+/* the small status pills in the top bar */
+.topbar-badge,.route-count,.signout{border-radius:var(--radius);font-family:var(--mono);font-size:.72rem;letter-spacing:0}
+.page{font-family:'IBM Plex Sans', sans-serif}
+/* calmer motion */
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
 </head>
 <body>
 
@@ -855,7 +903,7 @@ textarea:focus{outline:none;border-color:rgba(59,130,246,.5);background:rgba(59,
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.1.27</span>
+      <span class="topbar-badge">v1.2.0</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
