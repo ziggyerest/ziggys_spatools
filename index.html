@@ -941,7 +941,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.2</span>
+      <span class="topbar-badge">v1.2.3</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -5006,6 +5006,8 @@ function ccPlane() {
 function renderCCArm() {
   const box = g('cc-arming');
   if (!box) return;
+  box.innerHTML = '';
+  return;
   const pl = g('cc-plane').value;
   const sc = pl && BR_SCRIPTS[pl];
   if (!sc) { box.innerHTML = pl ? '<div class="info-box">No arming scripts for ' + pl + ' yet.</div>' : ''; return; }
@@ -5016,7 +5018,13 @@ function renderCCArm() {
 document.addEventListener('DOMContentLoaded', function () { if (g('cc-arming')) renderCCArm(); });
 function renderCC() {
   const data = CC[curCC];
-  g('cc-panels').innerHTML = data.scripts.map(s => {
+  let scripts = data.scripts;
+  if (curCC === '🔒 Arming' || curCC === '🔓 Disarming') {
+    const pl = g('cc-plane') ? g('cc-plane').value : '';
+    const sc = pl && BR_SCRIPTS[pl];
+    if (sc) scripts = (curCC === '🔓 Disarming' ? sc.disarm : sc.arm).map(t => ({ l: 'RP', t: t }));
+  }
+  g('cc-panels').innerHTML = scripts.map(s => {
     const display = subUser(s.t, s.greetOnly, s.serveOnly);
     const isRP = s.t.startsWith('-') && s.t.endsWith('-');
     const isCmd = s.t.startsWith(':') || s.t.startsWith('!');
