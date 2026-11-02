@@ -941,7 +941,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.3</span>
+      <span class="topbar-badge">v1.2.4</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -4935,11 +4935,14 @@ const CC = {
   ]},
 };
 
-let curCC = Object.keys(CC)[0];
+// sub-tabs in the order they happen in a flight
+const CC_ORDER = ["🏷️ Naming Formats", "🎫 Upgrade Commands", "🛬 Boarding", "🍹 Pre-Flight Service", "🔒 Arming", "🍱 Cruising Setup", "🧣 Warm Towels", "✈️ Cruising Service", "🗑️ Trash & Clean-Up", "🔓 Disarming", "🛬 Deboarding", "📢 Notify Commands", "🛠️ Admin Commands"];
+const CC_KEYS = CC_ORDER.filter(k => CC[k]).concat(Object.keys(CC).filter(k => CC_ORDER.indexOf(k) === -1));
+let curCC = CC_KEYS[0];
 
 function initCC() {
   const tabs = g('cc-tabs');
-  tabs.innerHTML = Object.keys(CC).map(tab =>
+  tabs.innerHTML = CC_KEYS.map(tab =>
     `<button onclick="selCC('${tab.replace(/'/g,"\\'")}',this)">${tab}</button>`
   ).join('');
   tabs.children[0].classList.add('active');
