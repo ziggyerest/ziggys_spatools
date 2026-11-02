@@ -919,16 +919,28 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 </head>
 <body>
 <script>
-// group the sidebar links by department (keeps each button's own action)
+// group the sidebar links by department (each page is assigned to one group)
 document.addEventListener('DOMContentLoaded', function () {
-  var groups = { flight: 'Flight', cc: 'Crew', ss: 'Security', suggest: 'Tools' };
-  document.querySelectorAll('.main-nav button').forEach(function (b) {
+  var nav = document.querySelector('.main-nav');
+  if (!nav) return;
+  var groups = [
+    ['Flight',   ['flight', 'routeinfo', 'charts', 'fleet']],
+    ['Crew',     ['cc', 'pf', 'roles', 'greet', 'cohost', 'briefing', 'gc', 'atc']],
+    ['Security', ['ss']],
+    ['Tools',    ['suggest', 'permissions']]
+  ];
+  var byPage = {};
+  nav.querySelectorAll('button').forEach(function (b) {
     var m = (b.getAttribute('onclick') || '').match(/showPage\('(\w+)'/);
-    if (!m || !groups[m[1]]) return;
-    var h = document.createElement('div');
-    h.className = 'nav-group';
-    h.textContent = groups[m[1]];
-    b.parentNode.insertBefore(h, b);
+    if (m) byPage[m[1]] = b;
+  });
+  nav.querySelectorAll('.nav-group').forEach(function (h) { h.remove(); });
+  groups.forEach(function (grp) {
+    var header = document.createElement('div');
+    header.className = 'nav-group';
+    header.textContent = grp[0];
+    nav.appendChild(header);
+    grp[1].forEach(function (id) { if (byPage[id]) nav.appendChild(byPage[id]); });
   });
 });
 </script>
@@ -941,7 +953,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.4</span>
+      <span class="topbar-badge">v1.2.5</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
