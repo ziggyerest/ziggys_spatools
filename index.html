@@ -893,8 +893,46 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
 /* calmer motion */
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
+<style id="ops-shell">
+/* Remade layout: sidebar navigation grouped by department, content beside it */
+@media (min-width: 901px){
+  body{padding-left:248px!important}
+  .topbar{position:fixed!important;top:0;left:0;bottom:0;width:248px;height:100vh;overflow-y:auto;background:var(--bg2)!important;border-right:1px solid var(--border);border-bottom:0!important;padding:20px 12px!important;display:flex;flex-direction:column;gap:20px;z-index:50;box-sizing:border-box}
+  .topbar-top{padding:0 6px!important}
+  .topbar-logo{flex-wrap:wrap;gap:6px!important}
+  .topbar-logo-text{font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:1rem;width:100%}
+  .main-nav{display:flex!important;flex-direction:column!important;align-items:stretch!important;overflow:visible!important;border:0!important;gap:2px!important;padding:0!important;background:none!important}
+  .main-nav button{width:100%;text-align:left!important;padding:8px 12px!important;border-radius:var(--radius)!important;white-space:nowrap;box-shadow:none!important;color:var(--text2)!important}
+  .main-nav button:hover{background:var(--hover)!important;color:var(--text)!important}
+  .main-nav button.active{background:var(--glow)!important;color:var(--accent)!important;box-shadow:inset 3px 0 0 var(--accent)!important}
+  .nav-group{font-size:.7rem;color:var(--text3);padding:14px 12px 4px;font-weight:600;letter-spacing:.02em}
+  .nav-group:first-child{padding-top:0}
+  #toast{left:auto;right:24px}
+}
+@media (max-width: 900px){
+  .topbar{position:sticky!important;top:0;padding:10px 12px!important;background:var(--bg2)!important;border-bottom:1px solid var(--border)!important}
+  .main-nav{flex-direction:row!important;overflow-x:auto;gap:4px!important}
+  .main-nav button{white-space:nowrap;padding:8px 10px!important}
+  .nav-group{display:none}
+}
+</style>
 </head>
 <body>
+<script>
+// group the sidebar links by department (keeps each button's own action)
+document.addEventListener('DOMContentLoaded', function () {
+  var groups = { flight: 'Flight', cc: 'Crew', ss: 'Security', suggest: 'Tools' };
+  document.querySelectorAll('.main-nav button').forEach(function (b) {
+    var m = (b.getAttribute('onclick') || '').match(/showPage\('(\w+)'/);
+    if (!m || !groups[m[1]]) return;
+    var h = document.createElement('div');
+    h.className = 'nav-group';
+    h.textContent = groups[m[1]];
+    b.parentNode.insertBefore(h, b);
+  });
+});
+</script>
+
 
 <span class="toast" id="toast">✓ Copied!</span>
 
@@ -903,7 +941,7 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.0</span>
+      <span class="topbar-badge">v1.2.1</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
