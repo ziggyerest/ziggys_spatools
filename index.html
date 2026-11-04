@@ -916,6 +916,38 @@ input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid v
   .nav-group{display:none}
 }
 </style>
+<style id="colour-scheme">
+/* Colour scheme: midnight indigo with teal and coral accents and soft glows */
+:root{
+  --bg:#0a0c22; --bg2:#101432; --panel:#151a3d; --panel2:#1c2350;
+  --border:#2b3570; --border2:#3d4a92;
+  --accent:#2de2e6; --accent2:#ff7a59; --accent3:#a78bfa;
+  --green:#5eead4; --orange:#ffb454; --red:#ff6b8a;
+  --text:#f4f6ff; --text2:#b9c2ec; --text3:#7c86bd;
+  --card:rgba(21,26,61,.72); --hover:rgba(45,226,230,.08);
+  --glow:rgba(45,226,230,.14); --glow2:rgba(255,122,89,.12);
+}
+html,body{
+  background:
+    radial-gradient(1200px 700px at 10% -10%, rgba(45,226,230,.14), transparent 60%),
+    radial-gradient(900px 600px at 100% 110%, rgba(255,122,89,.12), transparent 60%),
+    radial-gradient(800px 500px at 60% 40%, rgba(167,139,250,.08), transparent 70%),
+    var(--bg) !important;
+  background-attachment: fixed;
+}
+.topbar{background:linear-gradient(180deg, rgba(16,20,50,.96), rgba(10,12,34,.96)) !important;border-right:1px solid var(--border) !important}
+.main-nav button.active{background:linear-gradient(90deg, rgba(45,226,230,.22), rgba(45,226,230,.04)) !important;color:var(--accent) !important;box-shadow:inset 3px 0 0 var(--accent2) !important}
+.nav-group{color:var(--accent3) !important}
+.s-block{background:var(--card) !important;backdrop-filter:blur(6px);border-color:var(--border) !important}
+.s-block:hover{border-color:var(--accent) !important}
+.info-box{background:rgba(16,20,50,.7) !important;border-left-color:var(--accent3) !important}
+h3{border-left-color:var(--accent2) !important;color:#ffffff !important}
+.roles-tab-btn.active{background:linear-gradient(90deg, rgba(45,226,230,.2), rgba(255,122,89,.12)) !important;border-color:var(--accent) !important;color:var(--accent) !important}
+input,select,textarea{background:rgba(10,12,34,.7) !important;border-color:var(--border2) !important}
+input:focus,select:focus,textarea:focus{border-color:var(--accent) !important;outline-color:var(--accent) !important}
+.chart-card{background:var(--card) !important}
+::selection{background:rgba(255,122,89,.35)}
+</style>
 </head>
 <body>
 <script>
@@ -953,7 +985,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.7</span>
+      <span class="topbar-badge">v1.2.8</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
