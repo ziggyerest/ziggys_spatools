@@ -956,10 +956,13 @@ document.addEventListener('DOMContentLoaded', function () {
   var nav = document.querySelector('.main-nav');
   if (!nav) return;
   var groups = [
-    ['Flight',   ['flight', 'routeinfo', 'charts', 'fleet']],
-    ['Crew',     ['cc', 'pf', 'roles', 'greet', 'cohost', 'briefing', 'gc', 'atc']],
-    ['Security', ['ss']],
-    ['Tools',    ['suggest', 'permissions']]
+    ['Flight',       ['flight', 'routeinfo', 'charts', 'fleet']],
+    ['Crew',         []],
+    ['Cabin Crew',   ['cc', 'pf', 'roles', 'greet']],
+    ['Managers',     ['cohost', 'briefing']],
+    ['Ground Crew',  ['gc', 'atc']],
+    ['Security',     ['ss']],
+    ['Tools',        ['suggest', 'permissions']]
   ];
   var byPage = {};
   nav.querySelectorAll('button').forEach(function (b) {
@@ -985,7 +988,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.10</span>
+      <span class="topbar-badge">v1.2.11</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
