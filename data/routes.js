@@ -13,8 +13,6 @@ const AIRPORTS = {
   "Jackson Hole": "KJAC",
   "Monbetsu": "RJEB",
   "Mesa Regional": "KIWA",
-  "Paine Field": "KPAE",
-  "Ronald Reagan": "KDCA",
 };
 
 // origin, route ID, destination, destination ICAO, aircraft
