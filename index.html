@@ -1006,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.15</span>
+      <span class="topbar-badge">v1.2.16</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -1325,6 +1325,14 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="role-info-title">Airport Roles Overview</div>
       <div class="role-info-meta">Listed in priority order. You may be assigned any one of these at the departure airport.</div>
     </div></div>
+    <div class="rs" style="margin-bottom:14px"><div class="rs-title">Greetings</div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to [AIRPORT]. My name is [NAME]! And I am the Customer Service Assistant for today, is there anything I can do for you?" data-tpl="Hello and welcome to [AIRPORT]. My name is [NAME]! And I am the Customer Service Assistant for today, is there anything I can do for you?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Customer Service Assistant</div><div class="s-text pf-cmd">Hello and welcome to [AIRPORT]. My name is [NAME]! And I am the Customer Service Assistant for today, is there anything I can do for you?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to Gate [GATE NUMBER]. my name is [NAME]! And I am the Gate Agent for today, what can I do for you?" data-tpl="Hello and welcome to Gate [GATE NUMBER]. my name is [NAME]! And I am the Gate Agent for today, what can I do for you?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Gate Agent</div><div class="s-text pf-cmd">Hello and welcome to Gate [GATE NUMBER]. my name is [NAME]! And I am the Gate Agent for today, what can I do for you?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?" data-tpl="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Investor Lounge Attendant</div><div class="s-text pf-cmd">Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?" data-tpl="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Premium Lounge Attendant</div><div class="s-text pf-cmd">Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Table Service for today, Could I interest you in any drinks?" data-tpl="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Table Service for today, Could I interest you in any drinks?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Investor Table Service</div><div class="s-text pf-cmd">Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Table Service for today, Could I interest you in any drinks?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Table Service for today, could I interest you in any drinks?" data-tpl="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Table Service for today, could I interest you in any drinks?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Premium Table Service</div><div class="s-text pf-cmd">Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Table Service for today, could I interest you in any drinks?</div></div>
+    </div>
     <div class="role-cols"><div>
       <div class="rs"><div class="rs-title">Role Priority Order</div>
         <div class="role-table">
@@ -1370,6 +1378,9 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="role-info-title">Customer Service Assistant (CSA)</div>
       <div class="role-info-meta">Be at check-in from briefing dismissal until CC walk. You are usually the first staff passengers interact with — make a great impression.</div>
     </div></div>
+    <div class="rs" style="margin-bottom:14px"><div class="rs-title">Greetings</div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to [AIRPORT]. My name is [NAME]! And I am the Customer Service Assistant for today, is there anything I can do for you?" data-tpl="Hello and welcome to [AIRPORT]. My name is [NAME]! And I am the Customer Service Assistant for today, is there anything I can do for you?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Customer Service Assistant</div><div class="s-text pf-cmd">Hello and welcome to [AIRPORT]. My name is [NAME]! And I am the Customer Service Assistant for today, is there anything I can do for you?</div></div>
+    </div>
     <div class="role-cols"><div>
       <div class="rs"><div class="rs-title">🛠️ Setup Commands</div>
         <div class="rc" onclick="rcopy(this)"><div class="rc-label">Name yourself</div><div class="rc-text rc-cmd">:name me [NAME] [-] Customer Service Assistant [-] [ENG]</div></div>
@@ -1421,6 +1432,9 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="role-info-title">Gate Agent</div>
       <div class="role-info-meta">Answer passenger questions and hand out amenities (max 3 per passenger). Gate agents do NOT do the CC walk — only board when economy boarding starts.</div>
     </div></div>
+    <div class="rs" style="margin-bottom:14px"><div class="rs-title">Greetings</div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to Gate [GATE NUMBER]. my name is [NAME]! And I am the Gate Agent for today, what can I do for you?" data-tpl="Hello and welcome to Gate [GATE NUMBER]. my name is [NAME]! And I am the Gate Agent for today, what can I do for you?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Gate Agent</div><div class="s-text pf-cmd">Hello and welcome to Gate [GATE NUMBER]. my name is [NAME]! And I am the Gate Agent for today, what can I do for you?</div></div>
+    </div>
     <div class="role-cols"><div>
       <div class="rs"><div class="rs-title">🔌 Setup Procedure</div>
         <div class="role-steps">
@@ -1456,6 +1470,12 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="role-info-title">Lounge Attendant</div>
       <div class="role-info-meta">Work at Premium or Investor lounge. Two service types: Bar Service and Table Service. Never use :give command to serve — use the Serving GUI only.</div>
     </div></div>
+    <div class="rs" style="margin-bottom:14px"><div class="rs-title">Greetings</div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?" data-tpl="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Investor Lounge Attendant</div><div class="s-text pf-cmd">Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?" data-tpl="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Premium Lounge Attendant</div><div class="s-text pf-cmd">Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Table Service for today, Could I interest you in any drinks?" data-tpl="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Table Service for today, Could I interest you in any drinks?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Investor Table Service</div><div class="s-text pf-cmd">Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Table Service for today, Could I interest you in any drinks?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Table Service for today, could I interest you in any drinks?" data-tpl="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Table Service for today, could I interest you in any drinks?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Premium Table Service</div><div class="s-text pf-cmd">Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Table Service for today, could I interest you in any drinks?</div></div>
+    </div>
     <div class="role-cols"><div>
       <div class="rs"><div class="rs-title">🍹 Bar Service</div>
         <div class="info-box">Tool: Drinks Platter (<code>:give me drinks</code>)<br><br>Approach and greet passenger → ask what they'd like → use Serving GUI to hand items.</div>
@@ -8407,6 +8427,21 @@ const CV_CHARTS = [{"name": "Summit Peak \u00b7 Departure ground chart", "src": 
   stage.addEventListener('pointerup',endPtr); stage.addEventListener('pointercancel',endPtr);
   window.addEventListener('resize',()=>{ if(viewer.classList.contains('open')) fitView(); });
 })();
+</script>
+<script>
+// ── Airport greetings in the Cabin Crew tab: fill [NAME], [GATE NUMBER], [AIRPORT] from the boxes ──
+function ccAirportGreets() {
+  const nm = ((document.getElementById('cc-name') || {}).value || '').trim() || 'Ziggy';
+  const gate = ((document.getElementById('greet-gate') || {}).value || '').trim();
+  const ap = ((document.getElementById('greet-airport') || {}).value || '').trim() || ((document.getElementById('cohost-airport') || {}).value || '').trim();
+  document.querySelectorAll('#page-cc .s-block[data-tpl]').forEach(function (b) {
+    const t = b.dataset.tpl.replace(/\[NAME\]/g, nm).replace(/\[GATE NUMBER\]/g, gate || '[GATE NUMBER]').replace(/\[AIRPORT\]/g, ap || '[AIRPORT]');
+    b.dataset.t = t;
+    const txt = b.querySelector('.pf-cmd'); if (txt) txt.textContent = t;
+  });
+}
+document.addEventListener('input', function (e) { if (e.target && ['cc-name','greet-gate','greet-airport','cohost-airport'].indexOf(e.target.id) !== -1) ccAirportGreets(); });
+document.addEventListener('DOMContentLoaded', ccAirportGreets);
 </script>
 </body>
 </html>
