@@ -1006,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.17</span>
+      <span class="topbar-badge">v1.2.19</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -4551,20 +4551,20 @@ const FO_CHECKLIST = [
   {phase:"PA — After Service, Before Descent", items:[
     {text:"PA: Initial descent announcement",                                                  cmd:":n Ladies and gentlemen, this is your First Officer [NAME] speaking. We have begun our initial descent into [DESTINATION] and will be landing shortly. | !wait 10 | :n At this time, Cabin Crew will be passing through for the last time to collect any rubbish, magazines, or unused items. We hope you have had a pleasant flight with us. | !wait 10 | :n Cabin Crew, prepare for arrival."},
   ]},
-  {phase:"Descent — 10,000ft", items:[
+  {phase:"2,000ft", items:[
     {text:"10,000 Feet, Speed Checked, Flaps 1.",                                              cmd:":scriptchat fd [FO] 10,000 Feet, Speed Checked, Flaps 1."},
   ]},
-  {phase:"Descent — 7,000ft", items:[
+  {phase:"1,500ft", items:[
     {text:"7,000 Feet, Speed Checked, Flaps 2.",                                               cmd:":scriptchat fd [FO] 7,000 Feet, Speed Checked, Flaps 2."},
   ]},
-  {phase:"PA — At 1,500ft", items:[
+  {phase:"At 1500ft", items:[
     {text:"PA: Seatbelt sign on",                                                              cmd:":n Cabin Crew, prepare for landing."},
   ]},
-  {phase:"Approach — 5,000ft", items:[
+  {phase:"1,000ft", items:[
     {text:"5,000 Feet. Speed Checked, Flaps 3.",                                               cmd:":scriptchat fd [FO] 5,000 Feet. Speed Checked, Flaps 3."},
     {text:"-Approach Mode ON-",                                                                cmd:":scriptchat fd [FO] -Approach Mode ON-"},
   ]},
-  {phase:"Final Approach — 3,000ft", items:[
+  {phase:"Final approach (500ft)", items:[
     {text:"Final approach 3,000 Feet, Speed Checked, Flaps full.",                             cmd:":scriptchat fd [FO] Final approach 3,000 Feet, Speed Checked, Flaps full."},
     {text:"-Gear Down-",                                                                       cmd:":scriptchat fd [FO] -Gear Down-"},
     {text:"-Landing Lights ON-",                                                               cmd:":scriptchat fd [FO] -Landing Lights ON-"},
