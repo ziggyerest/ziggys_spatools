@@ -1006,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.16</span>
+      <span class="topbar-badge">v1.2.17</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -6236,7 +6236,8 @@ var ROLE_GATES = [
   { page: 'flight', label: 'Flight Deck',       ids: ['1194355051804754041', '1194303022692569098', '1297002701443305533'] },
   { page: 'ss',     label: 'Safety & Security', ids: ['1194303260719337599'] },
   { page: 'cc',     label: 'Cabin Crew',        ids: ['1194303157388451950'] },
-  { page: 'cohost', label: 'Co-Host',           ids: ['1194302914060107796'] }
+  { page: 'cohost', label: 'Co-Host',           ids: ['1194302914060107796'] },
+  { page: 'gc', label: 'Ground Crew', ids: ['1241528593385783318'] }
 ];
 // Ground Crew role IDs (no Ground Crew tab right now): 1241528593385783318, 1290004653404328048
 var LOCKED = {};
@@ -6420,8 +6421,8 @@ function brCCOut() {
 
 // ── BRIEFING ROLE LOCKS ──
 var BR_GATES = {
-  cc:  { label: 'Cabin Crew',        ids: ['1194303157388451950'] },
-  sec: { label: 'Safety & Security', ids: ['1194303260719337599'] }
+  cc:  { label: 'Cabin Crew', ids: ['1194303157388451950', '1194302750784229497'] },
+  sec: { label: 'Safety & Security', ids: ['1194303260719337599', '1295852083152552038'] }
 };
 var BR_LOCKED = {};
 function applyBriefingLocks() {
