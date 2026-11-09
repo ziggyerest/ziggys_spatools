@@ -1006,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.21</span>
+      <span class="topbar-badge">v1.2.22</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -4553,7 +4553,8 @@ const FO_CHECKLIST = [
   ]},
   {phase:"PA — Before Descent (roaming)", items:[
     {text:"PA: Before descent, roaming allowed (lavatories, rubbish collection)", cmd:":n Ladies and gentlemen, this is your First Officer [NAME] speaking. We have begun our initial descent into [DESTINATION]. At this time, feel free to use the lavatories before the seatbelt sign is turned on. | !wait 10 | :n Cabin Crew will be passing through the cabin for the last time to collect any rubbish, magazines, or unused items shortly. | !wait 10 | :n Cabin Crew, prepare for arrival."},
-  ]},
+      {text:"PA: Seatbelt sign on (after the 60 second countdown)", cmd:":n Ladies and gentlemen, the seatbelt sign has now been turned on. Please return to your seats and ensure your seatbelt is securely fastened. We hope you have enjoyed your flight with us. | !wait 10 | :n Cabin Crew, prepare for landing."},
+]},
   {phase:"2,000ft", items:[
     {text:"10,000 Feet, Speed Checked, Flaps 1.",                                              cmd:":scriptchat fd [FO] 10,000 Feet, Speed Checked, Flaps 1."},
   ]},
@@ -4561,8 +4562,8 @@ const FO_CHECKLIST = [
     {text:"7,000 Feet, Speed Checked, Flaps 2.",                                               cmd:":scriptchat fd [FO] 7,000 Feet, Speed Checked, Flaps 2."},
   ]},
   {phase:"At 1500ft", items:[
-    {text:"PA: Seatbelt sign on (after the 60 second countdown)", cmd:":n Ladies and gentlemen, the seatbelt sign has now been turned on. Please return to your seats and ensure your seatbelt is securely fastened. We hope you have enjoyed your flight with us. | !wait 10 | :n Cabin Crew, prepare for landing."},
-  ]},
+    {text:"PA: Cabin Crew, prepare for landing.", cmd:":n Cabin Crew, prepare for landing."},
+      ]},
   {phase:"1,000ft", items:[
     {text:"5,000 Feet. Speed Checked, Flaps 3.",                                               cmd:":scriptchat fd [FO] 5,000 Feet. Speed Checked, Flaps 3."},
     {text:"-Approach Mode ON-",                                                                cmd:":scriptchat fd [FO] -Approach Mode ON-"},
