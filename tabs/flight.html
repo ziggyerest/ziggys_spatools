@@ -18,6 +18,12 @@
       <input id="inp-name" placeholder="Ziggy" oninput="update();saveState()">
     </div>
     <div class="form-group">
+      <label>Speaking as</label>
+      <select id="inp-rank" onchange="update();saveState()">
+        <option>First Officer</option><option>Senior First Officer</option><option>Captain</option><option>Senior Captain</option>
+      </select>
+    </div>
+    <div class="form-group">
       <label>Route ID</label>
       <div class="form-row">
         <span>SPA</span>

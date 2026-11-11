@@ -1038,7 +1038,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.29</span>
+      <span class="topbar-badge">v1.2.31</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -1358,19 +1358,19 @@ function wxStr() {
 }
 
 function genCptBoard() {
-  return `:n Ladies and gentlemen, this is Captain ${name()} speaking. On behalf of the entire flight crew, we would like to welcome you aboard our ${ac()} to ${destCity()}. | !wait 10 | :n We are expecting a flight time of approximately ${getFlightTimeStr()}, and our flight path looks clear. | !wait 10 | :n As a reminder, you are legally required to follow all instructions and directions from our Cabin Crew personnel. We thank you for your cooperation and we hope you enjoy the flight.`;
+  return `:n Ladies and gentlemen, this is ${rankTitle()} ${name()} speaking. On behalf of the entire flight crew, we would like to welcome you aboard our ${ac()} to ${destCity()}. | !wait 10 | :n We are expecting a flight time of approximately ${getFlightTimeStr()}, and our flight path looks clear. | !wait 10 | :n As a reminder, you are legally required to follow all instructions and directions from our Cabin Crew personnel. We thank you for your cooperation and we hope you enjoy the flight.`;
 }
 function genCptArr() {
-  return `:n Ladies and gentlemen, this is Captain ${name()} speaking. As you can see we have arrived at ${destCity()}, the weather is ${wxStr()}. | !wait 10 | :n On behalf of the flight crew, we would like to wish you a lovely holiday or welcome you back home. Thank you for flying with South Pacific Airways and we hope to see you again soon.`;
+  return `:n Ladies and gentlemen, this is ${rankTitle()} ${name()} speaking. As you can see we have arrived at ${destCity()}, the weather is ${wxStr()}. | !wait 10 | :n On behalf of the flight crew, we would like to wish you a lovely holiday or welcome you back home. Thank you for flying with South Pacific Airways and we hope to see you again soon.`;
 }
 function genFOCruise() {
-  return `:n Ladies and gentlemen, this is First Officer ${name()} speaking. I'm happy to announce that we have reached our cruising altitude of 35,000 feet, which is roughly 11 kilometers or 7 miles. | !wait 10 | :n We are expecting a clear flight path up ahead. Estimated remaining flight time is ${getFlightTimeStr()}. Cabin Crew will be coming through the cabin to serve meals and beverages shortly. We hope you enjoy the flight!`;
+  return `:n Ladies and gentlemen, this is ${rankTitle()} ${name()} speaking. I'm happy to announce that we have reached our cruising altitude of 35,000 feet, which is roughly 11 kilometers or 7 miles. | !wait 10 | :n We are expecting a clear flight path up ahead. Estimated remaining flight time is ${getFlightTimeStr()}. Cabin Crew will be coming through the cabin to serve meals and beverages shortly. We hope you enjoy the flight!`;
 }
 function genFODescEarly() {
-  return `:n Ladies and gentlemen, this is First Officer ${name()} speaking. We have begun our initial descent into ${destCity()}. At this time, feel free to use the lavatories before the seatbelt sign is turned on. | !wait 10 | :n Cabin Crew will be passing through the cabin for the last time to collect any rubbish, magazines, or unused items shortly. | !wait 10 | :n Cabin Crew, prepare for arrival.`;
+  return `:n Ladies and gentlemen, this is ${rankTitle()} ${name()} speaking. We have begun our initial descent into ${destCity()}. At this time, feel free to use the lavatories before the seatbelt sign is turned on. | !wait 10 | :n Cabin Crew will be passing through the cabin for the last time to collect any rubbish, magazines, or unused items shortly. | !wait 10 | :n Cabin Crew, prepare for arrival.`;
 }
 function genFODesc() {
-  return `:n Ladies and gentlemen, this is First Officer ${name()} speaking. We have begun our initial descent into ${destCity()} and will be landing shortly. | !wait 10 | :n At this time, Cabin Crew will be passing through for the last time to collect any rubbish, magazines, or unused items. We hope you have had a pleasant flight with us. | !wait 10 | :n Cabin Crew, prepare for arrival.`;
+  return `:n Ladies and gentlemen, this is ${rankTitle()} ${name()} speaking. We have begun our initial descent into ${destCity()} and will be landing shortly. | !wait 10 | :n At this time, Cabin Crew will be passing through for the last time to collect any rubbish, magazines, or unused items. We hope you have had a pleasant flight with us. | !wait 10 | :n Cabin Crew, prepare for arrival.`;
 }
 function genFO1500() {
   return `:n Ladies and gentlemen, the seatbelt sign has now been turned on. Please return to your seats and ensure your seatbelt is securely fastened. We hope you have enjoyed your flight with us. | !wait 10 | :n Cabin Crew, prepare for landing.`;
@@ -1505,7 +1505,7 @@ function buildFOChecklist() {
           var key = pi+'-'+ii;
           var done = clState[key];
           var isPA = item.text.indexOf('PA:') === 0;
-          var resolved = (item.cmd||'')
+          var resolved = rankAnn(item.cmd||'')
             .replace(/\[NAME\]/g, nm)
             .replace(/\[DESTINATION\]/g, dst)
             .replace(/\$\{getFlightTimeStr\(\)\}/g, getFlightTimeStr());
@@ -4600,6 +4600,18 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
 else enforceLogin();
 
 
+
+
+function rankTitle() {
+  const sel = g('inp-rank');
+  return sel && sel.value ? sel.value : 'First Officer';
+}
+// ── SPEAKING AS: swaps First Officer / Captain in announcements for the chosen rank ──
+function rankAnn(t) {
+  const sel = g('inp-rank');
+  const rank = sel && sel.value ? sel.value : 'First Officer';
+  return String(t).replace(/(Senior )?(First Officer|Captain) (?=\[NAME\])/g, rank + ' ');
+}
 // ── NOTAMS: show only the notices for the selected aircraft ──
 function notamKey(v) {
   v = v || '';
