@@ -1038,7 +1038,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.32</span>
+      <span class="topbar-badge">v1.2.33</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -4606,6 +4606,62 @@ function rankTitle() {
   const sel = g('inp-rank');
   return sel && sel.value ? sel.value : 'First Officer';
 }
+
+// ── CABIN MANAGER: route ID and weather fill the announcements ──
+function cmTemplates() {
+  document.querySelectorAll('#page-cm .s-text.pf-cmd').forEach(function (el) {
+    if (!el.dataset.tpl) el.dataset.tpl = el.textContent;
+  });
+}
+function cmApply() {
+  cmTemplates();
+  const rid = (g('cm-route') ? g('cm-route').value : '').replace(/\D/g, '');
+  const f = rid ? routeFind(rid) : null;
+  const dest = f ? f.r.dest.replace(/\s*\[.*\]\s*$/, '') : '';
+  const callsign = rid ? 'SPA' + rid : '';
+  const name = (g('cm-name') ? g('cm-name').value : '').trim() || '[NAME]';
+  const temp = (document.getElementById('cm-temp').dataset.v || '');
+  const time = (document.getElementById('cm-time').dataset.v || '');
+  document.getElementById('cm-callsign').textContent = callsign || '–';
+  document.getElementById('cm-dest').textContent = dest || '–';
+  document.getElementById('cm-temp').textContent = temp ? temp + ' °C' : '–';
+  document.getElementById('cm-time').textContent = time || '–';
+  document.querySelectorAll('#page-cm .s-text.pf-cmd').forEach(function (el) {
+    el.textContent = el.dataset.tpl
+      .replace(/\[CALLSIGN\]/g, callsign || '[CALLSIGN]')
+      .replace(/\[DESTINATION\]/g, dest || '[DESTINATION]')
+      .replace(/\[NAME\]/g, name)
+      .replace(/\[TEMP\]/g, temp || '[TEMP]')
+      .replace(/\[TIME\]/g, time || '[TIME]');
+  });
+}
+function cmRoute() {
+  const rid = (g('cm-route').value || '').replace(/\D/g, '');
+  const f = rid ? routeFind(rid) : null;
+  const plane = f ? ccPlaneFromAc(f.r.ac) : null;
+  if (plane && g('cm-plane')) g('cm-plane').value = plane;
+  cmApply();
+  if (f) cmWeather();
+}
+async function cmWeather() {
+  const msg = document.getElementById('cm-wx-msg');
+  const rid = (g('cm-route').value || '').replace(/\D/g, '');
+  const f = rid ? routeFind(rid) : null;
+  if (!f) { msg.textContent = 'Enter a valid route ID first.'; return; }
+  const icao = (f.r.dest.match(/\[(.*?)\]/) || [])[1] || '';
+  const c = ICAO_COORDS[icao];
+  if (!c) { msg.textContent = 'No coordinates for ' + icao + '. Type the temp and time yourself.'; return; }
+  msg.textContent = 'Fetching weather...';
+  try {
+    const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + c[0] + '&longitude=' + c[1] + '&current=temperature_2m&timezone=auto');
+    const cur = (await res.json()).current;
+    document.getElementById('cm-temp').dataset.v = String(Math.round(cur.temperature_2m));
+    document.getElementById('cm-time').dataset.v = cur.time.split('T')[1].slice(0, 5);
+    msg.textContent = 'Weather at ' + icao + ' updated.';
+  } catch (e) { msg.textContent = 'Weather unavailable (check the internet connection).'; }
+  cmApply();
+}
+document.addEventListener('DOMContentLoaded', function () { cmTemplates(); });
 // ── SPEAKING AS: swaps First Officer / Captain in announcements for the chosen rank ──
 function rankAnn(t) {
   const sel = g('inp-rank');
