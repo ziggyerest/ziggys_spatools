@@ -1,0 +1,158 @@
+<div id="page-atc" class="page" style="max-width:900px">
+  <div style="font-size:1.2rem;font-weight:700;letter-spacing:-.01em;margin-bottom:4px">🗼 Air Traffic Control</div>
+  <div style="font-size:.8rem;color:var(--text3);margin-bottom:16px">Click any line to copy it. Communications are in English, and letters are always spelt with the phonetic alphabet.</div>
+  <div class="s-section"><h3>ATC Info</h3>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Naming format: GCXXXX [-] Username [-] Air Traffic Controller [-] Languages</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Uniform: regular Ground Crew uniform with the green Ground Crew vest. Must be worn at all times.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">After briefing, teleport to the Ground Manager like all Ground Crew. If the airport has a tower, enter it once your regular GC tasks are done (walk into the door).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Other Ground Crew tasks are only allowed when free from ATC, and ONLY with the Ground Manager's permission.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Role: get the Captain's aircraft to the destination safely. Use the airport chart for the route. Announcements use :scriptchat atc (script). If there is no Ground Manager with ATC certification, a trusted Ground Crew member or ATC runs the Ground Communications.</div></div>
+</div>
+  
+<div class="s-section"><h3>ATC Comms: Ground crew communications</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat gc [GC] SPA [CODE], Ground Crew, confirm communications test is successful.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Ground Crew, communications test is successful.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat gc [GC] SPA [CODE], Ground Crew, confirm parking brake is set.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Ground Crew, parking brake confirmed to be set.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat gc [GC] SPA [CODE], Ground Crew, confirm clearance to attach ground vehicles.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Ground Crew, clear to attach all necessary ground vehicles.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat gc [GC] SPA [CODE], Ground Crew, confirm clearance to detach all ground vehicles.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Ground Crew, clear to detach ground vehicles.</div></div>
+</div>
+<div class="s-section"><h3>ATC Comms: Before boarding (xx:50 - xx:10)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] (DEP AIRPORT) clearance, SPA (CALLSIGN) at gate (NUMBER), requesting IFR clearance to (DEST AIRPORT CODE).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA flight (CALLSIGN) IFR clearance to (DEST AIRPORT CODE) approved, using the departure SID then as filed, expect flight level 350, 10 minutes after departure and expect runway (RUNWAY), contact ground when ready to push.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Cleared to (DEST AIRPORT CODE) via the departure SID then as filed going to flight level 350, 10 minutes after departure. we&#x27;ll contact ground when ready to push, thanks.</div></div>
+</div>
+<div class="s-section"><h3>ATC Comms: When ready for pushback</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] (DEP AIRPORT) ground, SPA (CALLSIGN) with current, request push and start.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) push and start approved, push tail (RIGHT/LEFT).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Pushing back tail to the (RIGHT/LEFT), SPA (CALLSIGN).</div></div>
+<div class="info-box" style="margin-bottom:8px">At Southwest: :scriptchat fd [FD] (DEP AIRPORT) ground, SPA (CALLSIGN) with current, request for start.</div>
+<div class="info-box" style="margin-bottom:8px">At Southwest: :scriptchat atc [ATC] SPA (CALLSIGN) start approved.</div>
+<div class="info-box" style="margin-bottom:8px">At Southwest: :scriptchat fd [FD] Roger starting engines.</div>
+</div>
+<div class="s-section"><h3>ATC Comms: When ready for taxi</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] (AIRPORT CODE) Ground SPA (CALLSIGN) on (TAXIWAY), ready for taxi.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) taxi to active, runway (number) via, (TAXI ROUTE).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Taxi to active, runway (number) via (TAXI ROUTE). SPA (CALLSIGN).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) monitor the frequency.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Monitor the frequency SPA (CALLSIGN).</div></div>
+</div>
+<div class="s-section"><h3>ATC Comms: Takeoff and departure</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN), runway (RUNWAY) cleared for takeoff.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Runway (RUNWAY) cleared for takeoff SPA (CALLSIGN).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) contact departure.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Over to departure SPA (CALLSIGN), G&#x27;day.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] (DEPARTURE) departure, SPA (callsign) is with you flying on route as filed.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] Roger, SPA (CALLSIGN) cleared to flight level 350, continue route as filed.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Cleared up to flight level 350.</div></div>
+</div>
+<div class="s-section"><h3>ATC Comms: During cruise</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) frequency change to destination center approved. G&#x27;day.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Over to arrival center.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Good morning center, SPA (CALLSIGN) with you at Flight Level 350.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] Copy, welcome SPA (CALLSIGN).</div></div>
+</div>
+<div class="s-section"><h3>ATC Comms: Before descent</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] SPA (CALLSIGN) requesting permission to descend to flight level 200.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) cleared to descend to flight level 200, continue route as filed.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) change frequency over to arrival.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Changing frequency to arrival, SPA (CALLSIGN).</div></div>
+</div>
+<div class="s-section"><h3>ATC Comms: During descent</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] (DESTINATION) arrival SPA (CALLSIGN) with current for arrival into (DESTINATION).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) welcome, keep your own navigation expect the ILS for runway (NUMBER).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Continuing with our own navigation, SPA (CALLSIGN).</div></div>
+</div>
+<div class="s-section"><h3>ATC Comms: On approach</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) Over to Tower.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Contacting tower SPA (CALLSIGN).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Tower SPA (CALLSIGN) on approach to runway (NUMBER).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) runway (RUNWAY) cleared to land.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Cleared to land runway (NUMBER), SPA (CALLSIGN).</div></div>
+</div>
+<div class="s-section"><h3>ATC Comms: After landing</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) contact ground, and welcome.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Over to ground SPA (CALLSIGN), thanks.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Ground SPA (CALLSIGN) off runway (NUMBER) on (TAXIWAY), request taxi to the ramp.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) taxi to the ramp, via (TAXI ROUTE).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] To the ramp, via (TAXI ROUTE), for SPA (CALLSIGN).</div></div>
+</div>
+<div class="s-section"><h3>ATC Comms: Extra: holding pattern</h3><div class="info-box" style="margin-bottom:8px">Only if arrival ground needs more time. Tell the Captain to make left or right hand circles at the same altitude until told to break.</div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) maintain (right/left) holding pattern.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Roger maintaining (right/left) holding pattern SPA (CALLSIGN).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) break holding pattern continue as filed.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Roger breaking holding pattern, continue as filed.</div></div>
+</div>
+<div class="s-section"><h3>ATC Comms: Extra: go around (FD call)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Going around runway (RUNWAY) SPA (CALLSIGN).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] Roger climb and maintain FL050 off to the (right/left) switch over to arrivals.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Climb and maintain FL050 over to arrivals.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] SPA (CALLSIGN) climbing FL050 for re-approach runway (RUNWAY).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] Roger, clear to re-approach runway (RUNWAY) SPA (CALLSIGN).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Cleared to re-approach runway (RUNWAY) SPA (CALLSIGN).</div></div>
+</div>
+<div class="s-section"><h3>ATC Comms: Extra: go around (ATC call)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) Go Around.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Going Around SPA (CALLSIGN).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] SPA (CALLSIGN) climb and maintain FL050, over to arrivals.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Climb and maintain FL050 over to arrivals, for SPA (CALLSIGN).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] SPA (CALLSIGN) climbing FL050 for re-approach runway (RUNWAY).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] Roger, clear to re-approach runway (RUNWAY) SPA (CALLSIGN).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [FD] Cleared to re-approach runway (RUNWAY) SPA (CALLSIGN).</div></div>
+</div>
+
+
+<div class="s-section"><h3>Phonetic Alphabet</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">A = Alpha</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">B = Bravo</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">C = Charlie</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">D = Delta</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">E = Echo</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">F = Foxtrot</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">G = Golf</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">H = Hotel</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">I = India</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">J = Juliett</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">K = Kilo</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">L = Lima</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">M = Mike</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">N = November</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">O = Oscar</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">P = Papa</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Q = Quebec</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">R = Romeo</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">S = Sierra</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">T = Tango</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">U = Uniform</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">V = Victor</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">W = Whiskey</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">X = X-ray</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Y = Yankee</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Z = Zulu</div></div>
+</div>
+  <div class="s-section"><h3>Squawk Codes</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">0000, 7777, 7500, 7600: Never to be used. Reserved for military transponders or forbidden emergency roleplays.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">0001 - 7776: Commercial aviation squawk codes. Can be used by all commercial aircraft during a flight.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">7700: Emergency only. Alerts ATC that the aircraft has an emergency.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Any abuse of codes can lead to consequences. Passengers may know some of these codes.</div></div>
+</div>
+  <div class="s-section"><h3>Standard Taxi Instruction Types</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Push tail left/right: Sub-instruction for pushback. Decides which side the tail goes.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Taxi to: Where and how to taxi. Includes the taxi route the Captain must follow.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Hold position (of): Aircraft must stop immediately or at a taxi point. High priority issues only, such as someone standing or something blocking the route.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Hold short of: Aircraft will not line up on the runway yet. Only when the host says so, for non-urgent aircraft issues.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Line up and wait: Aircraft taxis onto the runway but does not take off.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Cleared for takeoff: Clearance for the aircraft to take off.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">All instructions are in the ATC document. Leaking any part of it is strictly prohibited.</div></div>
+</div>
+  <div class="s-section"><h3>Airport Charts (standard taxi routes)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Each chart shows the taxiways, gates and runways for ATC and the Flight Deck. Check the chart for runway direction.</div></div>
+</div>
+<div class="s-section"><h3>London Heathrow (LHR)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Quebec Lima to 27. (You may also take a taxiway like Quebec 1, 2, 3, 4, Charlie, Hotel or Romeo and make a left on Lima to enter the RW.)</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: Any of the exits to Alpha to the ramp.</div></div>
+</div>
+<div class="s-section"><h3>Mark Neris International (MNI / KMNI)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Bravo Charlie Foxtrot to 09.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: B/B6 Lima Echo Delta to the ramp.</div></div>
+</div>
+<div class="s-section"><h3>Punta Cana International (PUJ / MDPC)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Victor Sierra to 36.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: Any exit Yankee to the ramp.</div></div>
+</div>
+<div class="s-section"><h3>Southwest Regional (ABY / KABY)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Uniform Hotel Kilo Bravo to ? (chart text unclear, check the chart).</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: Any exit to Lima to the ramp.</div></div>
+</div>
+<div class="s-section"><h3>Summit Peak Regional (BJC / KBJC)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Bravo, Bravo 1, to 19.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: Lima 2, Lima, Papa 1, Papa, to the ramp.</div></div>
+</div>
+<div class="s-section"><h3>Paine Field International (KPAE)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Charlie Alpha Alpha 1 to 16.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: Any exit, Hotel, any B1, B2, B3, B4, Bravo to the ramp.</div></div>
+</div>
+<div class="s-section"><h3>Ronald Reagan (DCA / KDCA)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Departure: Juliett, Echo to Runway 01.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Arrival: Bravo [X], Bravo, Papa to the ramp.</div></div>
+</div>
+</div>

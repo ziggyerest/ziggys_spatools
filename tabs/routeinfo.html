@@ -1,0 +1,10 @@
+<div id="page-routeinfo" class="page" style="max-width:900px">
+  <div style="font-size:1.2rem;font-weight:700;margin-bottom:4px">🧭 Route Info</div>
+  <div style="font-size:.8rem;color:var(--text3);margin-bottom:14px">Type a route ID to see everything about that route.</div>
+  <div class="form-group" style="max-width:240px;margin-bottom:12px"><label>Route ID</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2)">SPA</span><input id="ri-route" placeholder="220" oninput="renderRouteInfo()"></div></div>
+  <div class="form-group" style="max-width:320px;margin-bottom:12px"><label>Aircraft (leave on route aircraft, or pick one)</label><select id="ri-ac" onchange="renderRouteInfo()"><option value="">Use route aircraft</option><option>Airbus A220-300</option><option>Airbus A318</option><option>Airbus A319</option><option>Airbus A320-231</option><option>Airbus A321neo</option><option>Airbus A330-941neo</option><option>Airbus A350-900</option><option>Boeing 737 MAX 8</option><option>Boeing 777-300ER</option><option>Boeing 787-9 Dreamliner</option></select></div>
+  <div id="ri-out" style="border:1px solid #1a3456;border-radius:12px;background:#0a1a30;padding:6px 4px;min-height:60px">Enter a route ID.</div>
+  <button class="roles-tab-btn active" style="margin-top:12px" onclick="copyRouteInfo()">📋 Copy route info</button>
+  <button class="roles-tab-btn" style="margin-top:12px" onclick="riCheckWeather()">🌤️ Check weather</button>
+  <div id="ri-wx" style="margin-top:8px;font-size:.84rem;color:#9bb8d4"></div>
+</div>

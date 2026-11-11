@@ -1,0 +1,378 @@
+<div id="page-roles" class="page" style="max-width:1080px">
+
+  <div class="roles-hero">
+    <div class="roles-hero-inner">
+      <div class="roles-hero-icon">🎭</div>
+      <div>
+        <div class="roles-hero-title">Airport Roles</div>
+        <div class="roles-hero-sub">Everything you need for each role — scripts, commands, procedures, all click-to-copy</div>
+      </div>
+      <div class="greet-name-pill">
+        <span class="greet-name-label">✏ Name</span>
+        <input id="roles-name" type="text" placeholder="Ziggy" value="Ziggy" oninput="renderRoleTab()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Role selector -->
+  <div class="roles-tab-row">
+    <button class="roles-tab-btn active" onclick="selectRoleTab('csa',this)">🪪 Customer Service</button>
+    <button class="roles-tab-btn" onclick="selectRoleTab('gate',this)">🚪 Gate Agent</button>
+    <button class="roles-tab-btn" onclick="selectRoleTab('premium',this)">🥂 Premium Lounge</button>
+    <button class="roles-tab-btn" onclick="selectRoleTab('investor',this)">💎 Investor Lounge</button>
+  </div>
+
+  <!-- ══════ CSA ══════ -->
+  <div id="roletab-csa" class="roletab active">
+
+    <div class="role-info-header">
+      <div class="role-info-badge">🪪</div>
+      <div>
+        <div class="role-info-title">Customer Service Assistant</div>
+        <div class="role-info-meta">Tool: <code>:give me flag</code> · <code>!notepad</code> · Stand at check-in area from briefing until CC walk</div>
+        <div class="role-info-meta">Name: <code>:name me NAME [-] Customer Service Assistant [-] [ENG]</code></div>
+      </div>
+    </div>
+
+    <div class="role-cols">
+      <div>
+
+        <div class="rs"><div class="rs-title">👋 Opening Greeting</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Standard</div><div class="rc-text" data-name>Hey, welcome to South Pacific Airways! I'm [NAME] — is there anything I can help you with today?</div></div>
+        </div>
+
+        <div class="rs"><div class="rs-title">🕐 Flight Times & Check-In Schedule</div>
+          <div class="role-table">
+            <div class="role-table-row header"><span>Flight Time</span><span>Premium Opens</span><span>Economy Opens</span><span>Boarding</span></div>
+            <div class="role-table-row"><span>XX:00</span><span>XX:52</span><span>XX:00</span><span>XX:11</span></div>
+            <div class="role-table-row"><span>XX:15</span><span>XX:07</span><span>XX:15</span><span>XX:26</span></div>
+            <div class="role-table-row"><span>XX:30</span><span>XX:22</span><span>XX:30</span><span>XX:41</span></div>
+            <div class="role-table-row"><span>XX:45</span><span>XX:37</span><span>XX:45</span><span>XX:56</span></div>
+          </div>
+        </div>
+
+        <div class="rs"><div class="rs-title">❓ Common Questions</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Economy check-in time</div><div class="rc-text">Economy check-in will open at [TIME]!</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">What does XX:00 mean</div><div class="rc-text">XX:00 displays the minute of time — it just means the minute of any specific hour! For me the time would be [TIME].</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Class says no seats left</div><div class="rc-text">It says zero seats left because the class isn't open yet — it will open at [TIME]!</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Can't check in</div><div class="rc-text" data-name>I apologise for that, one moment while I set you up!</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">How to join staff</div><div class="rc-text">If you're looking to join the team, hop on our Discord — it's the Communications server. Once you're in, check out the #careers channel and you'll find all the open roles there. Just apply for whatever takes your fancy!</div></div>
+        </div>
+
+        <div class="rs"><div class="rs-title">🎫 Check-In Commands</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Investor</div><div class="rc-text rc-cmd">:give [USER] investor | :give [USER] flight | :give [USER] lounge</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">First Class</div><div class="rc-text rc-cmd">:give [USER] first | :give [USER] flight | :give [USER] lounge</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Business</div><div class="rc-text rc-cmd">:give [USER] business | :give [USER] flight | :give [USER] lounge</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Economy</div><div class="rc-text rc-cmd">:give [USER] economy | :give [USER] flight</div></div>
+        </div>
+
+        <div class="rs"><div class="rs-title">😡 Trollers & Exploiters</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Troller — notify staff</div><div class="rc-text rc-cmd">:notify %sta [USERNAME] is trolling in the self check-in area - [YOUR NAME]</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Troller — bomb/NSFW/9-11</div><div class="rc-text rc-cmd">:notify %sta [USERNAME] is trolling in the self check-in area saying bomb threats/9-11 jokes/nsfw roleplay - [YOUR NAME]</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Exploiter — notify staff</div><div class="rc-text rc-cmd">:notify %sta [USERNAME] is exploiting in the self check-in area [SITUATION] - [YOUR NAME]</div></div>
+          <div class="role-note">⚠️ Trollers: one verbal warning only. Exploiters: NO warnings — notify immediately.</div>
+        </div>
+
+      </div>
+      <div>
+
+        <div class="rs"><div class="rs-title">🤝 Allied Representative</div>
+          <div class="role-steps">
+            <div class="role-step"><span class="role-step-num">1</span><span>Run <code>!profile [USER]</code> → click Groups → search "South Pacific Airways"</span></div>
+            <div class="role-step"><span class="role-step-num">2</span><span>If not found → ask them to ping you in the Communications server</span></div>
+            <div class="role-step"><span class="role-step-num">3</span><span>If confirmed → run upgrade commands below</span></div>
+          </div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Not found — ask to ping</div><div class="rc-text" data-name>Sorry, you must've not been ranked in the Roblox group — could you please ping [NAME] in the SPA communications server?</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Cannot find at all</div><div class="rc-text">I apologise but I cannot find you in any of our systems — please make a ticket in the Communications server to fix that!</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Allied Rep upgrade commands</div><div class="rc-text rc-cmd">:give [USER] first | :give [USER] lounge | :give [USER] flight | :name [USER] [USERNAME] // Allied Representative</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Done</div><div class="rc-text">I've just finished upgrading you — thank you for flying with SPA!</div></div>
+        </div>
+
+        <div class="rs"><div class="rs-title">💎 Investor Guesting</div>
+          <div class="role-steps">
+            <div class="role-step"><span class="role-step-num">1</span><span>Run <code>:viewtools [USER]</code> — check for investor ticket in inventory</span></div>
+            <div class="role-step"><span class="role-step-num">2</span><span>If no ticket → direct to self check-in kiosk + run <code>!profile [USER]</code> to verify "Investors" rank</span></div>
+            <div class="role-step"><span class="role-step-num">3</span><span>If asking on behalf of investor → get investor's username first</span></div>
+            <div class="role-step"><span class="role-step-num">4</span><span>Once verified → run commands on the guest</span></div>
+          </div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Find investor first</div><div class="rc-text">Alright! Please locate the investor or give their username so I can verify!</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Guest upgrade commands</div><div class="rc-text rc-cmd">:give [USER] Investor | :give [USER] lounge | :give [USER] flight | :name [USER] [USERNAME] // Investor guest</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Done</div><div class="rc-text">The guest has been given all appropriate items! Have a wonderful flight!</div></div>
+        </div>
+
+        <div class="rs"><div class="rs-title">🎟️ One-Time Upgrade & OnePass</div>
+          <div class="role-steps">
+            <div class="role-step"><span class="role-step-num">1</span><span>Ask them to ping you in the Communications server</span></div>
+            <div class="role-step"><span class="role-step-num">2</span><span>Check for roles: One-Time-Only Investor/First/Business, or OnePass</span></div>
+            <div class="role-step"><span class="role-step-num">3</span><span>If role found → run upgrade commands</span></div>
+            <div class="role-step"><span class="role-step-num">4</span><span>Inform an HR+ via ticket or DM that the upgrade was used</span></div>
+          </div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Ask to ping</div><div class="rc-text" data-name>Please go ahead and ping [NAME] in the SPA communications server so I can verify!</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Role not found</div><div class="rc-text">Sorry — it looks like that upgrade was already used or never existed.</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Upgrade commands</div><div class="rc-text rc-cmd">:give [USER] [CLASS] | :give [USER] flight | :give [USER] lounge</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Done</div><div class="rc-text">I've now processed your upgrade and you have the needed items. Enjoy your flight!</div></div>
+          <div class="role-note">⚠️ Remind them they can't use the one-time ticket again (except OnePass). Notify HR+ after.</div>
+        </div>
+
+        <div class="rs"><div class="rs-title">🛠️ Commands</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Get flag</div><div class="rc-text rc-cmd">:give me flag</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Notepad</div><div class="rc-text rc-cmd">!notepad</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Check profile</div><div class="rc-text rc-cmd">!profile [user]</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">View inventory</div><div class="rc-text rc-cmd">:viewtools [user]</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Notify staff</div><div class="rc-text rc-cmd">:notify %sta [MESSAGE] - [NAME]</div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+<!-- ══════ GATE AGENT ══════ -->
+  <div id="roletab-gate" class="roletab">
+
+    <div class="role-info-header">
+      <div class="role-info-badge">🚪</div>
+      <div>
+        <div class="role-info-title">Gate Agent</div>
+        <div class="role-info-meta">No tools required · Stand at the gate desk · Run <code>:to</code> to enter desk · Hold <b>E</b> to open Queue Management System</div>
+        <div class="role-info-meta">Name: <code>Firstname L. [-] Gate Agent [-] [ENG]</code></div>
+        <div class="role-info-meta">⚠️ Gate Agents do NOT do the CC Walk — board once economy boarding starts · Cannot serve food or drinks at gate</div>
+      </div>
+    </div>
+
+    <div class="role-cols">
+      <div>
+
+        <div class="rs">
+          <div class="rs-title">👋 Greeting</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Standard</div><div class="rc-text" data-name>Hey! I'm [NAME], your gate agent today. What can I do for you?</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Formal</div><div class="rc-text" data-name>Welcome! I'm [NAME] on the gate today — need anything?</div></div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🚪 Gate Setup Steps</div>
+          <div class="role-steps">
+            <div class="role-step"><span class="role-step-num">1</span><span>Approach the gate desk</span></div>
+            <div class="role-step"><span class="role-step-num">2</span><span>Run <code>:to</code> command to enter</span></div>
+            <div class="role-step"><span class="role-step-num">3</span><span>Hold <b>E</b> to open Queue Management System</span></div>
+            <div class="role-step"><span class="role-step-num">4</span><span>Click <b>Open</b> to open the queue for passengers</span></div>
+            <div class="role-step"><span class="role-step-num">5</span><span>Assist passengers — click <b>NEXT</b> after each one</span></div>
+          </div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🎒 Amenities (max 3 per passenger)</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Over limit</div><div class="rc-text" data-name>Sorry, passengers can only get up to 3 amenities! Is there anything else I can do for you?</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Freecam</div><div class="rc-text rc-cmd">:freecam [user]</div></div>
+          <div class="role-note">💡 You can give freecam at the gate — you cannot serve food or drinks</div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🚫 No Ticket</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Deny entry</div><div class="rc-text" data-name>Sorry, I can't let you through without a ticket — head to check-in and they'll get you sorted!</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Direct to CSA</div><div class="rc-text" data-name>Head over to the CSA at check-in — they'll sort you out!</div></div>
+        </div>
+
+      </div>
+      <div>
+
+        <div class="rs">
+          <div class="rs-title">📢 Gate Announcements</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Boarding open</div><div class="rc-text" data-name>Hey everyone, boarding is now open! Please have your tickets ready and make your way to the gate.</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Economy boarding</div><div class="rc-text" data-name>Economy boarding is open! Come on through when you're ready.</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Delay</div><div class="rc-text" data-name>Hey, sorry about the wait — we'll be boarding shortly, just hang tight!</div></div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🚦 Crowd Control</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Line cutter</div><div class="rc-text" data-name>Hey, you'll need to go to the back of the queue!</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Troller warning</div><div class="rc-text" data-name>I'm going to need you to calm down please — any more disruptions and I'll have to get security involved.</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Bomb joke</div><div class="rc-text rc-cmd">:notify %staff [user] making bomb/hijack jokes at gate — no warning given</div></div>
+          <div class="role-note">⚠️ Bomb/hijack/NSFW/9-11 jokes = NO warning, notify staff directly</div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🛠️ Gate Commands</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Enter gate</div><div class="rc-text rc-cmd">:to [gate desk]</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Freecam pax</div><div class="rc-text rc-cmd">:freecam [user]</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Track usernames</div><div class="rc-text rc-cmd">:track all</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Notify staff</div><div class="rc-text rc-cmd">:notify %staff [MESSAGE] - [NAME]</div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ PREMIUM LOUNGE ══════ -->
+  <div id="roletab-premium" class="roletab">
+
+    <div class="role-info-header">
+      <div class="role-info-badge">🥂</div>
+      <div>
+        <div class="role-info-title">Premium Lounge Attendant</div>
+        <div class="role-info-meta">Tools: <code>:give me drinks</code> · <code>:give me tray</code> · Flag equipped at all times</div>
+        <div class="role-info-meta">Name: <code>Firstname L. [-] Premium Lounge Attendant [-] [ENG]</code></div>
+        <div class="role-info-meta">Services: Bar Service (drinks platter) · Table Service (drinks + warm towels)</div>
+      </div>
+    </div>
+
+    <div class="role-cols">
+      <div>
+
+        <div class="rs">
+          <div class="rs-title">👋 Welcome Greeting</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Full welcome</div><div class="rc-text" data-name>Welcome to the Premium Lounge! I'm [NAME] and I'll be looking after you today. Make yourself at home!</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Short welcome</div><div class="rc-text" data-name>Hey, welcome to the Premium Lounge! I'm [NAME] — can I get you a drink or a warm towel?</div></div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🍸 Bar Service</div>
+          <div class="role-steps">
+            <div class="role-step"><span class="role-step-num">1</span><span>Approach and greet the passenger</span></div>
+            <div class="role-step"><span class="role-step-num">2</span><span>Ask what they would like</span></div>
+            <div class="role-step"><span class="role-step-num">3</span><span>Use Serving GUI on Drinks Platter to hand items</span></div>
+          </div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Bar greeting</div><div class="rc-text" data-name>Hey! Can I get you a drink?</div></div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🛋️ Table Service</div>
+          <div class="role-steps">
+            <div class="role-step"><span class="role-step-num">1</span><span>Approach, greet, ask what they'd like</span></div>
+            <div class="role-step"><span class="role-step-num">2</span><span>Hand drinks using Drinks Platter only</span></div>
+            <div class="role-step"><span class="role-step-num">3</span><span>Equip Tray of Warm Towels → <code>:give (user) warm</code> if they want a towel</span></div>
+            <div class="role-step"><span class="role-step-num">4</span><span>If they request food, redirect to the bar</span></div>
+          </div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Seated greeting</div><div class="rc-text" data-name>Now that you are able to relax, may I offer you a beverage of your choice followed by a warm towel to enjoy?</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Allergy check</div><div class="rc-text" data-name>Nice one! Any allergies I should know about?</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">RP</div><div class="rc-text rc-rp">-pours drink into glass-</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">RP</div><div class="rc-text rc-rp">-grabs warm towel-</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Order ready</div><div class="rc-text" data-name>Here you go! Give me a shout if you need anything else.</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Warm towel cmd</div><div class="rc-text rc-cmd">:give (user) warm</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Food redirect</div><div class="rc-text" data-name>Food's only at the bar unfortunately — head over there and they'll sort you out!</div></div>
+        </div>
+
+      </div>
+      <div>
+
+        <div class="rs">
+          <div class="rs-title">🏢 Lounge Locations</div>
+          <div class="role-table">
+            <div class="role-table-row header"><span>Airport</span><span>Premium Lounge</span></div>
+            <div class="role-table-row"><span>Summit Peak</span><span>Pacific Club (Ground Floor)</span></div>
+            <div class="role-table-row"><span>Punta Cana</span><span>Premium Lounge</span></div>
+            <div class="role-table-row"><span>Southwest Regional</span><span>The Silver Club</span></div>
+            <div class="role-table-row"><span>London Heathrow</span><span>The Silver Club</span></div>
+            <div class="role-table-row"><span>Okhotsk Monbetsu</span><span>Sora Lounge</span></div>
+            <div class="role-table-row"><span>Mark Neris</span><span>The Silver Club</span></div>
+            <div class="role-table-row"><span>Phoenix-Mesa</span><span>South Pacific Lounge</span></div>
+          </div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🚪 Boarding — Escort to Gate</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Gate escort</div><div class="rc-text" data-name>Hope you enjoyed the lounge! Boarding's about to start so follow me to the gate.</div></div>
+          <div class="role-note">💡 Ensure flag is equipped before escorting. Passengers at gate by XX:08–09.</div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🛠️ Commands</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Drinks platter</div><div class="rc-text rc-cmd">:give me drinks</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Warm towels tray</div><div class="rc-text rc-cmd">:give me tray</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give warm towel</div><div class="rc-text rc-cmd">:give (user) warm</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Flag</div><div class="rc-text rc-cmd">:give me flag</div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ INVESTOR LOUNGE ══════ -->
+  <div id="roletab-investor" class="roletab">
+
+    <div class="role-info-header">
+      <div class="role-info-badge">💎</div>
+      <div>
+        <div class="role-info-title">Investor Lounge Attendant</div>
+        <div class="role-info-meta">Tools: <code>:give me drinks</code> · <code>:give me tray</code> · Flag equipped at all times</div>
+        <div class="role-info-meta">Name: <code>Firstname L. [-] Investor Lounge Attendant [-] [ENG]</code></div>
+        <div class="role-info-meta">⭐ Highest tier passengers — greetings must be more detailed and professional than any other role</div>
+      </div>
+    </div>
+
+    <div class="role-cols">
+      <div>
+
+        <div class="rs">
+          <div class="rs-title">👋 Welcome Greeting</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Full welcome</div><div class="rc-text" data-name>Welcome to the Investor Lounge! I'm [NAME] and I'll be taking care of you today. Make yourself comfortable — just let me know if there's anything at all you need.</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Bar service</div><div class="rc-text" data-name>Welcome to the Investor Lounge! I'm [NAME] — can I get you a drink or a warm towel to start?</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Table service</div><div class="rc-text" data-name>Hey! I'm [NAME], I'll be looking after you today. Can I get you a drink and a warm towel?</div></div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🍸 Bar Service</div>
+          <div class="role-steps">
+            <div class="role-step"><span class="role-step-num">1</span><span>Approach and greet the passenger warmly</span></div>
+            <div class="role-step"><span class="role-step-num">2</span><span>Ask what they would like</span></div>
+            <div class="role-step"><span class="role-step-num">3</span><span>Use Serving GUI on Drinks Platter to hand items</span></div>
+          </div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🛋️ Table Service</div>
+          <div class="role-steps">
+            <div class="role-step"><span class="role-step-num">1</span><span>Escort to a seat — do NOT take to the bar</span></div>
+            <div class="role-step"><span class="role-step-num">2</span><span>Greet and offer beverage + warm towel</span></div>
+            <div class="role-step"><span class="role-step-num">3</span><span>Check for allergies</span></div>
+            <div class="role-step"><span class="role-step-num">4</span><span>Do serving RP, use Drinks Platter for drinks</span></div>
+            <div class="role-step"><span class="role-step-num">5</span><span>Give warm towel: <code>:give (user) warm</code></span></div>
+          </div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Allergy check</div><div class="rc-text" data-name>Wonderful! Do you have any food allergies that we need to be aware of?</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">RP</div><div class="rc-text rc-rp">-pours drink into glass-</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">RP</div><div class="rc-text rc-rp">-grabs warm towel-</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Order ready</div><div class="rc-text" data-name>Here is your order! Please do not hesitate to ask me if you have any further concerns.</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Warm towel cmd</div><div class="rc-text rc-cmd">:give (user) warm</div></div>
+        </div>
+
+      </div>
+      <div>
+
+        <div class="rs">
+          <div class="rs-title">🏢 Lounge Locations</div>
+          <div class="role-table">
+            <div class="role-table-row header"><span>Airport</span><span>Investor Lounge</span></div>
+            <div class="role-table-row"><span>Summit Peak</span><span>Pacific Club (Basement)</span></div>
+            <div class="role-table-row"><span>Punta Cana</span><span>The Pub</span></div>
+            <div class="role-table-row"><span>Southwest Regional</span><span>Premium Lounge</span></div>
+            <div class="role-table-row"><span>London Heathrow</span><span>The Gold Club</span></div>
+            <div class="role-table-row"><span>Okhotsk Monbetsu</span><span>N/A</span></div>
+            <div class="role-table-row"><span>Mark Neris</span><span>Vemonteu</span></div>
+            <div class="role-table-row"><span>Phoenix-Mesa</span><span>N/A</span></div>
+          </div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🚪 Boarding — Escort to Gate</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Gate escort</div><div class="rc-text" data-name>Hope you had a great time! Your flight's boarding soon — let me walk you to the gate.</div></div>
+          <div class="role-note">💡 Flag equipped for the escort. Investors at gate by XX:08–09. If lounge attendant is present, wait for service to conclude before escorting.</div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🚪 Farewell</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Farewell</div><div class="rc-text" data-name>It was great having you! Have an amazing flight — hope to see you again soon!</div></div>
+        </div>
+
+        <div class="rs">
+          <div class="rs-title">🛠️ Commands</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Drinks platter</div><div class="rc-text rc-cmd">:give me drinks</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Warm towels tray</div><div class="rc-text rc-cmd">:give me tray</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give warm towel</div><div class="rc-text rc-cmd">:give (user) warm</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Flag</div><div class="rc-text rc-cmd">:give me flag</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Notify done</div><div class="rc-text rc-cmd">:notify %sta [Section] Done - [NAME]</div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

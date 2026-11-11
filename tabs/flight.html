@@ -1,0 +1,177 @@
+<div id="page-flight" class="page active">
+
+  
+  <!-- Route Search -->
+  <div id="recent-routes" style="display:none;margin-bottom:14px;display:flex;align-items:center;flex-wrap:wrap;gap:4px"></div>
+  <div style="margin-bottom:16px;position:relative">
+    <input id="route-search" placeholder="🔍  Search by city or route ID  (e.g. Tokyo, SPA280, London...)" 
+      oninput="searchRoutes()" autocomplete="off"
+      style="padding:11px 16px;font-size:.9rem;border-radius:12px;background:#0a1d36;border:1px solid #1a3456;color:var(--text);width:100%">
+    <div id="search-results" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:50;
+      background:#0a1d36;border:1px solid #1e90ff44;border-radius:12px;margin-top:6px;
+      max-height:280px;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.5)">
+    </div>
+  </div>
+<div class="form-grid">
+    <div class="form-group">
+      <label>Your Name</label>
+      <input id="inp-name" placeholder="Ziggy" oninput="update();saveState()">
+    </div>
+    <div class="form-group">
+      <label>Route ID</label>
+      <div class="form-row">
+        <span>SPA</span>
+        <input id="inp-rid" placeholder="1456" oninput="update();saveState()" style="max-width:170px">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Aircraft</label>
+      <select id="inp-ac" onchange="update()">
+        <option value="Airbus A318">Airbus A318</option>
+        <option value="Airbus A319">Airbus A319</option>
+        <option value="Airbus A220">Airbus A220</option>
+        <option value="Airbus A320">Airbus A320</option>
+        <option value="Boeing 737 MAX 8">Boeing 737 MAX 8</option>
+        <option value="Airbus A321neo" selected>Airbus A321neo</option>
+        <option value="Airbus A321XLR">Airbus A321XLR</option>
+        <option value="Airbus A330-941neo">Airbus A330-941neo</option>
+        <option value="Boeing 777-300ER">Boeing 777-300ER</option>
+        <option value="Boeing 787-9 Dreamliner">Boeing 787-9 Dreamliner</option>
+        <option value="Airbus A350-900">Airbus A350-900</option>
+        <option value="Airbus A380">Airbus A380</option>
+        <option value="Boeing 747">Boeing 747</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Flight Path</label>
+      <select id="inp-path" onchange="update()">
+        <option>Path A</option><option>Path B</option><option>Path C</option>
+        <option>Path D</option><option>Path E</option><option>Path F</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="route-hdr" class="route-header">Enter a Route ID above</div>
+
+  <div class="charts-toggle-row" id="charts-toggle-row" style="display:none">
+    <button id="charts-chk-btn" onclick="toggleCharts(this)" style="background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);color:var(--accent);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:.76rem;font-weight:600;font-family:'Inter',sans-serif;transition:all .15s">📊 Show Charts</button>
+  </div>
+  <div class="charts-grid" id="inline-charts"></div>
+
+  <div class="role-tabs">
+    <button class="active r-cpt" onclick="showRole('cpt',this,'r-cpt')">Captain</button>
+    <button onclick="showRole('fo',this,'r-fo')">First Officer</button>
+    <button onclick="showRole('so',this,'r-so')">Second Officer <span class="beta-badge">BETA</span></button>
+  </div>
+
+  <!-- ── CAPTAIN ── -->
+  <div id="role-cpt" class="role-panel active">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<div class="s-section"><h3>Captain Tips &amp; Tricks</h3><div class="info-box" style="margin-bottom:8px">Descent: know the correct level to approach the runway, as Roblox does not use normal plane physics. For immediate descent push the nose down, at -3 AOA max. Senior staff+ may go to -6 AOA for an immediate need to descend. Only pull the nose up when very close and at low speed. WATCH THE STALL SPEED.</div>
+<div class="info-box" style="margin-bottom:8px">Emergency flights: the fire is only visual. Listen to your host at all times and land. Do not go around unless told to. Let the fire trucks approach after you have landed.</div>
+<div class="info-box" style="margin-bottom:8px">Listen to your Deck Manager, Supervisor or Host. They are experienced, and you will never be told off for following their instruction.</div>
+<div class="info-box" style="margin-bottom:8px">If you can&#x27;t reach the cruise pad because your approach is wrong or you are too low, perform a Go Around and try again.</div>
+</div>
+<div class="s-section"><h3>Captain Priority &amp; Decisions</h3><div class="info-box" style="margin-bottom:8px">If you can&#x27;t be captain, contact the Deck Manager (or the host if there is none) for a valid reason, not because you don&#x27;t want to.</div>
+<div class="info-box" style="margin-bottom:8px">When a superior gives an instruction, do it immediately. They take responsibility for the order. Fighting back against a superior leads to severe punishments.</div>
+<div class="info-box" style="margin-bottom:8px">Air worthiness: you are responsible for the aircraft and can decide if it needs changing. If you think it is not airworthy during delag, notify the host so the aircraft can be changed or solved by your Deck Manager.</div>
+</div>
+
+
+
+
+
+    <div class="s-section">
+      <h3>When Boarding is in Progress or Complete</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text" id="cpt-board"></div></div>
+    </div>
+    <div class="s-section">
+      <h3>When Parked at Destination</h3>
+      <div class="wx-bar" id="cpt-wx-bar">
+        <div class="wx-item"><span class="wx-label">Dest Weather</span><span class="wx-val loading" id="wx-status">enter route ID first</span></div>
+        <button class="wx-fetch" onclick="fetchWeather()" id="wx-btn" style="display:none">Fetch Live Weather</button>
+        <div class="wx-item" id="wx-temp-item" style="display:none"><span class="wx-label">Temp</span><span class="wx-val" id="wx-temp">—</span></div>
+        <div class="wx-item" id="wx-cond-item" style="display:none"><span class="wx-label">Condition</span><span class="wx-val" id="wx-cond">—</span></div>
+        <div class="wx-item" id="wx-wind-item" style="display:none"><span class="wx-label">Wind</span><span class="wx-val" id="wx-wind">—</span></div>
+      </div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text" id="cpt-arr"></div></div>
+    </div>
+  </div>
+
+  <!-- ── FIRST OFFICER ── -->
+  <div id="role-fo" class="role-panel">
+    
+
+
+
+
+<div class="s-section"><h3>Chat Roleplay</h3><div class="info-box" style="margin-bottom:8px">Chat roleplay scripts are below in the FO panel. Use !notepad to copy and paste them into the command bar at the right time.</div>
+</div>
+
+
+    <div class="s-section">
+      <h3>When Cruising (After Reaching Cruise Altitude)</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text" id="fo-cruise"></div></div>
+    </div>
+    <div class="s-section">
+      <h3>Before Descent (Service Complete Before XX:40)</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text" id="fo-desc-early"></div></div>
+    </div>
+    <div class="s-section">
+      <h3>Before Descent (Standard / After XX:40)</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text" id="fo-desc"></div></div>
+    </div>
+    <div class="s-section">
+      <h3>When Seatbelt Sign is Turned On (1500ft)</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text" id="fo-1500"></div></div>
+    </div>
+
+    <div class="s-section" style="margin-top:22px">
+      <h3>FO Checklist</h3>
+      <div id="fo-checklist"></div>
+      <button onclick="resetChecklist()" style="margin-top:10px;background:none;border:1px solid var(--border);color:var(--sub);padding:5px 14px;border-radius:var(--radius);cursor:pointer;font-size:.78rem">Reset Checklist</button>
+    </div>
+  </div>
+
+  <!-- ── SECOND OFFICER ── -->
+  <div id="role-so" class="role-panel">
+    
+<div class="s-section"><h3>Delag Checks</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Aircraft all features checked.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Aircraft all features turned off.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Gear down, functional.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Everything clear, Delag checklist complete.</div></div></div>
+<div class="s-section"><h3>Cockpit Inspection</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Parking Brake set, confirmed.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Navigation Lights checked and confirmed.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Logos Lights on and checked.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Battery Switch on, confirmed.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] APU and APU Bleed confirmed on and ticked.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Engine bleed on and confirmed.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Flight Path checked and filed.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Cockpit Inspection complete.</div></div></div>
+<div class="s-section"><h3>Second Officer Walk-Around (Optional)</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Tires in good condition.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Fuselage checked.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Fuel quantity correct.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Rudder checked.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Engines good, in condition.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Windshield checked and in condition.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Nose checked.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Second Officer Walk Around complete.</div></div></div>
+<div class="s-section"><h3>Airport Roam, CC Walk &amp; Boarding</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:talk Welcome abroad!</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:talk Have an amazing flight!</div></div></div>
+<div class="s-section"><h3>Descend Procedures</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Engines monitored, stable.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Fuel monitored.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Radio has been set.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Landing briefing completed, Flight Deck is ready for descent.</div></div></div>
+<div class="s-section"><h3>Deboarding Procedures</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Engine 1 &amp; 2 shutdown confirmed.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] APU on checked.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] Battery Switch off checked.</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat fd [SO] APU off for shutdown confirmed.</div></div></div>
+
+
+
+    <div class="gate-row">
+      <label>Gate:</label>
+      <input id="inp-gate" placeholder="Gate 2" oninput="update();saveState()" style="max-width:130px">
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+  <button onclick="copyAllSO()" style="background:linear-gradient(135deg,#1565c0,#0d8a9e);border:none;color:#fff;padding:6px 16px;border-radius:20px;cursor:pointer;font-size:.78rem;font-weight:600">📋 Copy All SO Scripts</button>
+</div>
+<div id="so-scripts"></div>
+  </div>
+
+
+
+</div>

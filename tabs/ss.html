@@ -1,0 +1,863 @@
+<div id="page-ss" class="page" style="max-width:1080px">
+
+  <div class="ss-role-tabs" id="ss-role-tabs">
+    <button class="active" onclick="showSSRole('general',this)">📋 General</button>
+    <button onclick="showSSRole('comms',this)">📡 Comms</button>
+    <button onclick="showSSRole('tsa',this)">🔍 TSA</button>
+    <button onclick="showSSRole('cc_crowd',this)">🚦 Crowd Control</button>
+    <button onclick="showSSRole('checkin',this)">🏷️ Check-In Patrol</button>
+    <button onclick="showSSRole('gate',this)">🚪 Gate Patrol</button>
+    <button onclick="showSSRole('lounge',this)">🥂 Lounge Patrol</button>
+    <button onclick="showSSRole('tarmac',this)">🚗 Tarmac Patrol</button>
+    <button onclick="showSSRole('ap',this)">👮 Airport Police</button>
+    <button onclick="showSSRole('runway',this)">🛬 Runway Inspection</button>
+    <button onclick="showSSRole('paramedic',this)">🚑 Paramedic</button>
+    <button onclick="showSSRole('marshal',this)">🕵️ Air Marshal</button>
+    <button onclick="showSSRole('pta',this)">🛺 PTA</button>
+    <button onclick="showSSRole('pfo',this)">✈️ PFO</button>
+    <button onclick="showSSRole('bus',this)">🚌 Bus Escort</button>
+    <button onclick="showSSRole('emergency',this)">🚨 Emergency</button>
+    <button onclick="showSSRole('dep_check',this)">🛫 Dep. Check</button>
+    <button onclick="showSSRole('arr_check',this)">🛬 Arr. Check</button>
+    <button onclick="showSSRole('runway_dep',this)">🏃 Runway (Dep)</button>
+    <button onclick="showSSRole('runway_arr',this)">🏃 Runway (Arr)</button>
+    <button onclick="showSSRole('airport_check',this)">🏢 Airport Check</button>
+    <button onclick="showSSRole('deboard',this)">🚶 Deboarding</button>
+    <button onclick="showSSRole('mod',this)">⚖️ Moderation</button>
+    <button onclick="showSSRole('radio',this)">📻 Radio Codes</button>
+  </div>
+
+  <!-- ══════ GENERAL ══════ -->
+  <div id="ss-general" class="ss-panel active">
+    
+
+
+
+<div class="s-section"><h3>Interrogation Procedure</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:jpower [USER] 0</div></div><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:talk Hello. My name is [NAME] and I am an Airport Officer. You were detained due to [REASON]. You have the right to remain silent during this interrogation, but that may lead to your dismissal from this flight.</div></div></div>
+<div class="s-section"><h3>Aliases for Detaining</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:talk -cuffs- | !wait 2 | :talk [10-43] You have been detained and will be taken into interrogation. | !wait 2 | :talk You have the right to remain silent.</div></div></div>
+
+
+    <div class="info-box"><b>Safety &amp; Security — General Information</b><br>
+    Be in flight comms 30 minutes before flight time. Join the game at or before briefing time.<br>
+    Example: If flight is 08:00, be ready by <b>07:30</b>. Notify the host if you cannot attend or will be late.</div>
+
+    <div class="s-section"><h3>👔 Uniforms (3 only)</h3>
+      <div class="info-box">
+        · <b>Airport Patrol</b> — standard patrol uniform<br>
+        · <b>Air Marshal</b> — blends in with passengers, no name required<br>
+        · <b>Security Agent</b> — TSA scanner duty<br><br>
+        ⚠️ The <b>blue vest</b> is strictly for Security Sergeant only. Do not wear it unless assigned a destination duty that requires it.
+      </div>
+    </div>
+
+    <div class="s-section"><h3>🏷️ Naming Format</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text pf-cmd">:name me [NAME] [-] [ROLE] [-] [ENG]</div>
+      </div>
+      <div class="info-box">Air Marshal does NOT name themselves — keep the default blue display name. Run <code>:delete-overhead</code> to remove SPA rank display.</div>
+    </div>
+
+    <div class="s-section"><h3>🛠️ Key Commands</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:to [user]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:bring [user]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:freeze [user]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:chatlogs true</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:track [name/%team]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:bring [user] | :freeze [user]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:repeat 40 60 :track nonadmins</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me walkie</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me hand</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">!profile [user]</div></div>
+      <div class="info-box" style="margin-top:6px">💡 Have the walkie talkie equipped at ALL times — it looks professional and is required.</div>
+    </div>
+
+    <div class="s-section"><h3>🔗 GUI Panels</h3>
+      <div class="info-box">
+        · <b>Uniform GUI</b> — top left, 3-people icon → scroll right → Uniform<br>
+        · <b>Teleport Panel</b> — next to Uniform GUI, quick teleport to tarmac/gate etc.<br>
+        · <b>Insert GUI</b> — next to Teleport Panel, used to insert the Airport Explorer
+      </div>
+    </div>
+
+    <div class="s-section"><h3>🤜 Security Handcuffs</h3>
+      <div class="info-box">Command: <code>:give me hand</code><br><br>
+      Walk up to a passenger with the tool equipped and click to detain them. They will follow in front of you. Unequip to release.<br><br>
+      ✅ Use for: restraining trollers/glitchers during interrogation, removing someone from a restricted area.<br>
+      ❌ Do NOT use on regular passengers — this is abuse and will result in disciplinary action.
+      </div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me hand</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ COMMS ══════ -->
+  <div id="ss-comms" class="ss-panel">
+    <div class="info-box"><b>Communications &amp; Passenger Interaction</b><br>
+    S&amp;S primarily communicates through SY comms — an in-game DM via <code>:dm (users)</code>. Only managers should add staff to a DM unless no manager is present.</div>
+
+    <div class="s-section"><h3>💬 Communicating with Passengers</h3>
+      <div class="info-box">
+        <b>1. Auto-Updating Chatlogs</b><br>
+        Run <code>:chatlogs true</code> — keeps the chat window auto-refreshing so you can see all age groups. Keep this open at all times for moderation.<br><br>
+        <b>2. Chat Bubbles</b><br>
+        Use <code>:talk [msg]</code> to show a chat bubble above your head — visible to all passengers regardless of age group.<br><br>
+        <b>3. Private Chat Windows</b><br>
+        Use <code>:dm [user]</code> to open a private window for longer conversations — especially useful for interrogations.
+      </div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:chatlogs true</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:talk [your message]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:dm [user]</div></div>
+    </div>
+
+    <div class="s-section"><h3>🔍 Interrogation Roleplay</h3>
+      <div class="info-box" style="margin-bottom:8px">When starting an interrogation — teleport suspect to a restaurant/seating area away from the gate. Run <code>:jpower [user] 0</code> or <code>:freeze [user]</code>. Greet them, check profile (<code>!profile [user]</code>), ask questions, then release.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy 10-20 [location], suspect currently in custody and being interrogated. 10-12.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy 10-20 Interrogation Room, suspect currently in custody and being interrogated. 10-12.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy 10-72, suspect has been handled. Continuing patrol.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:bring [user] | :freeze [user]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:jpower [user] 0</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:jpower [user]</div></div>
+    </div>
+
+    <div class="s-section"><h3>📋 Profile Check</h3>
+      <div class="info-box">Run <code>!profile [user]</code> → check:<br>
+      · <b>Account age</b> — minimum 60 days<br>
+      · <b>Groups</b> — at least 5 groups<br>
+      · <b>Moderation history</b> — use your own knowledge, flag familiar usernames to other S&amp;S members<br>
+      If they are in little/no groups and have no friends, treat as highly suspicious.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">!profile [user]</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ CHECK-IN PATROL ══════ -->
+  <div id="ss-checkin" class="ss-panel">
+    <div class="info-box"><b>Check-In Patrol</b><br>Walk around the check-in hall ensuring no glitchers or trollers are present. Help the CSA Agent by keeping passengers in a straight line and preventing crowding.</div>
+    <div class="s-section"><h3>📋 Duties</h3>
+      <div class="info-box">
+        · Walk around the check-in hall patrolling for trollers and glitchers.<br>
+        · Ask passengers to line up in a straight line and stop crowding the CSA.<br>
+        · After Economy Check-In time, move to the passport control area.<br>
+        · Help passengers get through passport scanners.
+      </div>
+    </div>
+    <div class="s-section"><h3>🚫 Economy Jump Disable</h3>
+      <div class="info-box">If no Security Sergeant is present, disable jumping for economy at investor boarding time, then re-enable at economy boarding time.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:jpower eco 0</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:jpower eco</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ GATE PATROL ══════ -->
+  <div id="ss-gate" class="ss-panel">
+    <div class="info-box"><b>Gate Patrol</b><br>Ensure everything at the gate is running smoothly. Make sure only the correct boarding class is lining up at any given time.</div>
+    <div class="s-section"><h3>📋 Duties</h3>
+      <div class="info-box">
+        · When a class is boarding, ensure ONLY that class and the next class are near the scanners. Bring all other passengers to seats or away from the line.<br>
+        · Maintain orderly lines — bring passengers crowded at the front of the line away.<br>
+        · Report anything unusual to your Sergeant or Host.<br>
+        · If passengers are still in lounges when boarding starts, direct them to the gate.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ LOUNGE PATROL ══════ -->
+  <div id="ss-lounge" class="ss-panel">
+    <div class="info-box"><b>Lounge Patrol</b><br>Patrol and inspect the Premium and Investor Lounges regularly and before boarding begins.</div>
+    <div class="s-section"><h3>📋 Duties</h3>
+      <div class="info-box">
+        · Make your way to the Premium and Investor Lounges.<br>
+        · Patrol and inspect the lounges regularly.<br>
+        · If you find passengers who are NOT meant to be in the lounge, bring them out.<br>
+        · Before boarding starts, direct any remaining lounge passengers to the gate.
+      </div>
+    </div>
+    <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:bring [user]</div></div>
+  </div>
+
+  <!-- ══════ TARMAC PATROL ══════ -->
+  <div id="ss-tarmac" class="ss-panel">
+    <div class="info-box"><b>Tarmac Patrol</b><br>Patrol the tarmac via Explorer car. Speed limit: <b>45 MPH on taxiways, 65 MPH on runways</b>.</div>
+
+    <div class="s-section"><h3>🚗 Setup RP (in briefing room)</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-takes explorer car keys-</div></div>
+    </div>
+
+    <div class="s-section"><h3>🔍 Spawn &amp; Inspect Explorer</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">!insert</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [TARMAC PATROL OFFICER] -inspects explorer-</div></div>
+    </div>
+
+    <div class="s-section"><h3>🚙 Car Setup RP</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -opens trunk- | !wait 3 | :scriptchat sy [SECURITY] -packs first aid supplies- | !wait 3 | :scriptchat sy [SECURITY] -adds AED- | !wait 3 | :scriptchat sy [SECURITY] -packs tactical gear- | !wait 3 | :scriptchat sy [SECURITY] -organizes safety cones- | !wait 3 | :scriptchat sy [SECURITY] -closes trunk-</div></div>
+    </div>
+
+    <div class="s-section"><h3>🛣️ Driving RP</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -enters runway-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -looks for debris-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -exits runway-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -proceeds back to gate-</div></div>
+    </div>
+
+    <div class="s-section"><h3>✅ Return to Gate</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-shuts engine off-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [AIRPORT POLICE] Tarmac Patrol has been completed and no debris have been spotted. - [USER] | !wait 2 | :scriptchat sy [AIRPORT POLICE] The taxiways have been cleared and no debris has been spotted. | :scriptchat sy [AIRPORT POLICE] 10-4</div></div>
+    </div>
+
+    <div class="s-section"><h3>🔍 XX:16 Terminal Check</h3>
+      <div class="info-box" style="margin-bottom:8px">At XX:16, do one last loop inside the airport to check for missing passengers.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [AIRPORT POLICE] We have came across a passenger still in the airport. Airport Police Personnel will direct the passenger to the gate. Please halt until pushback. Thank you - Airport Police</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [AIRPORT POLICE] Airport Police has finished inspecting the terminal, lounges, and stores. The plane is now clear to pushback when ready. | :scriptchat sy [AIRPORT POLICE] The airport is all clear. Please be seated for pushback shortly.</div></div>
+      <div class="info-box" style="margin-top:6px">💡 Explorer lights: press <b>J × 3</b> to turn ON, <b>J × 1</b> to turn OFF.</div>
+    </div>
+  </div>
+
+  <!-- ══════ EMERGENCY FLIGHT ══════ -->
+  <div id="ss-emergency" class="ss-panel">
+    <div class="info-box"><b>Emergency Flights</b><br>Carry out normal duties until the plane begins cruising. Check briefing sheet for your emergency arrival role. Max explorer speed raised to <b>50 MPH</b>.</div>
+
+    <div class="s-section"><h3>🚨 Roles During Emergency</h3>
+      <div class="info-box">
+        · <b>Airport Police</b> — assist passengers off plane, direct to buses. Use <code>:talk [msg]</code> for age restrictions. Station 1-2 members near buses. Do last loop with <code>:track nonadmins</code>.<br>
+        · <b>Paramedic</b> — approach deboarding passengers and ask if they need aid. Roleplay calling ambulance for serious cases. Follow Paramedic guide.<br>
+        · <b>Transportation Safety Officer</b> — investigate crash cause. Wear Airport Patrol uniform + S&amp;S Belt + Blue Vest. Name: <code>[NAME] [-] Transportation Safety Officer [-] [LANG]</code>
+      </div>
+    </div>
+
+    <div class="s-section"><h3>🔍 Transportation Safety Officer RP</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -exits explorer-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -takes out flashlight-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -inspects around plane-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [NTSB] A member of the National Transportation Safety Board has arrived to begin investigating the cause of the crash. Please standby. | :scriptchat sy [NTSB] Greetings passengers, A member of the National Transportation Safety Board has arrived at the aircraft and are currently inspecting the plane. Please stay alert for further updates. | !wait 3 | :scriptchat sy [SECURITY] 10-4</div></div>
+    </div>
+
+    <div class="s-section"><h3>🏎️ Explorer Procedure</h3>
+      <div class="info-box">
+        · 2 S&amp;S members drive explorers — one front, one back of buses.<br>
+        · Once plane touches down, follow Security Sergeant's instructions to the plane.<br>
+        · Park a safe distance from aircraft. Do NOT teleport while explorer is still moving.<br>
+        · After activity: drive explorers back to arrival airport.
+      </div>
+    </div>
+
+    <div class="s-section"><h3>🚌 Bus Escort during Emergency</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -secures the door for departure-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -ensures the door is closed-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %sta [SECURITY] The doors are securely closed and all passengers are seated for departure - [USER]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %sta [SECURITY] The Bus Escort is complete and the buses are ready to deboard - [USER]</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ TSA AGENT ══════ -->
+  <div id="ss-tsa" class="ss-panel">
+    <div class="info-box"><b>TSA Agent:</b> Monitor the scanner at Okhotsk Monbetsu or Mark Neris. Scan passengers, check inventory, Pass/Deny/Search accordingly.<br>Name: <code>:name me Name [-] Security Agent [-] [LANGUAGE]</code></div>
+    <div class="s-section"><h3>🟢 Standard Greeting at Scanner</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Greetings! Welcome to [AIRPORT NAME]. My name is [NAME]. Please step through the scanner and then wait for further instructions.</div></div>
+    </div>
+    <div class="s-section"><h3>⚠️ Suspicious Item Detected</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">[SECURITY NOTICE] - We have detected a suspicious item in your inventory. We need to ask you to step aside please.</div></div>
+    </div>
+    <div class="s-section"><h3>🎫 Gate Boarding Announcement</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Your flight is boarding at Gate [##] now — keep it moving please!</div></div>
+    </div>
+    <div class="s-section"><h3>🔍 Additional Screening (before gate opens)</h3>
+      <div class="info-box" style="margin-bottom:8px">Only done once per randomly selected passenger at beginning of boarding. Notify any CC or CM in the area first.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -scanning-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -scanning-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -scanning-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -moves wand scanner from left side to right side-</div></div>
+    </div>
+    <div class="s-section"><h3>🛠️ TSA Commands</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:search [user]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">!profile [user]</div></div>
+      <div class="info-box">Scanner buttons: <b>Pass</b> · <b>Deny</b> · <b>Search</b>. No ticket → Search. Not supposed to be searched → verify ticket first. If no ticket → message Sergeant or Airport Police.</div>
+    </div>
+  </div>
+
+  <!-- ══════ AIRPORT POLICE ══════ -->
+  <div id="ss-ap" class="ss-panel">
+    <div class="info-box"><b>Airport Police:</b> Equip Airport Patrol Uniform via uniform GUI. Keep an eye out for trespassers, violations, glitchers.<br>Name: <code>:name me Name [-] Airport Police [-] [LANGUAGE]</code></div>
+    <div class="s-section"><h3>🎭 Checking Passes</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat gc [GC] [name], present your flight pass!</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] Copy [GC], sending [name] your way.</div></div>
+    </div>
+    <div class="s-section"><h3>📻 Runway Inspection — Arrival</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] RUNWAY INSPECTION - BEGINNING, standing by.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] Runway inspection, checking for debris.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] Clear! Runway APPROVED for landing!</div></div>
+    </div>
+    
+    <div class="s-section"><h3>✈️ Runway Inspection (AP)</h3>
+      <div class="info-box" style="margin-bottom:8px">Command: <code>:give me flash</code> · Done before aircraft lands. Walk along the runway checking for debris and obstructions.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] RUNWAY INSPECTION - Beginning. Standing by.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-walks along the runway checking for debris-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks runway surface for damage or obstructions-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-inspects runway lighting-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] Runway inspection complete. No debris or obstructions found. Runway CLEAR for landing.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] 10-4 — Runway approved for landing.</div></div>
+      <div class="info-box" style="margin-top:6px">If debris/issue found, notify Ground Crew and Flight Host before clearing the runway. Do not clear for landing until stand is confirmed safe.</div>
+    </div>
+
+    <div class="s-section"><h3>📻 Arrival Check</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] ARRIVAL CHECK - scanning for suspicious passengers.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] 10-8 — scan complete, clear.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] 10-9 — scan complete, suspicious.</div></div>
+    </div>
+    <div class="s-section"><h3>📻 Deboarding & Destination</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] DEBOARDING - All passengers, we hope you enjoyed your flight. Thank you for flying!</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] DESTINATION REACHED!</div></div>
+    </div>
+    <div class="s-section"><h3>🔍 Commands</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:seethe [user]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:freeze [user]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:admin freeze [user]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:walk seatbelt [username]</div></div>
+      <div class="info-box">Use <code>:walk seatbelt [username]</code> to handcuff a seated player. Press <b>E</b> to toggle explorer lights. Do NOT use emergency lights during a normal flight.</div>
+    </div>
+    <div class="s-section"><h3>❓ Interrogation Procedure</h3>
+      <div class="info-box">1. Bring suspect to an isolated area (waiting/seating area).<br>2. Use <code>:seethe [user]</code> to check activity.<br>3. Follow basic questioning — minimum 30% of time questioning.<br>4. Press harder on suspicious answers. Record what they say.<br>5. Use <code>:freeze [user]</code> to prevent mobility.<br>6. Questioning ends when you reach a proper decision.</div>
+    </div>
+    <div class="s-section"><h3>🛬 Arrival AP — Deboarding</h3>
+      <div class="info-box" style="margin-bottom:8px">Name: <code>:name me [Name] [-] Arrival Airport Police [-] [LANGS]</code></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] DEBOARDING - All passengers, we hope you enjoyed your flight. Thank you for flying!</div></div>
+      <div class="info-box" style="margin-top:8px">After flight: escort passengers from deboarding area. Use <code>:seethe [user]</code> to check for suspicious behaviour. Every passenger must exit the plane.</div>
+    </div>
+  </div>
+
+  <!-- ══════ CROWD CONTROL ══════ -->
+  <div id="ss-cc_crowd" class="ss-panel">
+    <div class="info-box"><b>Crowd Control / Gate Security:</b> Guide passengers in an orderly manner. Max 1 passenger out of line at a time.</div>
+    <div class="s-section"><h3>📋 Queue Patrol Guidelines</h3>
+      <div class="info-box"><b>No ticket?</b> → Deny entry and tell them to go to check-in.<br><b>Cutting in line (first offence)?</b> → Warn them.<br><b>Continues causing trouble?</b> → Notify Sergeant and/or apply appropriate punishment per Situational Guide.<br>Do NOT use emergency lights during normal flights.</div>
+    </div>
+    <div class="s-section"><h3>🚫 Denying a Passenger</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Sorry, I can't let you through without a ticket — head to check-in and they'll get you sorted!</div></div>
+    </div>
+    <div class="s-section"><h3>⚠️ Line Cutter Warning</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Hey, you'll need to go to the back of the queue!</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ BUS ESCORT ══════ -->
+  <div id="ss-bus" class="ss-panel">
+    <div class="info-box"><b>Bus Escort:</b> Oversees transport of buses and passengers from terminal to after-flight destination.<br>Name: <code>:name me Name [-] Bus Escort [-] [LANGS]</code><br>One car FRONT, one car BACK. Both follow Security Sergeant. Max speed: 40 MPH.</div>
+    <div class="s-section"><h3>🚌 Departure</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] DEPARTED, making our way to the destination.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] TRANSPORT SECURITY - On our way!</div></div>
+    </div>
+    <div class="s-section"><h3>🏁 Arrival</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] DESTINATION REACHED!</div></div>
+      <div class="info-box">Park explorer, open bus door, announce destination reached. Turn off lights and engine when parked. 8–14 passengers max per bus. Do NOT exceed 40 MPH or block buses.</div>
+    </div>
+  </div>
+
+  <!-- ══════ PARAMEDIC ══════ -->
+  <div id="ss-paramedic" class="ss-panel">
+    <div class="info-box"><b>Paramedic — Updated September 5th, 2026</b><br>Name: <code>:name me [NAME] [-] Paramedic [-] [LANG]</code><br>Uniform: Blue EMS Vest (<code>:shirt me 86034896224782</code>) or Red (<code>:shirt me 80008173110546</code>) + Air Marshal Uniform.</div>
+    <div class="s-section"><h3>🧰 Tools</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me first aid kit</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me jumpbag</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me walkie talkie</div></div>
+      <div class="info-box"><b>Accessories (hat me lid):</b> Stethoscope: 102507070349004 · Face Mask: 6227164371 · Medic Belt: 80573941527265 · R6 Gloves L: 125995149073050 / R: 135235408544152 · Jumpbag Blue: 92997564909818 / Red: 112593981672816</div>
+    </div>
+    <div class="s-section"><h3>👕 Full Kit (one command)</h3>
+      <div class="info-box" style="margin-bottom:8px">Blue EMS shirt and all accessories. Add the Air Marshal Uniform yourself, the guide does not list its ID.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:shirt me 86034896224782 | :hat me 102507070349004 | :hat me 6227164371 | :hat me 80573941527265 | :hat me 125995149073050 | :hat me 135235408544152 | :hat me 92997564909818</div></div>
+    </div>
+    <div class="s-section"><h3>📋 SAMPLE Assessment</h3>
+      <div class="info-box" style="margin-bottom:8px">Use when a) you have time and b) case is not immediately life-threatening.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">How are you feeling right now? Any pain, dizziness, trouble breathing, nausea — anything like that?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Any allergies I should know about — medications, food, anything?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Are you on any medications at the moment?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Any past medical conditions or surgeries?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">What's the last thing you ate or drank, and when?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">And what were you doing when this all started?</div></div>
+    </div>
+    <div class="s-section"><h3>❤️ Vitals</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-clips pulse oximeter to right index finger-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Is your heart rate high, low, or normal?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-wraps blood pressure cuff around left arm-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Is your blood pressure high, low, or normal?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-uses stethoscope to measure respiratory rate-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Are you breathing too fast, too slowly, or normally?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-swipes thermometer across forehead-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Is your temperature too high or low?</div></div>
+    </div>
+    <div class="s-section"><h3>🦴 Broken Arm/Leg</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">On a scale of 0-10, how much pain are you feeling?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-examines for swelling or cuts-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-sets up IV and gives pain medicine-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-sets up portable x-ray system and checks for fractures-</div></div>
+    </div>
+    <div class="s-section"><h3>😵 Unconsciousness</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Can you hear me?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-performs compressions-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-sets up portable oxygen delivery system-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-puts mask on patient-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-turns on oxygen pumps-</div></div>
+    </div>
+    <div class="s-section"><h3>🤕 Headache</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-opens first aid kit-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-takes out paracetamol tablets-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-gives cup of water-</div></div>
+    </div>
+    <div class="s-section"><h3>🚫 Prohibited Cases (trolling)</h3>
+      <div class="info-box">· Anything relating to pregnancy · Bodily fluids · Death · Unrealistic illnesses ("stage one billion toe cancer") · Inappropriate RP (-farts loudly-, etc.)</div>
+    </div>
+    <div class="s-section"><h3>📝 Notes</h3>
+      <div class="info-box">· Note usernames of passengers you treat.<br>· 2–3 minutes before investor boarding: approach noted passengers and ask if they need boarding assistance.<br>· Use radio to describe issues: e.g. "Passenger unconscious at gate 5, beginning treatment."</div>
+    </div>
+  </div>
+
+  <!-- ══════ AIR MARSHAL ══════ -->
+  <div id="ss-marshal" class="ss-panel">
+    
+    
+    <div class="s-section"><h3>Introduction</h3>
+      
+    </div>
+    <div class="s-section"><h3>Preparation</h3>
+      
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:delete-overhead</div></div>
+    </div>
+    <div class="s-section"><h3>Airport Duties &amp; Pre-Boarding Aircraft Inspection</h3>
+      
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me flashlight</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AIR MARSHAL] 10-41, beginning aircraft exterior inspection.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -inspects door locking and arming mechanism-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -inspects nose of aircraft for damage-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -checks that the landing gear is secure-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -observes aircraft CPT side for damage-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -ensures cargo hold doors are properly sealed-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -inspects engine intake for any obstructions or damage-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -checks engine housing-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AIR MARSHAL] 10-42, the exterior of the aircraft is fully inspected.</div></div>
+      
+    </div>
+    <div class="s-section"><h3>Boarding Duties</h3>
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Greetings cabin crew, I will be your air marshal for this flight and will closely monitor this flight. If you need assistance, feel free to contact me.</div></div>
+    </div>
+    <div class="s-section"><h3>Economy Boarding Procedure</h3>
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AIR MARSHAL] All premium passengers are seated and the premium cabin is secure for economy boarding.</div></div>
+      
+    </div>
+    <div class="s-section"><h3>Jetway</h3>
+      
+    </div>
+    <div class="s-section"><h3>Seating Checks &amp; Final Secure</h3>
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:standlogs true</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:bring (USER)</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:viewtools (USER)</div></div>
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Checks the door to the Flight Deck is locked-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Door locked and Flight Deck Secured-</div></div>
+    </div>
+    <div class="s-section"><h3>Seating Arrangement</h3>
+      
+    </div>
+    <div class="s-section"><h3>Boarding to Cruising</h3>
+      
+      
+      
+    </div>
+    <div class="s-section"><h3>Responsibilities During Cruising</h3>
+      
+    </div>
+    <div class="s-section"><h3>Lavatory Inspection</h3>
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Inspects Lavatory-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Nothing odd here-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Leaves Lavatory-</div></div>
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AIR MARSHAL] All lavatories have been checked and secured.</div></div>
+    </div>
+    <div class="s-section"><h3>Cockpit Inspection</h3>
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Opens Door to Flight Deck-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Shuts Door to Flight Deck-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Checks Flights Deck-</div></div>
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Opens Flight Deck Door-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Exits Flight Deck-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy -Shuts Flight Deck Door-</div></div>
+    </div>
+    <div class="s-section"><h3>Inspecting Information (ID checks)</h3>
+      
+      
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Greetings. I have decided to run a quick inspection on you. I will ask you a few questions and take a look at your ID. We will now begin.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">What is your reason for traveling today?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Have you flown with South Pacific Airways before?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">How long are you planning to stay in (destination)?</div></div>
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:talk -Takes ID-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:talk -Inspects ID-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:talk -Hands ID back to passenger-</div></div>
+      
+    </div>
+    <div class="s-section"><h3>Active Chatter Interrogation</h3>
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Did you notice anything suspicious?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Where are you heading to?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">Did you face any problem during your flight?</div></div>
+    </div>
+    <div class="s-section"><h3>Trollers Interrogation</h3>
+      
+    </div>
+    <div class="s-section"><h3>End of Cruising</h3>
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff The Air Marshal Officer is now seated and confirms that the cabin is ready for descent. | :scriptchat sy [AIR MARSHAL] All passengers and staff are seated; the cabin is ready for descent.</div></div>
+    </div>
+    <div class="s-section"><h3>After Landing</h3>
+      
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:bring (USER)</div></div>
+      
+    </div>
+    <div class="s-section"><h3>Conclusion</h3>
+      
+    </div>
+  </div>
+  <div id="ss-pta" class="ss-panel">
+    <div class="info-box"><b>Passenger Transport Agent — Updated April 16th, 2026</b><br>Only at <b>London Heathrow</b> and <b>Ronald Reagan</b>.<br>Name: <code>NAME [-] Passenger Transport Agent [-] [LANG]</code><br>Uniform: Ground Crew button in GUI → do NOT equip GC Vest → DO equip Security Belt.</div>
+
+    <div class="s-section"><h3>🔍 Buggy Inspection RP (public chat, before XX:50)</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-grabs keys-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-turns key to start engine-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-parks buggy-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:pm (user) The buggy has been inspected and is ready for use.</div></div>
+      <div class="info-box" style="margin-top:6px">PM your Security Sergeant after inspection. Stay in driver's seat so glitching passengers can't steal the buggy.</div>
+    </div>
+
+    <div class="s-section"><h3>📍 Starting Points</h3>
+      <div class="info-box"><b>London Heathrow:</b> Right of the Security Checkpoint in the corner.<br><b>Ronald Reagan:</b> Left of StarBlox. Insert buggy to the right of the bathrooms in front of the SPA photo (invisible roof near StarBlox blocks insertion).</div>
+    </div>
+
+    <div class="s-section"><h3>⏰ Timing</h3>
+      <div class="info-box"><b>Start:</b> XX:50 once all Investor Passengers check-in.<br><b>End:</b> ~XX:18 once boarding door closes. Run <code>!insert</code> to remove buggy.<br>If only 2 on buggy: wait for more. <b>Never wait more than 2 minutes.</b><br>After dropping off → return to starting point.</div>
+    </div>
+
+    <div class="s-section"><h3>👋 Passenger Greeting</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Welcome! My name is [Name] and I'll be your Transport Agent for today's flight. Where would you like to be dropped off? Just a heads up — boarding starts at XX:11.</div></div>
+      <div class="info-box" style="margin-top:6px">Multiple drop-offs: go closest to farthest from checkpoint.</div>
+    </div>
+
+    <div class="s-section"><h3>🚌 Every Time Passengers Board — RP (public chat)</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-turns key to start engine-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-buckles seat belt-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks mirrors-</div></div>
+    </div>
+
+    <div class="s-section"><h3>🔄 Passenger Round-Up</h3>
+      <div class="info-box" style="margin-bottom:8px">At XX:15, boarding complete. Roam on foot (buggy only beyond Security Checkpoint). Use <code>:track all</code> to find roaming pax.</div>
+      <div class="s-label">XX:15 Announcement:</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] The Passenger Transport Agent has begun its initial passenger round-up. Roaming passengers will be transported to the gate shortly if found. | :scriptchat sy [SECURITY] The Passenger Transport Agent is currently searching and observing the airport for roaming passengers. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+      <div class="s-label" style="margin-top:8px">XX:18 Announcement (Check-In Area on foot):</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] The Passenger Transport Agent has begun to observe and inspect the Check-In Area. Roaming passengers will be transported to the gate shortly if found. | :scriptchat sy [SECURITY] The Passenger Transport Agent is currently searching and observing the Check-In Area for roaming passengers. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+      <div class="info-box" style="margin-top:6px">After round-up: de-insert buggy and return to Security Sergeant.</div>
+    </div>
+
+    <div class="s-section"><h3>📋 Driving Rules</h3>
+      <div class="info-box">· Decent speed — not too fast, not too slow.<br>· Do NOT run over passengers on foot.<br>· Do NOT bump into airport objects.<br>· Turn slowly and smoothly.<br>· Turn off when not in use.<br>· Do NOT transport one passenger at a time — wait for more.<br>· Failure to follow ANY of these = <b>suspension of S&amp;S Licence</b>.</div>
+    </div>
+  </div>
+
+  <!-- ══════ FLIGHT MODERATION ══════ -->
+  <div id="ss-mod" class="ss-panel">
+  
+
+<div class="s-section"><h3>Moderation Commands</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:to [user]  (teleports yourself to a user)</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:bring [user]  (teleports a user to yourself)</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:freeze [user]  (freezes a user in place)</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:jpower [user] 0  (makes the user unable to jump)</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:jpower [user]  (makes the user able to jump again)</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:dm [user]  (opens a communication channel between you and another user)</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:serverban [user] [reason]  (kicks a user and stops them rejoining the server; same as :ban)</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">;game-ban [user] [days/perm] [reason]  (bans a user from all SPA games; Discord only, needs evidence, restricted ranks. If you don&#x27;t have access, message the flight host with the Roblox username and evidence)</div></div>
+</div>
+
+<div class="s-section"><h3>Rule List</h3><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.8rem"><tr style="text-align:left;color:#7fa6c9"><th style="padding:6px">Offense</th><th style="padding:6px">Description</th><th style="padding:6px">Punishment</th></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Bomb/Hijack Jokes (Minor)</td><td style="padding:6px;vertical-align:top">A user mentions having a bomb (&quot;I have a bomb, guys!&quot;)</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Bomb/Hijack Jokes (Major)</td><td style="padding:6px;vertical-align:top">Violent roleplay such as hijacking or blowing up the plane, detailed and spanning multiple messages</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban &gt; 7d game ban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Crash Jokes</td><td style="padding:6px;vertical-align:top">A user mentions the plane crashing</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Glitching (Minor)</td><td style="padding:6px;vertical-align:top">A user goes through a wall or attempts to</td><td style="padding:6px;vertical-align:top;color:#f0b429">Verbal warning</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Glitching (Major)</td><td style="padding:6px;vertical-align:top">A user goes to a restricted area such as the staff room or tarmac</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Trolling / Harassment</td><td style="padding:6px;vertical-align:top">E.g. &quot;Can I get some rat soup my brotha&quot;</td><td style="padding:6px;vertical-align:top;color:#f0b429">Verbal warning at first; second offence is a serverban depending on severity</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Spam (Minor)</td><td style="padding:6px;vertical-align:top">Many messages in a short time, e.g. &quot;noob&quot; or &quot;this plane is bad&quot;</td><td style="padding:6px;vertical-align:top;color:#f0b429">Kickwarn &gt; Serverban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Spam (Major)</td><td style="padding:6px;vertical-align:top">Like minor spam, but text is inappropriate or bypasses Roblox moderation</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban &gt; 30d game ban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Raiding</td><td style="padding:6px;vertical-align:top">A group of users join a flight and cause chaos</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban &gt; 30d game ban &gt; open a ticket and ask HRD to permanently ban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Bodily Fluid Mentions</td><td style="padding:6px;vertical-align:top">E.g. &quot;has explosive diarrhea&quot;</td><td style="padding:6px;vertical-align:top;color:#f0b429">Discretionary: 3d-5d game ban recommended</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Not listening</td><td style="padding:6px;vertical-align:top">Fails to follow or ignores staff directions after being told</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Leaking Documents</td><td style="padding:6px;vertical-align:top">Spamming information from the staff handbook or other sensitive materials</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban &gt; 30d game ban &gt; open a ticket and ask HRD to permanently ban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Impersonation of Staff</td><td style="padding:6px;vertical-align:top">Falsely claims to be a staff member (&quot;I&#x27;m a staff member, I&#x27;m gonna ban you&quot;)</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban &gt; 7d game ban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Impersonation of Leadership</td><td style="padding:6px;vertical-align:top">Falsely claims to be a leadership member (&quot;I lead Cabin Crew, I&#x27;m gonna get you fired&quot;)</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban &gt; 7d game ban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Impersonation of an Alliance</td><td style="padding:6px;vertical-align:top">Claims to be an alliance member (&quot;I&#x27;m an alliance rep from Ameritan, can I get free upgrade&quot;)</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban &gt; 7d game ban &gt; notify PRL. Be fully sure by checking their rank and roles in the ally&#x27;s group and Discord server</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Advertising</td><td style="padding:6px;vertical-align:top">Asks staff to apply to their group or promotes their game during a flight</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban &gt; 30d game ban &gt; open a ticket and ask HRD to permanently ban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Exploiting</td><td style="padding:6px;vertical-align:top">Software against TOS used to disrupt the game, e.g. flinging the plane during pushback</td><td style="padding:6px;vertical-align:top;color:#f0b429">Permanent game ban. Collect evidence of exploiter attacks</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Inappropriate Avatar</td><td style="padding:6px;vertical-align:top">Clothing that bypasses Roblox moderation, wearing nothing but underwear, or a tuxedo with the back ripped to reveal undergarments</td><td style="padding:6px;vertical-align:top;color:#f0b429">Ask user to change. Refresh them if needed. If they refuse or continue: serverban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Inappropriate Display or Username</td><td style="padding:6px;vertical-align:top">Inappropriate display name or username, bypassing Roblox moderation</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban &gt; 7d game ban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Inappropriate Behavior</td><td style="padding:6px;vertical-align:top">Hints at, discusses or roleplays NSFW behaviour</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban &gt; 30d game ban &gt; forward to HRD for a permanent ban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Flirting / Suggestive Remarks</td><td style="padding:6px;vertical-align:top">E.g. &quot;I&#x27;m gonna touch you&quot;</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Overly Large Avatar</td><td style="padding:6px;vertical-align:top">E.g. an entire McDonald&#x27;s on the avatar, or anime cutouts next to it</td><td style="padding:6px;vertical-align:top;color:#f0b429">Ask user to change. Refresh them if needed. If they refuse or continue: serverban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Further Repeat Offenses</td><td style="padding:6px;vertical-align:top">Multiple of the same offenses or multiple different offenses</td><td style="padding:6px;vertical-align:top;color:#f0b429">Discretionary: 3d-7d game ban recommended</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Discrimination</td><td style="padding:6px;vertical-align:top">Discriminatory towards someone, or remarks based on gender, romantic preferences, religion, etc.</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban &gt; 30d game ban &gt; forward to HRD for a permanent ban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Real life references</td><td style="padding:6px;vertical-align:top">A graphic real-life event or person (e.g. 9/11 or the unabomber)</td><td style="padding:6px;vertical-align:top;color:#f0b429">3d game ban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Mentions of drugs</td><td style="padding:6px;vertical-align:top">E.g. &quot;snorts coke&quot; or references to drug smuggling</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Threats of harm</td><td style="padding:6px;vertical-align:top">Tells someone to kill themselves, or says they&#x27;ll kill or harm someone or their family</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban &gt; 5d game ban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Bypassing Chat</td><td style="padding:6px;vertical-align:top">Symbols or other means to bypass the chat filter (e.g. &#x27;@ss&#x27;)</td><td style="padding:6px;vertical-align:top;color:#f0b429">Serverban &gt; 3d game ban</td></tr><tr style="border-bottom:1px solid #1a3456"><td style="padding:6px;vertical-align:top;color:#fff">Underage Account</td><td style="padding:6px;vertical-align:top">Accounts that are not 60 days old yet are not permitted in our games</td><td style="padding:6px;vertical-align:top;color:#f0b429">Game ban for the number of days until the account reaches 60 days</td></tr></table></div></div>
+
+
+
+  </div>
+  <div id="ss-radio" class="ss-panel">
+    <div class="info-box"><b>Police Radio Codes</b> — used with :scriptchat sy [SECURITY] or verbally. Know the key ones off by heart.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px">
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-0</b> Use Caution</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-4</b> Affirmative</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-6</b> Busy</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-7</b> Out of Service</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-8</b> In Service</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-9</b> Say Again</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-10</b> Negative</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-17</b> Enroute</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-18</b> Urgent</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-20</b> Location</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-22</b> Disregard</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-23</b> Arrived at Scene</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-24</b> Assignment Completed</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-30</b> Danger</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-33</b> Need Immediate Assistance</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-40</b> Fight in Progress</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-41</b> Beginning Tour of Duty</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-42</b> Ending Tour of Duty</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-43</b> In Pursuit</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-44</b> Riot</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-45</b> Bomb Threat</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-48</b> Detaining Suspect, Expedite</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-52</b> Dispatch Ambulance</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-59</b> Escort</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-60</b> Suspicious Vehicle</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-64</b> Crime in Progress</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-65</b> Armed Robbery</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-72</b> Prisoner in Custody</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-80</b> Fire Alarm</div></div>
+      <div class="s-block" onclick="cp(this)" style="margin-bottom:0"><span class="copy-hint">click to copy</span><div class="s-text"><b style="color:#2196f3">10-82</b> Fire in Progress</div></div>
+    </div>
+    <div style="margin-top:14px">
+      <div class="s-section"><h3>Full Code List</h3>
+        <div class="info-box" style="font-size:.78rem;line-height:2;columns:2">
+          10-0 Use Caution · 10-1 Weak Signal · 10-2 Good Signal · 10-3 Stop Transmitting · 10-4 Affirmative · 10-5 Relay to/from · 10-6 Busy · 10-7 Out of Service · 10-8 In Service · 10-9 Say Again · 10-10 Negative · 10-11 Employee Number · 10-12 Stand By · 10-13 Weather Conditions · 10-14 Message/Information · 10-15 Message Delivered · 10-16 Reply to Message · 10-17 Enroute · 10-18 Urgent · 10-19 In Contact · 10-20 Location · 10-21 Call by phone · 10-22 Disregard · 10-23 Arrived at Scene · 10-24 Assignment Completed · 10-25 Report to __ · 10-26 ETA · 10-30 Danger · 10-31 Pick-up · 10-32 __ Units Needed · 10-33 Need Immediate Assistance · 10-34 Current Time · 10-40 Fight in Progress · 10-41 Beginning Tour of Duty · 10-42 Ending Tour of Duty · 10-43 In Pursuit · 10-44 Riot · 10-45 Bomb Threat · 10-47 Complete Assignment Quickly · 10-48 Detaining Suspect Expedite · 10-52 Dispatch Ambulance · 10-59 Escort · 10-60 Suspicious Vehicle · 10-61 Stopping Suspicious Vehicle · 10-64 Crime in Progress · 10-65 Armed Robbery · 10-72 Prisoner in Custody · 10-73 Mental Subject · 10-75 Wanted or Stolen · 10-80 Fire Alarm · 10-82 Fire in Progress · 10-83 Smoke Visible · 10-84 No Smoke Visible · 10-85 Respond without Blue Lights/Siren
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ PRIVATE FLIGHT OFFICER ══════ -->
+  <div id="ss-pfo" class="ss-panel">
+    <div class="info-box"><b>Private Flight Officer:</b> Same duties, attire and expectations as standard security. Make sure everyone on the private flight is safe.<br>Name: <code>:name me [First Last] [-] In-Flight Officer [-] [LANGS]</code></div>
+    <div class="s-section"><h3>📋 Private Flight Security Tips</h3>
+      <div class="info-box">· Greetings must be more elaborate than regular flights.<br>· Treat passengers like royalty.<br>· Tag plane entrances and notify Security Department of any issues.<br>· Follow the same Situational Guide rules as standard security.</div>
+    </div>
+    <div class="s-section"><h3>🛡️ Greeting</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Hey! I'm [NAME], the security officer on this flight. Great to have you on board — let me know if you need anything at all.</div></div>
+    </div>
+  </div>
+
+
+  <!-- ══════ RUNWAY INSPECTION ══════ -->
+  <div id="ss-runway" class="ss-panel">
+    <div class="info-box"><b>Runway Inspection — Airport Police</b><br>
+    Done before aircraft lands. Equip flashlight and walk the runway checking for debris, damage and obstructions. Do NOT clear for landing until runway is fully confirmed safe.<br>
+    Command: <code>:give me flash</code></div>
+
+    <div class="s-section"><h3>📻 Begin Inspection</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] RUNWAY INSPECTION - Beginning. Standing by.</div></div>
+    </div>
+
+    <div class="s-section"><h3>🔦 Inspection RP (paste while walking)</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-walks along runway checking for debris-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks runway surface for damage or obstructions-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-inspects runway lighting systems-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks runway markings and centerline-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-scans threshold for foreign object debris-</div></div>
+    </div>
+
+    <div class="s-section"><h3>✅ Runway Clear</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] Runway inspection complete. No debris or obstructions found. Runway CLEAR for landing.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] 10-4 — Runway approved for landing.</div></div>
+    </div>
+
+    <div class="s-section"><h3>⚠️ Issue Found</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat ap [AP] Runway inspection — debris/obstruction found. Notifying Ground Crew and Flight Host. Runway NOT cleared.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [AP] Runway obstruction found — holding landing clearance until resolved. - [NAME]</div></div>
+    </div>
+
+    <div class="s-section"><h3>🛠️ Commands</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me flash</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [MESSAGE] - [NAME]</div></div>
+    </div>
+
+    <div class="info-box" style="margin-top:4px">If debris or an issue is found, notify Ground Crew and the Flight Host before issuing any landing clearance. Only clear the runway once the stand is fully confirmed safe.</div>
+  </div>
+
+
+  <!-- ══════ DEPARTURE AIRPORT CHECK ══════ -->
+  <div id="ss-dep_check" class="ss-panel">
+    <div class="info-box"><b>Departure Airport Check</b><br>
+    Done before passengers arrive. Walk the terminal, check all areas are safe, equipment is in place and nothing suspicious is present.</div>
+
+    <div class="s-section"><h3>📢 Begin Check</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Beginning departure airport inspection. Standing by.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me flash</div></div>
+    </div>
+
+    <div class="s-section"><h3>🔦 Inspection RP</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks terminal entrance for any suspicious activity-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-inspects check-in area for hazards-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks TSA scanner area is operational-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-inspects gate area for any issues-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks lounge areas are clear and ready-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-verifies all security equipment is in place-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks for any debris or hazards in walkways-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-confirms emergency exits are accessible-</div></div>
+    </div>
+
+    <div class="s-section"><h3>✅ Complete</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Departure airport inspection complete. Terminal is clear and ready for passengers. 10-4</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] Departure airport is cleared and ready for passenger arrival. - [NAME]</div></div>
+    </div>
+
+    <div class="s-section"><h3>⚠️ Issue Found</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Issue found during departure inspection. Notifying staff. 10-12.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] Issue found at [LOCATION] during departure check. Please advise. - [NAME]</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ ARRIVAL AIRPORT CHECK ══════ -->
+  <div id="ss-arr_check" class="ss-panel">
+    <div class="info-box"><b>Arrival Airport Check</b><br>
+    Done when the plane is approaching the destination. Walk the arrival terminal and check all areas are ready to receive passengers. If there is no interior, walk around outside.</div>
+
+    <div class="s-section"><h3>📢 Begin Check</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Destination Security will now inspect the arrival terminal to ensure it is ready for passengers. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me flash</div></div>
+    </div>
+
+    <div class="s-section"><h3>🔦 Inspection RP</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks under chairs for suspicious items-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-reports lost baggage to Security Sergeant-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks that arrival airport scanners function-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-inspects baggage claim area-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks passport control area is clear-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-verifies arrival gate area is accessible-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-inspects terminal for any hazards or debris-</div></div>
+    </div>
+
+    <div class="s-section"><h3>✅ Complete</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Arrival airport inspection complete. Terminal is clear and ready for passengers. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] Arrival airport is cleared and ready for deboarding. - [NAME]</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ RUNWAY INSPECTION (DEPARTURE) ══════ -->
+  <div id="ss-runway_dep" class="ss-panel">
+    <div class="info-box"><b>Runway Inspection — Departure</b><br>
+    Done before aircraft pushes back. Drive the Explorer along taxiways and runway to confirm they are clear. Speed limit: 45 MPH taxiways / 65 MPH runway.</div>
+
+    <div class="s-section"><h3>📢 Announce</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Departure runway inspection commencing. Checking taxiways and runway are clear for pushback. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+    </div>
+
+    <div class="s-section"><h3>🚗 Setup</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-takes explorer car keys-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">!insert</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -inspects explorer-</div></div>
+    </div>
+
+    <div class="s-section"><h3>🛣️ Driving RP</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -enters taxiway-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -inspects taxiway surface for debris-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -enters runway-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -inspects runway for debris or obstructions-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -checks runway lighting-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -exits runway-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -proceeds back to gate-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-shuts engine off-</div></div>
+    </div>
+
+    <div class="s-section"><h3>✅ Clear for Pushback</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Departure runway inspection complete. Taxiways and runway are clear — aircraft is clear for pushback. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] Runway cleared for pushback. No debris or obstructions found. - [NAME]</div></div>
+    </div>
+
+    <div class="s-section"><h3>⚠️ Issue Found</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Debris/obstruction found on runway. Holding pushback clearance until resolved. 10-12.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] Obstruction found at [LOCATION] — holding pushback clearance. Please advise. - [NAME]</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ RUNWAY INSPECTION (ARRIVAL) ══════ -->
+  <div id="ss-runway_arr" class="ss-panel">
+    <div class="info-box"><b>Runway Inspection — Arrival</b><br>
+    Done when plane is approaching destination. Follow the route map for your airport. Speed limit: 45 MPH taxiways / 65 MPH runway.</div>
+
+    <div class="s-section"><h3>📢 Announce</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] Destination Security will now inspect the taxiways and runways for any debris to verify that the airport is ready for arrival. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+    </div>
+
+    <div class="s-section"><h3>🛣️ Inspection RP</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -looks for debris on taxiways-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -enters runway-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -inspects runway for issues-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -checks runway surface and lighting-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] -exits runway and returns to gate-</div></div>
+    </div>
+
+    <div class="s-section"><h3>✅ Clear for Landing</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [SECURITY] The airport's runways and taxiways have been cleared for arrival. | !wait 5 | :scriptchat sy [SECURITY] 10-4</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat atc [ATC] [CALLSIGN] runway [RUNWAY] cleared to land.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [SECURITY] Arrival runway inspection complete — cleared for landing. - [NAME]</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ AIRPORT POLICE CHECK ══════ -->
+  <div id="ss-airport_check" class="ss-panel">
+    <div class="info-box"><b>Airport Police Check</b><br>
+    Comprehensive patrol combining terminal, tarmac and lounge checks. Done pre-boarding. No set schedule but you must cover the majority of the airport between XX:50 and XX:10.</div>
+
+    <div class="s-section"><h3>📢 Begin Patrol</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] 10-41 Beginning patrol.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:repeat 40 60 :track nonadmins</div></div>
+    </div>
+
+    <div class="s-section"><h3>🏢 Terminal Check</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] -inspects terminal entrance-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] -checks check-in area for trollers or glitchers-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] -inspects duty-free and shop areas-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] -checks gate area and boarding queue-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] -patrols lounge areas-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] -verifies passport control area is clear-</div></div>
+    </div>
+
+    <div class="s-section"><h3>🕐 XX:16 Final Loop</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [AIRPORT POLICE] Airport Police has finished inspecting the terminal, lounges, and stores. The plane is now clear to pushback when ready. | :scriptchat sy [AIRPORT POLICE] The airport is all clear. Please be seated for pushback shortly.</div></div>
+    </div>
+
+    <div class="s-section"><h3>🚨 Passenger Left Behind</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [AIRPORT POLICE] We have come across a passenger still in the airport. Airport Police Personnel will direct the passenger to the gate. Please halt until pushback. Thank you - Airport Police</div></div>
+    </div>
+
+    <div class="s-section"><h3>🏁 End Patrol</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] 10-42 Ending patrol.</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ DEBOARDING SECURITY ══════ -->
+  <div id="ss-deboard" class="ss-panel">
+    <div class="info-box"><b>Deboarding Security</b><br>
+    Once the plane parks at destination, position yourself at the airstairs to welcome passengers. Rename to Arrival Airport Police. Air Marshals do NOT rename and deboard with passengers as normal.</div>
+
+    <div class="s-section"><h3>🏷️ Rename</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:name me [NAME] [-] Arrival Airport Police [-] [ENG]</div></div>
+    </div>
+
+    <div class="s-section"><h3>👋 Welcome Greetings</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Welcome to [DESTINATION]! We hope you enjoyed your flight!</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Welcome to [DESTINATION]! Thank you for flying with South Pacific Airways!</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">We hope you had a wonderful flight! Welcome to [DESTINATION]!</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">:talk Welcome to [DESTINATION]! Please follow staff instructions for deboarding.</div></div>
+    </div>
+
+    <div class="s-section"><h3>🚌 Direct to After-Flight</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">:talk Please follow me to the after-flight activity!</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:bring [USER]</div></div>
+    </div>
+
+    <div class="s-section"><h3>🔍 Last Passenger Check</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:track nonadmins</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks aircraft to ensure all passengers have deboarded-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat sy [AP] Aircraft checked — all passengers have deboarded. 10-4</div></div>
+    </div>
+
+    <div class="s-section"><h3>🎉 After-Flight Activity</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:talk Head over to the after-flight activity area for some fun!</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-moderates chat during after-flight activity-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-directs passengers to after-flight activity-</div></div>
+    </div>
+  </div>
+
+</div>

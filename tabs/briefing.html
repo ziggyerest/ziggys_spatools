@@ -1,0 +1,60 @@
+<div id="page-briefing" class="page" style="max-width:1000px">
+  <div style="margin-bottom:14px">
+    <div style="font-size:1.2rem;font-weight:700;letter-spacing:-.01em">📋 Briefing Sheets</div>
+    <div style="font-size:.8rem;color:var(--text3)">Fill in the details, then copy the sheet into Discord.</div>
+  </div>
+  <div id="br-auto-row" class="roles-tab-row" style="flex-wrap:wrap;margin-bottom:14px">
+    <button class="roles-tab-btn active" onclick="selBRAuto('cc',this)">🧳 Cabin Crew</button>
+    <button class="roles-tab-btn" onclick="selBRAuto('sec',this)">🛡️ Security</button>
+  </div>
+
+  <div class="form-row" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+    <div class="form-group" style="flex:1;min-width:200px"><label>Host's username</label><input id="br-host" placeholder="e.g. Ziggy" oninput="brRender()"></div>
+    <div class="form-group" style="flex:1;min-width:160px"><label>Route ID</label><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text2)">SPA</span><input id="br-route" placeholder="1452" oninput="brRender()"></div></div>
+  </div>
+  <div style="border:1px solid rgba(148,180,212,.15);border-radius:12px;padding:14px;margin-bottom:16px">
+    <div style="font-weight:700;margin-bottom:8px">📥 Fill from big briefing sheet</div>
+    <div class="form-group" style="margin-bottom:8px"><label>Paste the whole briefing sheet</label><textarea id="br-paste" rows="6" placeholder="Paste the whole sheet here" oninput="brPasted()"></textarea></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+      <div class="form-group" style="flex:1;min-width:200px"><label>Airport roles (one per line, include Gate Agent)</label><textarea id="br-role-air" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
+      <div class="form-group" style="flex:1;min-width:200px"><label>Onboard roles (one per line, Premium and Economy; Economy roles go to Gate Agents)</label><textarea id="br-role-onb" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
+      <div class="form-group" style="flex:1;min-width:200px"><label>Security roles (one per line)</label><div style="font-size:.8rem;margin:4px 0"><label><input type="checkbox" id="br-bus" onchange="brGenerate(false)"> Bus escort on this flight</label></div><textarea id="br-role-sec" rows="5" oninput="brRoleBoxChanged()"></textarea></div>
+    </div>
+    <button class="roles-tab-btn active" onclick="brGenerate(true)">🎲 Generate roles</button>
+    <button class="roles-tab-btn" onclick="brResetRoles()">↺ Reset role boxes to defaults</button>
+    <div id="br-fill-status" style="font-size:.82rem;color:var(--text2);margin-top:8px"></div>
+  </div>
+  <div style="border:1px solid rgba(148,180,212,.15);border-radius:12px;padding:14px;margin-bottom:16px">
+    <div style="font-weight:700;margin-bottom:8px">🎲 Random picker</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div class="form-group" style="flex:1;min-width:200px"><label>Users (one per line)</label><textarea id="rp-users" rows="5"></textarea></div>
+      <div class="form-group" style="flex:1;min-width:200px"><label>Roles (one per line, used for random role assignment)</label><textarea id="rp-tasks" rows="5"></textarea></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+      <button class="roles-tab-btn active" onclick="rpPick()">🎲 Pick randomly</button>
+      <button class="roles-tab-btn" onclick="cpText(g('rp-out').value)">📋 Copy results</button>
+      <button class="roles-tab-btn" onclick="rpOpenBriefing()">📄 Open big briefing sheet</button>
+    </div>
+    <textarea id="rp-out" rows="4" readonly style="margin-top:10px"></textarea>
+  </div>
+
+  <div id="br-cc" class="br-panel">
+    <div class="form-row" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+      <div class="form-group" style="flex:1;min-width:160px"><label>Number of Cabin Crew</label><input id="br-cc-count" type="number" min="0" placeholder="0" oninput="brRender()"></div>
+      <div class="form-group" style="flex:2;min-width:220px"><label>Plane</label><select id="br-plane" onchange="brApplyScripts()"><option>Airbus A220</option><option>Airbus A318</option><option>Airbus A319</option><option>Airbus A320</option><option>Airbus A321neo</option><option>Airbus A330</option><option>Airbus A350</option><option>Boeing 737-MAX8</option><option>Boeing 777-300ER</option><option>Boeing 787-9</option></select></div>
+    </div>
+    <div class="form-group" style="margin-bottom:12px"><label>Arming script</label><textarea id="br-cc-arm" rows="3" oninput="brRender()"></textarea></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Disarming script</label><textarea id="br-cc-disarm" rows="3" oninput="brRender()"></textarea></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Airport roles (one per line, e.g. @CC1 | Gate Agent)</label><textarea id="br-cc-airport" rows="4" oninput="brRender()"></textarea></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Onboard roles (one per line, e.g. @CC1 | Lounge)</label><textarea id="br-cc-onboard" rows="4" oninput="brRender()"></textarea></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Sheet</label><textarea id="br-cc-out" rows="16" readonly style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
+    <button class="roles-tab-btn active" onclick="cpText(g('br-cc-out').value)">📋 Copy Cabin Crew sheet</button>
+  </div>
+
+  <div id="br-sec" class="br-panel" style="display:none">
+    <div class="form-group" style="max-width:240px;margin-bottom:12px"><label>Number of SY</label><input id="br-sy" type="number" min="0" placeholder="0" oninput="brRender()"></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Role assignments (one per line, e.g. @user • Security Agent → Runway Inspection, Deboard Usher)</label><textarea id="br-sec-roles" rows="5" oninput="brRender()"></textarea></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Sheet</label><textarea id="br-sec-out" rows="14" readonly style="font-family:var(--mono,monospace);font-size:.8rem"></textarea></div>
+    <button class="roles-tab-btn active" onclick="cpText(g('br-sec-out').value)">📋 Copy Security sheet</button>
+  </div>
+</div>

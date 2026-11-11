@@ -1,0 +1,18 @@
+<div id="page-permissions" class="page" style="max-width:900px">
+  <div style="font-size:1.2rem;font-weight:700;margin-bottom:4px">🔑 Permissions</div>
+  <div style="font-size:.8rem;color:var(--text3);margin-bottom:14px">Admin only. Changes are saved to the database, and the database checks that only the admin account can make them.</div>
+  <div style="margin-bottom:12px"><button class="roles-tab-btn active" onclick="permSignIn()">Sign in with Discord (admin)</button> <span id="perm-who" style="font-size:.82rem;color:var(--text2)"></span></div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap">
+    <div class="form-group" style="flex:1;min-width:220px"><label>Discord user ID or username</label><input id="perm-user" placeholder="e.g. 1327108083281035325" oninput="permAuto(false)" onchange="permAuto(true)"></div>
+    <div class="form-group" style="flex:1;min-width:220px"><label>Username (optional, shown in the list)</label><input id="perm-name" placeholder="e.g. ziggyerest"></div>
+  </div>
+  <div style="font-size:.8rem;color:var(--text2);margin:12px 0 6px">Tabs they can access:</div>
+  <div id="perm-boxes" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px"></div>
+  <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+    <button class="roles-tab-btn active" onclick="permSave()">💾 Save</button>
+    <button class="roles-tab-btn" onclick="permLoad()">↺ Refresh list</button>
+    <button class="roles-tab-btn" onclick="permListAll()">👥 Show all past users</button>
+  </div>
+  <div id="perm-msg" style="margin-top:10px;font-size:.82rem;color:var(--text2)"></div>
+  <div id="perm-list" style="margin-top:14px"></div>
+</div>

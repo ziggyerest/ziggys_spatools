@@ -1,0 +1,451 @@
+<div id="page-cc" class="page" style="max-width:1100px">
+  </details>
+
+
+  <!-- CC top-level tab row -->
+  <div class="roles-tab-row cc-top-row" style="margin-bottom:16px">
+    <button class="roles-tab-btn active" onclick="selCCTop('scripts',this)">✈️ Scripts</button>
+    <button class="roles-tab-btn" onclick="selCCTop('dress',this)">👔 Dress Code</button>
+    <button class="roles-tab-btn" onclick="selCCTop('airport',this)">🏢 Airport Roles</button>
+    <button class="roles-tab-btn" onclick="selCCTop('csa',this)">🪧 CSA</button>
+    <button class="roles-tab-btn" onclick="selCCTop('gate',this)">🚪 Gate Agent</button>
+    <button class="roles-tab-btn" onclick="selCCTop('lounge',this)">🥂 Lounge</button>
+    <button class="roles-tab-btn" onclick="selCCTop('checklist',this)">📋 Checklist</button>
+    <button class="roles-tab-btn" onclick="selCCTop('announce',this)">📢 Announcements</button>
+    <button class="roles-tab-btn" onclick="selCCTop('emergency',this)">🚨 Emergency</button>
+    <button class="roles-tab-btn" onclick="selCCTop('mood',this)">💡 Mood Lighting</button>
+  </div>
+
+  <!-- Scripts tab (existing dynamic content) -->
+  <div id="cctop-scripts" class="cc-top-panel active">
+
+  <div style="background:#0a1d36;border:1px solid #1a3456;border-radius:12px;padding:10px 16px;margin-bottom:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <label style="color:var(--sub);font-size:.78rem;white-space:nowrap">✏ Your name:</label>
+    <input id="cc-name" type="text" placeholder="Ziggy" oninput="renderCC()" style="max-width:160px">
+    <label style="color:var(--sub);font-size:.78rem;white-space:nowrap;margin-left:8px">✈ Flight:</label>
+    <input id="cc-flight" type="text" placeholder="SPA280" oninput="renderCC()" style="max-width:120px">
+    <label style="color:var(--sub);font-size:.78rem;white-space:nowrap;margin-left:8px">🌍 Destination:</label>
+    <input id="cc-dest" type="text" placeholder="New York" oninput="renderCC()" style="max-width:160px">
+    <label style="color:var(--sub);font-size:.78rem;white-space:nowrap;margin-left:8px">🆔 Route ID:</label>
+    <div style="display:flex;align-items:center;gap:4px"><span style="color:var(--sub)">SPA</span><input id="cc-route" type="text" placeholder="536" oninput="ccRoute()" style="max-width:90px"></div>
+    <label style="color:var(--sub);font-size:.78rem;white-space:nowrap;margin-left:8px">🛩 Aircraft:</label>
+    <select id="cc-plane" onchange="ccPlane()" style="max-width:200px"><option value="">Choose</option><option>Airbus A220</option><option>Airbus A318</option><option>Airbus A319</option><option>Airbus A320</option><option>Airbus A321neo</option><option>Airbus A330</option><option>Airbus A350</option><option>Boeing 737-MAX8</option><option>Boeing 777-300ER</option><option>Boeing 787-9</option></select>
+  </div>
+  <div id="cc-arming" style="margin-bottom:14px"></div>
+  <div class="cc-tabs" id="cc-tabs"></div>
+
+  <!-- dual username bars — shown/hidden per tab -->
+  <div class="user-bar" id="ub-single">
+    <label>Username:</label>
+    <input id="ub-user" placeholder="passengeruser" oninput="renderCC()">
+    <small>(user) and [USERNAME] replaced</small>
+  </div>
+  <div class="user-bar2" id="ub-dual">
+    <div class="user-bar show" style="flex:1;margin:0">
+      <label>Greeting username(s):</label>
+      <input id="ub-greet-user" placeholder="user1,user2,user3" oninput="renderCC()">
+      <small>replaces user,user,user in :pm</small>
+    </div>
+    <div class="user-bar show" style="flex:1;margin:0">
+      <label>Serving username:</label>
+      <input id="ub-serve-user" placeholder="passengername" oninput="renderCC()">
+      <small>replaces (user) in :give</small>
+    </div>
+  </div>
+
+  <div id="cc-panels"></div>
+</div>
+
+  <!-- Reference tabs (from ccref) -->
+  <div id="cctop-dress" class="cc-top-panel">
+    <div class="role-info-header"><div class="role-info-badge">👔</div><div>
+      <div class="role-info-title">Dress Code — R.F.M Standard</div>
+      <div class="role-info-meta">Realistic · Friendly · Modest — Ask yourself these three questions when equipping your face.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">👩 Female Requirements</div>
+        <div class="info-box">
+          · Equip the <b>Woman package</b> (free) before joining the game — bugs if done in-game.<br>
+          · Hair: natural colors only (black, brown, blonde, ginger). Ombre style is the only exception to dyed hair. Must NOT cover the face.<br>
+          · Accessories: max <b>2 accessories</b>. Glasses, sunglasses on head, earrings are all fine. Keep it professional and realistic.<br>
+          · Faces: Miss Scarlet, Cat Eye, Sapphire Glaze and similar — warm, approachable, realistic.<br>
+          · You may use <code>:face</code> and <code>:hat</code> commands in-game (no need to purchase).
+        </div>
+      </div>
+      <div class="rs"><div class="rs-title">👨 Male Requirements</div>
+        <div class="info-box">
+          · <b>No body packages</b> — unequip everything (blocky avatar). No exceptions.<br>
+          · Hair: natural colors only (black, brown, blonde, ginger). Must NOT cover the eyes or face. Neat and tidy.<br>
+          · Accessories: max <b>2 accessories</b>. Glasses, sunglasses on head only. <b>No earrings.</b><br>
+          · Faces: Joyful Smile, Skeptic, Sigmund and similar — professional and welcoming.<br>
+          · Head: use the default Roblox head — do not equip a catalog head.
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">✅ What's Allowed / ❌ Not Allowed</div>
+        <div class="info-box">
+          ✅ Natural hair color<br>
+          ✅ Neat and tidy hairstyle<br>
+          ✅ Hair does not cover face<br>
+          ✅ Realistic, friendly, modest face<br>
+          ✅ Max 2 minimalistic accessories<br>
+          ✅ Ombre style hair (exception)<br><br>
+          ❌ Unnatural / dyed hair<br>
+          ❌ Hair covering the face<br>
+          ❌ Messy hairstyle<br>
+          ❌ Trolling or unprofessional faces<br>
+          ❌ Unrealistic accessories<br>
+          ❌ Earrings on male avatars<br>
+          ❌ Body packages on male avatars<br>
+          ❌ Any package other than Woman for females
+        </div>
+      </div>
+      <div class="rs"><div class="rs-title">🛠️ Useful Commands</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Set face</div><div class="rc-text rc-cmd">:face me [ASSET ID]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Set hat/hair</div><div class="rc-text rc-cmd">:hat me [ASSET ID]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Reset yourself</div><div class="rc-text rc-cmd">:re me</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div id="cctop-airport" class="cc-top-panel">
+    <div class="role-info-header"><div class="role-info-badge">🏢</div><div>
+      <div class="role-info-title">Airport Roles Overview</div>
+      <div class="role-info-meta">Listed in priority order. You may be assigned any one of these at the departure airport.</div>
+    </div></div>
+    <div class="rs" style="margin-bottom:14px"><div class="rs-title">Greetings</div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to [AIRPORT]. My name is [NAME]! And I am the Customer Service Assistant for today, is there anything I can do for you?" data-tpl="Hello and welcome to [AIRPORT]. My name is [NAME]! And I am the Customer Service Assistant for today, is there anything I can do for you?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Customer Service Assistant</div><div class="s-text pf-cmd">Hello and welcome to [AIRPORT]. My name is [NAME]! And I am the Customer Service Assistant for today, is there anything I can do for you?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to Gate [GATE NUMBER]. my name is [NAME]! And I am the Gate Agent for today, what can I do for you?" data-tpl="Hello and welcome to Gate [GATE NUMBER]. my name is [NAME]! And I am the Gate Agent for today, what can I do for you?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Gate Agent</div><div class="s-text pf-cmd">Hello and welcome to Gate [GATE NUMBER]. my name is [NAME]! And I am the Gate Agent for today, what can I do for you?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?" data-tpl="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Investor Lounge Attendant</div><div class="s-text pf-cmd">Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?" data-tpl="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Premium Lounge Attendant</div><div class="s-text pf-cmd">Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Table Service for today, Could I interest you in any drinks?" data-tpl="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Table Service for today, Could I interest you in any drinks?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Investor Table Service</div><div class="s-text pf-cmd">Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Table Service for today, Could I interest you in any drinks?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Table Service for today, could I interest you in any drinks?" data-tpl="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Table Service for today, could I interest you in any drinks?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Premium Table Service</div><div class="s-text pf-cmd">Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Table Service for today, could I interest you in any drinks?</div></div>
+    </div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">Role Priority Order</div>
+        <div class="role-table">
+          <div class="role-table-row header"><span>Priority</span><span>Role</span><span>Tools</span><span>Duty</span></div>
+          <div class="role-table-row"><span>1</span><span><b>Gate Agent</b></span><span>None</span><span>Answer questions, hand out max 3 amenities</span></div>
+          <div class="role-table-row"><span>2</span><span><b>Lounge Attendant</b></span><span>Drinks platter, warm towel tray</span><span>Serve food/drinks at premium/investor lounge</span></div>
+          <div class="role-table-row"><span>3</span><span><b>Customer Service Assistant</b></span><span>Ask Me Sign</span><span>Answer check-in questions, process upgrades</span></div>
+          <div class="role-table-row"><span>4</span><span><b>Manual Check-In Agent</b></span><span>None</span><span>Manually check-in passengers at desk GUI</span></div>
+        </div>
+      </div>
+      <div class="rs"><div class="rs-title">📍 Lounge Locations</div>
+        <div class="role-table">
+          <div class="role-table-row header"><span>Airport</span><span>Premium</span><span>Investor</span></div>
+          <div class="role-table-row"><span>Summit Peak</span><span>Pacific Club (Ground)</span><span>Pacific Club (Basement)</span></div>
+          <div class="role-table-row"><span>Punta Cana</span><span>Premium Lounge</span><span>The Pub</span></div>
+          <div class="role-table-row"><span>Southwest</span><span>The Silver Club</span><span>Premium Lounge</span></div>
+          <div class="role-table-row"><span>London Heathrow</span><span>The Silver Club</span><span>The Gold Club</span></div>
+          <div class="role-table-row"><span>Mark Neris</span><span>The Silver Club</span><span>Vemonteu</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🏷️ Naming Formats</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Gate Agent</div><div class="rc-text rc-cmd">:name me [NAME] [-] Gate Agent [-] [ENG]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Lounge Attendant</div><div class="rc-text rc-cmd">:name me [NAME] [-] Premium Lounge Attendant [-] [ENG]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">CSA</div><div class="rc-text rc-cmd">:name me [NAME] [-] Customer Service Assistant [-] [ENG]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Check-In Agent</div><div class="rc-text rc-cmd">:name me [NAME] [-] Check-In Agent [-] [ENG]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Cabin Crew (walk)</div><div class="rc-text rc-cmd">:name me [NAME] [-] Cabin Crew [-] [ENG]</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">⏰ Flight Time Schedule</div>
+        <div class="role-table">
+          <div class="role-table-row header"><span>Flight</span><span>Premium CI</span><span>Economy CI</span><span>Boarding</span></div>
+          <div class="role-table-row"><span>XX:00</span><span>XX:52</span><span>XX:00</span><span>XX:11</span></div>
+          <div class="role-table-row"><span>XX:15</span><span>XX:07</span><span>XX:15</span><span>XX:26</span></div>
+          <div class="role-table-row"><span>XX:30</span><span>XX:22</span><span>XX:30</span><span>XX:41</span></div>
+          <div class="role-table-row"><span>XX:45</span><span>XX:37</span><span>XX:45</span><span>XX:56</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div id="cctop-csa" class="cc-top-panel">
+    <div class="role-info-header"><div class="role-info-badge">🪧</div><div>
+      <div class="role-info-title">Customer Service Assistant (CSA)</div>
+      <div class="role-info-meta">Be at check-in from briefing dismissal until CC walk. You are usually the first staff passengers interact with — make a great impression.</div>
+    </div></div>
+    <div class="rs" style="margin-bottom:14px"><div class="rs-title">Greetings</div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to [AIRPORT]. My name is [NAME]! And I am the Customer Service Assistant for today, is there anything I can do for you?" data-tpl="Hello and welcome to [AIRPORT]. My name is [NAME]! And I am the Customer Service Assistant for today, is there anything I can do for you?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Customer Service Assistant</div><div class="s-text pf-cmd">Hello and welcome to [AIRPORT]. My name is [NAME]! And I am the Customer Service Assistant for today, is there anything I can do for you?</div></div>
+    </div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🛠️ Setup Commands</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Name yourself</div><div class="rc-text rc-cmd">:name me [NAME] [-] Customer Service Assistant [-] [ENG]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Ask Me sign</div><div class="rc-text rc-cmd">:give me ask</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Notepad</div><div class="rc-text rc-cmd">!notepad</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">👋 Greeting</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Standard greeting</div><div class="rc-text">Welcome to South Pacific Airways! My name is [NAME]; how can I help you on this fine day?</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">📦 Check-In Commands</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give class</div><div class="rc-text rc-cmd">:give [USER] investor</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give flight menu</div><div class="rc-text rc-cmd">:give [USER] flight</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give lounge menu</div><div class="rc-text rc-cmd">:give [USER] lounge</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Check profile</div><div class="rc-text rc-cmd">!profile [USER]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Check tools</div><div class="rc-text rc-cmd">:viewtools [USER]</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">⚠️ Troller/Exploiter</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Report troller</div><div class="rc-text rc-cmd">:notify %sta [USERNAME] is trolling in the self check-in area - [YOUR NAME]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Report NSFW/threat</div><div class="rc-text rc-cmd">:notify %sta [USERNAME] is trolling in the self check-in area saying bomb threats/9-11 jokes/nsfw roleplay - [YOUR NAME]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Report exploiter</div><div class="rc-text rc-cmd">:notify %sta [USERNAME] is exploiting in the self check-in area [SITUATION] - [YOUR NAME]</div></div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🤝 Allied Representative</div>
+        <div class="info-box" style="margin-bottom:8px">Run <code>!profile [USER]</code> → Groups → search "South Pacific Airways". Must be ranked in the Roblox group.</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">If not in group</div><div class="rc-text">Sorry, you must not have been ranked in the Roblox group, could you please ping [YOUR USERNAME] in the SPA communications server.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Allied rep upgrade</div><div class="rc-text rc-cmd">:give [USER] first | :give [USER] lounge | :give [USER] flight | :name [USER] [USERNAME] // Allied Representative</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Done</div><div class="rc-text">I have just now finished upgrading you, thank you for flying with SPA!</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">💎 Investor Guesting</div>
+        <div class="info-box" style="margin-bottom:8px">Verify investor with <code>:viewtools [USER]</code> (check for investor ticket) + <code>!profile [USER]</code> (must have "Investors" rank).</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Guest upgrade</div><div class="rc-text rc-cmd">:give [USER] Investor | :give [USER] lounge | :give [USER] flight | :name [USER] [USERNAME] // Investor guest</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Done</div><div class="rc-text">The guest has been given all appropriate items! Have a wonderful flight!</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">🎟️ One-Time Upgrade</div>
+        <div class="info-box" style="margin-bottom:8px">Check #item-logs in comms server — timestamp must be recent. React with ✅ after processing so others know it's used.</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Confirming</div><div class="rc-text">Please give me a moment to confirm your redemption.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">One-time upgrade</div><div class="rc-text rc-cmd">:give [USER] [CLASS] | :give [USER] flight | :give [USER] lounge</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Done</div><div class="rc-text">I have now processed your upgrade, and you have the needed items. Enjoy your flight!</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">🔑 OnePass Subscribers</div>
+        <div class="info-box">Ask them to ping you in the SPA comms server. Check their roles:<br>· OnePass only → Business Class<br>· Loyalty 2/3 (Recognized/Honored) → First Class<br>· Loyalty 4 (Legacy) → Investor Class<br>· No roles → upgrade to highest class they have</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Verify</div><div class="rc-text">Please go ahead and ping [YOUR USERNAME] in the SPA communications server so I can verify!</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div id="cctop-gate" class="cc-top-panel">
+    <div class="role-info-header"><div class="role-info-badge">🚪</div><div>
+      <div class="role-info-title">Gate Agent</div>
+      <div class="role-info-meta">Answer passenger questions and hand out amenities (max 3 per passenger). Gate agents do NOT do the CC walk — only board when economy boarding starts.</div>
+    </div></div>
+    <div class="rs" style="margin-bottom:14px"><div class="rs-title">Greetings</div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to Gate [GATE NUMBER]. my name is [NAME]! And I am the Gate Agent for today, what can I do for you?" data-tpl="Hello and welcome to Gate [GATE NUMBER]. my name is [NAME]! And I am the Gate Agent for today, what can I do for you?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Gate Agent</div><div class="s-text pf-cmd">Hello and welcome to Gate [GATE NUMBER]. my name is [NAME]! And I am the Gate Agent for today, what can I do for you?</div></div>
+    </div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🔌 Setup Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Approach the gate desk.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Run <code>:to [desk]</code> to enter the desk area.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Hold E to open the Queue Management System.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Click <b>Open</b> to open the queue for passengers.</span></div>
+          <div class="role-step"><span class="role-step-num">5</span><span>Assist passengers. Click <b>NEXT</b> after each passenger to remove them from queue.</span></div>
+        </div>
+      </div>
+      <div class="rs"><div class="rs-title">📋 Important Rules</div>
+        <div class="info-box">
+          · Max <b>3 amenities</b> per passenger. If they ask for more, politely decline.<br>
+          · Do NOT serve food or drinks at the gate.<br>
+          · You may give out freecam: <code>:freecam [user]</code><br>
+          · Only click each item <b>once</b> to avoid inventory spam.<br>
+          · Gate agents do NOT do the CC walk — board during economy boarding.<br>
+          · Close your queue before boarding: announce gate is closed.
+        </div>
+      </div>
+    </div><div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Name yourself</div><div class="rc-text rc-cmd">:name me [NAME] [-] Gate Agent [-] [ENG]</div></div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Freecam passenger</div><div class="rc-text rc-cmd">:freecam [USER]</div></div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Gate closed announce</div><div class="rc-text">:n Ladies and Gentlemen, the gate desk is now closed, as we are nearing the completion of the boarding process. Please make your way towards the boarding gate.</div></div>
+      <div class="rs"><div class="rs-title">🤝 Optional RP</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Start up RP</div><div class="rc-text">-Starts up the computer- | -Types on the computer- | -Verifies flight information- | -Checks seat count-</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div id="cctop-lounge" class="cc-top-panel">
+    <div class="role-info-header"><div class="role-info-badge">🥂</div><div>
+      <div class="role-info-title">Lounge Attendant</div>
+      <div class="role-info-meta">Work at Premium or Investor lounge. Two service types: Bar Service and Table Service. Never use :give command to serve — use the Serving GUI only.</div>
+    </div></div>
+    <div class="rs" style="margin-bottom:14px"><div class="rs-title">Greetings</div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?" data-tpl="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Investor Lounge Attendant</div><div class="s-text pf-cmd">Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?" data-tpl="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Premium Lounge Attendant</div><div class="s-text pf-cmd">Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Attendant for today, could I interest you in any drinks or food?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Table Service for today, Could I interest you in any drinks?" data-tpl="Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Table Service for today, Could I interest you in any drinks?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Investor Table Service</div><div class="s-text pf-cmd">Hello and welcome to the Investor Lounge. My name is [NAME]! and I am the Lounge Table Service for today, Could I interest you in any drinks?</div></div>
+      <div class="s-block" onclick="cpText(this.dataset.t)" data-t="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Table Service for today, could I interest you in any drinks?" data-tpl="Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Table Service for today, could I interest you in any drinks?"><span class="copy-hint">click to copy</span><div class="s-text" style="font-size:.7rem;color:var(--text3)">Premium Table Service</div><div class="s-text pf-cmd">Hello and welcome to the Premium Lounge. My name is [NAME]! and I am the Lounge Table Service for today, could I interest you in any drinks?</div></div>
+    </div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🍹 Bar Service</div>
+        <div class="info-box">Tool: Drinks Platter (<code>:give me drinks</code>)<br><br>Approach and greet passenger → ask what they'd like → use Serving GUI to hand items.</div>
+      </div>
+      <div class="rs"><div class="rs-title">🫖 Table Service</div>
+        <div class="info-box">Tools: Drinks Platter + Warm Towel Tray (<code>:give me tray</code>)<br><br>Approach and greet → hand drinks via Drinks Platter → use <code>:give [user] warm</code> for warm towels → redirect food requests to the bar.</div>
+      </div>
+      <div class="rs"><div class="rs-title">🖥️ Serving GUI</div>
+        <div class="info-box">1. Enter username in the Username box.<br>2. Scroll or search for the item.<br>3. Click the item <b>once only</b> — clicking multiple times causes inventory spam.<br>4. Use <code>:viewtools [user]</code> to verify they received the item.</div>
+      </div>
+    </div><div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Name (Premium)</div><div class="rc-text rc-cmd">:name me [NAME] [-] Premium Lounge Attendant [-] [ENG]</div></div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Name (Investor)</div><div class="rc-text rc-cmd">:name me [NAME] [-] Investor Lounge Attendant [-] [ENG]</div></div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Get drinks platter</div><div class="rc-text rc-cmd">:give me drinks</div></div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Get warm towel tray</div><div class="rc-text rc-cmd">:give me tray</div></div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Give warm towel</div><div class="rc-text rc-cmd">:give [USER] warm</div></div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Check tools</div><div class="rc-text rc-cmd">:viewtools [USER]</div></div>
+      <div class="rs"><div class="rs-title">🥂 Optional Lounge RP</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Setup RP</div><div class="rc-text">-Starts up coffee machines- | -Wipes down the counter- | -Checks food and beverage inventory-</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div id="cctop-checklist" class="cc-top-panel">
+    <div class="role-info-header"><div class="role-info-badge">📋</div><div>
+      <div class="role-info-title">CC Checklist (No Cabin Manager)</div>
+      <div class="role-info-meta">Used when no CM is present. Assign one CC member to handle CM duties alongside their own role. Still name yourself according to YOUR role.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">👥 Self-Assignment Tables</div>
+        <div class="role-table">
+          <div class="role-table-row header"><span>Count</span><span>CC #1</span><span>CC #2</span><span>CC #3</span><span>CC #4</span></div>
+          <div class="role-table-row"><span><b>1</b></span><span>Premium Lounge / Whole aircraft L1</span><span>—</span><span>—</span><span>—</span></div>
+          <div class="role-table-row"><span><b>2</b></span><span>Premium Lounge / Whole Premium L1</span><span>Gate Agent / Whole Economy R1</span><span>—</span><span>—</span></div>
+          <div class="role-table-row"><span><b>3</b></span><span>Premium Lounge / Whole Premium L1+R1</span><span>Gate Agent / Economy CPT L2</span><span>CSA / Economy FO R2</span><span>—</span></div>
+          <div class="role-table-row"><span><b>4</b></span><span>Premium Lounge / Premium CPT L1</span><span>Gate Agent / Economy CPT L2</span><span>CSA / Premium FO R1</span><span>Investor Lounge / Economy FO R2</span></div>
+        </div>
+      </div>
+      <div class="rs"><div class="rs-title">📋 Pre-Boarding Checklist</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Request briefing sheet from host/co-host OR self-assign using the tables above.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Create a DM chatroom: <code>:dm user1,user2,user3</code></span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Complete optional RP for your role if applicable.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>At XX:07–XX:08: CSA gathers all CC for the walk using the CC walk notify command.</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">✅ Onboard Checklist</div>
+        <div class="info-box" style="font-size:.8rem;line-height:1.8">
+          ☐ Complete Pre-Departure RP scripts<br>
+          ☐ Find boarding position, greet passengers<br>
+          ☐ Start Pre-Flight service after BC boarding<br>
+          ☐ Gate Agent closes queue and boards<br>
+          ☐ Arm door when ordered, notify CM<br>
+          ☐ If no CM: send short announcements during safety audio<br>
+          ☐ During taxi: <code>:track nonadmins</code> and note down usernames<br>
+          ☐ Approaching runway: dim moodlights<br>
+          ☐ Cruising: moodlights to pink<br>
+          ☐ Cruising: complete Cruising Service Set-Up<br>
+          ☐ Serve section with warm towels then food cart<br>
+          ☐ Complete Galley Clean-Up<br>
+          ☐ Cabin clean-up: <code>:give me trash</code><br>
+          ☐ Descent: dim moodlights<br>
+          ☐ Disarm door, notify, find deboarding position<br>
+          ☐ Deboard: moodlights to warm white/yellow
+        </div>
+      </div>
+      <div class="rs"><div class="rs-title">🚶 CC Walk Notify</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">CC Walk</div><div class="rc-text rc-cmd">:notify %staff [CABIN CREW & FD WALK] Cabin Crew and Flight Deck participating in the CC walk should now teleport to [YOUR USERNAME], a member of CC at this flight. Make sure you rename yourself to 'NAME [-] Cabin Crew [-] [LANGUAGES]' and give yourself the suitcase with ':give me cabin'. Thank you! | :n Greetings, passengers. Myself and the Cabin Crew team will now be boarding the aircraft, making many airport services potentially unavailable. Gate services will remain open until Economy boarding.</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div id="cctop-announce" class="cc-top-panel">
+    <div class="role-info-header"><div class="role-info-badge">📢</div><div>
+      <div class="role-info-title">Announcements (No Cabin Manager)</div>
+      <div class="role-info-meta">If no CM is onboard, one CC member handles these announcements. These are normally the CM's responsibility.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🛫 Post-Departure (Part 1)</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Cabin announcement</div><div class="rc-text rc-cmd">:scriptchat cc [CABIN ANNOUNCEMENT IN PROGRESS] | :n Dear passengers, I would like to welcome you aboard our South Pacific Airways flight with a nonstop service to [DESTINATION]. My name is [NAME], and I am a part of the Cabin Crew Members for the duration of today's flight, meaning we are held responsible for your safety & satisfaction.</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">🛫 Post-Departure (Part 2)</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Safety + seat reminder</div><div class="rc-text rc-cmd">:n The safety audio should now be playing which serves as a reminder of our safety protocols. Meal service will commence once we have arrived at cruising altitude. For your safety, you are required to remain in your seats during ascent and descent. At this time we are unable to provide you assistance as we are not permitted to stand during ascent as well. | !wait 10 | :n At this time, we ask that you ensure that your seats are in the upright & locked position, tray tables stowed, your window shades are completely open, and that your seatbelts are securely fastened. | !wait 10 | :n In a moment, I will be dimming the cabin lights for departure. If you require additional lighting there is a reading light above your seat. The cabin lights will return when we have reached our cruising altitude. | !wait 10 | :n We thank you for choosing South Pacific Airways as your travel partner. Your home in the skies. We wish you a smooth and pleasant flight!</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">🛬 Landing</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Descent announcement</div><div class="rc-text rc-cmd">:n Ladies and Gentlemen, may I have your attention please. We have started our descent towards [DESTINATION]. At this time, we ask you to fasten your seatbelts, put your seats in the upright & locked position, stow your tray tables, and open your window shades.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">No service during landing</div><div class="rc-text rc-cmd">:n Due to safety regulations, we are unable to stand during landing, meaning that at this time we are unable to provide you with assistance. Upon arrival at the destination, please approach a staff member at the terminal.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Thank you</div><div class="rc-text rc-cmd">:n Thank you for choosing South Pacific Airways as your travel partner, and we hope to see you onboard again soon!</div></div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🏁 Arrival</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Welcome (Part 1)</div><div class="rc-text rc-cmd">:n Ladies and Gentlemen, welcome to [DESTINATION]! Please remain seated with your seatbelts fastened until the aircraft comes to a complete stop at the gate. Your mobile electronic devices may now be used; however, larger devices such as laptops and computers must stay stowed.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Welcome (Part 2)</div><div class="rc-text rc-cmd">:n Please be careful when opening overhead bins, as items inside those may have shifted during the flight.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Welcome (Part 3)</div><div class="rc-text rc-cmd">:n We know that you have many choices when you fly, so thank you for choosing South Pacific Airways as your air carrier. We hope to see you again real soon! Once again, welcome to [DESTINATION]!</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">📡 Tracking & Service</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Track all non-admins</div><div class="rc-text rc-cmd">:track nonadmins</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Track premium only</div><div class="rc-text rc-cmd">:track inv,fc,bc</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">PM passengers</div><div class="rc-text rc-cmd">:pm user1,user2,user3 [MESSAGE]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Service done notify</div><div class="rc-text rc-cmd">:scriptchat cc [INITIAL] Premium FO service has concluded.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Galley clean done</div><div class="rc-text rc-cmd">:scriptchat cc [INITIAL] The galley has been cleaned and all trays & carts are stowed and locked for arrival.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Door armed</div><div class="rc-text rc-cmd">:scriptchat cc [INITIAL] [DOOR] has been armed and cross checked.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Door disarmed</div><div class="rc-text rc-cmd">:scriptchat cc [INITIAL] [DOOR] has been disarmed.</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div id="cctop-emergency" class="cc-top-panel">
+    <div class="role-info-header"><div class="role-info-badge">🚨</div><div>
+      <div class="role-info-title">Emergency Procedures</div>
+      <div class="role-info-meta">You will be notified in advance by the Host. Coordinate with CM before the landing. For medical situations, use the Paramedic Guide.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">✈️ Evacuation Procedure</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Prepare cabin</div><div class="rc-text rc-cmd">:n All passengers, your attention is required. We have been instructed by the flight deck to prepare the cabin for an emergency landing. Please carefully listen to the following instructions.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Brace instructions</div><div class="rc-text rc-cmd">:n Remove sharp objects from your person. Adjust your seats to the upright position with tray tables closed. Once you hear the command, "brace, brace," lean forward, feet flat on the floor, arms braced against the seat in front.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Crew commence</div><div class="rc-text rc-cmd">:chatnotify all Cabin crew, commence emergency landing preparations. | :n At this time the cabin crew will make sure the cabin is ready for landing. Please remain calm and listen for further instructions from the crew.</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Brace brace</div><div class="rc-text">Brace, Brace! Heads down, stay down!</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Evacuate</div><div class="rc-text">This way! Jump and slide! | Evacuate, evacuate!</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">🌊 Ditching Procedure</div>
+        <div class="info-box">Same as evacuation but with life vests. During emergency landing prep, walk the aisle and ensure all passengers have life vests equipped.</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Life vest RP</div><div class="rc-text">-ensures life vests are on- | -assists passenger tighten life vest- | -gives infant life vest-</div></div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🤕 Headache Scripts</div>
+        <div class="info-box" style="margin-bottom:6px">Command: <code>:give me medical kit</code></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Initial RP</div><div class="rc-text">-opens compartment- | -grabs medical kit and closes compartment- | -puts on mask and gloves- | -asks passenger questions about condition- | -notifies Cabin Manager of patient condition-</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Treatment RP</div><div class="rc-text">-opens compartment and puts away medical kit- | -gathers towels and pours cold water over towels- | -grabs cup and pours cold water- | -closes compartment- | -hands passenger cold towels and water- | -opens compartment- | -takes off mask and gloves, throwing them away- | -closes compartment-</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">🌡️ High Fever Scripts</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Initial RP</div><div class="rc-text">-opens compartment- | -puts on mask and gloves- | -grabs medical kit and closes compartment- | -opens kit and grabs thermometer- | -checks temperature- | -notifies Cabin Manager of patient condition- | -puts away thermometer and zips up medical kit- | -hands passenger a mask-</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Treatment RP</div><div class="rc-text">-opens compartment and puts away medical kit- | -gathers towels and pours cold water over towels- | -grabs cup and pours cold water- | -closes compartment- | -hands passenger cold towels and water- | -opens compartment- | -takes off mask and gloves, throwing them away- | -closes compartment-</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Get medical kit</div><div class="rc-text rc-cmd">:give me medical kit</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div id="cctop-mood" class="cc-top-panel">
+    <div class="role-info-header"><div class="role-info-badge">💡</div><div>
+      <div class="role-info-title">Mood Lighting Guide</div>
+      <div class="role-info-meta">Mandatory on ALL flights. Only Cabin Managers change lighting — CC may only do so if no CM is present. Abusing the panel = HRD action.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎛️ Panel Types</div>
+        <div class="info-box">
+          <b>Aeroware panel</b> — select color → click "Change".<br>
+          <b>Vuela panel</b> — set color → click "Set Color".<br>
+          <b>ZEROtech panel</b> — use Shift to select same color for all sections.<br><br>
+          Stars can only be enabled once at cruising altitude.<br>
+          Panel is usually above jump seats at the L1 door (sometimes L2).
+        </div>
+      </div>
+      <div class="rs"><div class="rs-title">💡 Lighting Schedule</div>
+        <div class="role-table">
+          <div class="role-table-row header"><span>Phase</span><span>Color</span></div>
+          <div class="role-table-row"><span>🛬 Boarding</span><span>Warm welcoming color (blue/purple/soft tones)</span></div>
+          <div class="role-table-row"><span>🛫 Takeoff & Landing approach</span><span>OFF / Black / Dark grey</span></div>
+          <div class="role-table-row"><span>✈️ Cruising</span><span>Pink (stars optional)</span></div>
+          <div class="role-table-row"><span>⬇️ Descent</span><span>Grey / Dark (same as takeoff)</span></div>
+          <div class="role-table-row"><span>🏁 Deboarding</span><span>White or warm yellow/off-white</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">📋 When to Change</div>
+        <div class="info-box">
+          · <b>Boarding</b> — after CC walk is complete<br>
+          · <b>Takeoff</b> — right before plane enters runway → OFF/dark<br>
+          · <b>Cruising</b> — once anchored on cruise pad → pink<br>
+          · <b>Descent</b> — once aircraft leaves cruise pad → grey/dark<br>
+          · <b>Deboarding</b> — once plane parks at gate → white/warm yellow
+        </div>
+      </div>
+      <div class="role-note">💡 If you notice the CM forgot to change lighting, feel free to remind them! Only change it yourself if no CM is present.</div>
+      <div class="rs"><div class="rs-title">🎮 Moodlight Commands</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Track nonadmins (taxi)</div><div class="rc-text rc-cmd">:track nonadmins</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Get trash bag</div><div class="rc-text rc-cmd">:give me trash</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Get serving tool</div><div class="rc-text rc-cmd">:give me serving</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Get suitcase</div><div class="rc-text rc-cmd">:give me cabin</div></div>
+      </div>
+    </div></div>
+  </div>
+
+</div>

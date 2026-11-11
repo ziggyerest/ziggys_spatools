@@ -1,0 +1,34 @@
+<div id="page-suggest" class="page" style="max-width:900px">
+  <div class="roles-hero">
+    <div class="roles-hero-inner">
+      <div class="roles-hero-icon">💡</div>
+      <div>
+        <div class="roles-hero-title">Suggestions</div>
+        <div class="roles-hero-sub">Send anonymously · everyone can read them</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="suggest-gate" class="rs" style="text-align:center;padding:26px 20px">
+    <div id="gate-msg" style="color:var(--text2);margin-bottom:14px"></div>
+    <button id="gate-login" class="roles-tab-btn active" style="display:none" onclick="window.location.href=discordLoginURL()">Log in with Discord</button>
+    <button id="gate-logout" class="roles-tab-btn" style="display:none" onclick="discordSignOut()">Sign out</button>
+  </div>
+  <div id="suggest-main" style="display:none">
+  <div class="rs"><div class="rs-title">Send a suggestion</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+      <button id="suggest-anon-btn" class="roles-tab-btn" onclick="toggleSuggestAnon()">Anonymous: On</button>
+      <span style="font-size:.76rem;color:var(--text3)">Off = your Discord username is sent with the suggestion</span>
+    </div>
+    <textarea id="suggest-input" rows="4" placeholder="Write your suggestion…"></textarea>
+    <div style="display:flex;gap:12px;align-items:center;margin-top:10px;flex-wrap:wrap">
+      <button id="suggest-send-btn" class="roles-tab-btn active" onclick="submitSuggestion()">Send anonymously</button>
+      <span id="suggest-status" style="font-size:.78rem;color:var(--text3)"></span>
+    </div>
+  </div>
+
+  <div class="rs">
+  </div>
+
+  </div>
+</div>

@@ -1,0 +1,343 @@
+<div id="page-pf" class="page">
+
+  <!-- Sub-role tabs -->
+  <div class="pf-role-tabs" id="pf-role-tabs">
+    <button class="active" onclick="showPFRole('pfgeneral',this)">📋 General</button>
+    <button onclick="showPFRole('butler',this)">🎩 Butler</button>
+    <button onclick="showPFRole('chef',this)">👨‍🍳 In-Flight Chef</button>
+    <button onclick="showPFRole('galley',this)">🍽️ Galley Setup</button>
+    <button onclick="showPFRole('mealprep',this)">🥗 Meal Service</button>
+  </div>
+
+
+  <!-- ══════ PF GENERAL ══════ -->
+  <div id="pf-pfgeneral" class="pf-panel active">
+    <div class="info-box"><b>Private Flight — General</b><br>
+    Three major roles: Butler, In-Flight Chef, Manual Check-In Agent. Gate Agent, Lounge Attendant, Pre-flight Services and Arm/Disarm can also be done on Private Flights.<br><br>
+    The biggest thing to strive for is <b>luxury</b>. Make greetings more elaborate, treat passengers like royalty.</div>
+
+    <div class="s-section"><h3>📋 Dress Code & Rules</h3>
+      <div class="info-box">
+        · Follow proper dress code at all times — hair, face, accessories, name.<br>
+        · Be professional throughout the entire flight.<br>
+        · All roles must be done properly.<br>
+        · Greetings must be more detailed and professional than normal flights.<br>
+        · Use chat roleplays where necessary — Private Flights should be as realistic as possible.<br>
+        · If questions arise, ask the Cabin Manager or Flight Host.
+      </div>
+    </div>
+
+    <div class="s-section"><h3>👔 Naming Formats</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:name me [NAME] [-] Butler [-] [LANG]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:name me [NAME] [-] In-Flight Chef [-] [LANG]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:name me [NAME] [-] Manual Check-In Agent [-] [LANG]</div></div>
+    </div>
+
+    <div class="s-section"><h3>🛠️ Key Commands</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me flag</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me drinks</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me tray</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me serving</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:re me</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:hat me 6603386310</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:shirt me 6602162100</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:pants me 1860814442</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:bring [user]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:handto [user]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give [user] warm</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give [user] investor | :give [user] flight | :give [user] lounge</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [GALLEY CLEAN UP] The galley has been cleaned and all trays & carts are stowed and locked for arrival. - [Username]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat cc</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ BUTLER ══════ -->
+  <div id="pf-butler" class="pf-panel">
+
+    <div class="info-box">
+      <b>Butler Role:</b> Accommodate investors from entrance → manual check-in → airport tour → investor lounge → gate.<br>
+      Name: <code>:name me Name [-] Butler [-] [LANGUAGE]</code> · Flag: <code>:give me flag</code>
+    </div>
+
+    <div class="s-section"><h3>🚪 Entrance — Initial Greeting</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text" data-name>Greetings, welcome to this lovely private flight! I'm [NAME] and I will be accompanying you throughout this private flight. May I accompany you to the Self Check-In desk to get you checked in?</div>
+      </div>
+    </div>
+
+    <div class="s-section"><h3>🧳 Escort to Check-In</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">Great! Please allow me to escort you to the check-in desk. May I take your luggage for your convenience?</div>
+      </div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-takes suitcase-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Please follow me to the check-in desk!</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-opens check-in portal-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">May I see your reservation?</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-scans-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-prints ticket-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Here's your ticket! Please ensure to keep it with you.</div></div>
+    </div>
+
+    <div class="s-section"><h3>🎫 Check-In Commands</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text pf-cmd">:give &lt;user&gt; investor | :give &lt;user&gt; flight | :give &lt;user&gt; lounge</div>
+      </div>
+    </div>
+
+    <div class="s-section"><h3>😔 If They Don't Want to Be Escorted</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">No worries! Please let me know if you need any assistance checking in.</div>
+      </div>
+    </div>
+
+    <div class="s-section"><h3>🏪 Airport Tour — Opening</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">Now that you are checked-in, may I escort you to our state-of-the-art shops and lounges before we board the aircraft?</div>
+      </div>
+    </div>
+
+    <div class="s-section"><h3>🏪 Showing a Shop</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">Here is [SHOP NAME], you may find many [items] here! Please feel free to take a look.</div>
+      </div>
+      <div class="info-box">
+        <b>Shops by airport:</b><br>
+        Mark Neris: ameritanStore, Louis Vuitton, Starblox Coffee, Stüssy<br>
+        Punta Cana: Jakes Pizza, Runway Delights, Helixir, Fangs Donuts<br>
+        London Heathrow: Tom Ford, Harrods, Louis Vuitton, Gucci, Valentino<br>
+        Summit Peak: ameritanStore, Summit Bakery, Snack Store, Jacobs Diner<br>
+        Southwest Regional: Starbucks Coffee, Chanel, Tsunami Sushi<br>
+        Okhotsk Monbetsu: Cafe Okhotsk Blue, Snack Store, Observation Deck
+      </div>
+    </div>
+
+    <div class="s-section"><h3>🛋️ Lounge — Escort</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">I hope you have enjoyed the tour! Please follow me to the lounge so you can relax before boarding!</div>
+      </div>
+    </div>
+
+    <div class="s-section"><h3>🛋️ Lounge — Seated Service</h3>
+      <div class="info-box" style="margin-bottom:8px">Escort to a seat — NOT the bar. Equip drinks platter or warm towel tray.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">Now that you are able to relax, may I offer you a beverage of your choice followed by a warm towel to enjoy?</div>
+      </div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">Wonderful! Do you have any food allergies that we need to be aware of?</div>
+      </div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-pours drink into glass-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-grabs warm towel-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">Here is your order! Please do not hesitate to ask me if you have any further concerns.</div>
+      </div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text pf-cmd">:give &lt;username&gt; warm</div>
+      </div>
+      <div class="info-box" style="margin-top:6px">If a lounge attendant is already present, wait for service to conclude before escorting to gate.</div>
+    </div>
+
+    <div class="s-section"><h3>🚪 Boarding — Escort to Gate (XX:08–09)</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">As boarding will be commencing shortly, please follow me to the gate.</div>
+      </div>
+      <div class="info-box">Re-equip flag for escort. CM will tell you when to switch to your Chef uniform.</div>
+    </div>
+
+  </div><!-- /pf-butler -->
+
+<!-- ══════ IN-FLIGHT CHEF ══════ -->
+  <div id="pf-chef" class="pf-panel">
+
+    <div class="info-box">
+      <b>In-Flight Chef:</b> Greet and serve passengers from boarding to deboarding. Always switch to Chef after your airport role when CM instructs.<br>
+      Name: <code>:name me Name [-] In-Flight Chef [-] [LANGUAGES]</code>
+    </div>
+
+    <div class="s-section"><h3>👔 CC Walk — Chef Uniform</h3>
+      <div class="info-box" style="margin-bottom:8px">When CM informs you of the CC Walk, reset yourself first, then put on chef uniform + badge + lanyard + black suitcase.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:re me</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:hat me 6603386310</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:shirt me 6602162100</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:pants me 1860814442</div></div>
+    </div>
+
+    <div class="s-section"><h3>🛫 Boarding Greeting</h3>
+      <div class="info-box" style="margin-bottom:8px">Must be more detailed than a normal flight.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">Greetings, dear passenger! Welcome aboard our A320 Executive. On behalf of today's flight crew, we wish you a pleasant flight!</div>
+      </div>
+    </div>
+
+    <div class="s-section"><h3>🍹 Pre-Flight Service — Setup RP</h3>
+      <div class="info-box" style="margin-bottom:8px">Get tools: <code>:give me drinks</code> and <code>:give me tray</code>. Complete setup before serving.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-pulls out drink tray-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-pulls out fancy cups and napkins-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-puts cups in chiller-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-grabs bag of ice-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-crushes ice with mallet and dumps in icebox-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-sets drink platter aside-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-pours warm water over towels-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-places towels in heated chiller-</div></div>
+    </div>
+
+    <div class="s-section"><h3>🍹 Pre-Flight Service — PM Greeting</h3>
+      <div class="info-box" style="margin-bottom:8px">Equip drinks platter. If they want warm towel, switch to tray. Notify CM when done using <code>:scriptchat cc</code>.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">:pm [user] Greetings, welcome on-board this South Pacific Airways Private Flight! May I interest you in a beverage and a warm towel before we depart?</div>
+      </div>
+    </div>
+
+    <div class="s-section"><h3>🍽️ Cruising Service — Setup RP</h3>
+      <div class="info-box" style="margin-bottom:8px">Must be done before starting meal service. If assigned premium, also do warm towel prep.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-pulls out galley cart-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-stocks with food and drinks-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-grabs bag of ice and crushes with mallet-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-dumps in icebox-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-pours warm water over towels-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-places towels in heated chiller-</div></div>
+    </div>
+
+    <div class="s-section"><h3>💺 Step 1 — Escort to Dining Area</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">Greetings, dear passenger! Please head to the dining area so we can begin serving you.</div>
+      </div>
+      <div class="info-box">If AFK: use <code>:bring</code> to TP them to a seat at the dining table.</div>
+    </div>
+
+    <div class="s-section"><h3>🥗 Step 2 — PM: Drinks & Starters</h3>
+      <div class="info-box" style="margin-bottom:8px">3-course meals on private flights. If they order entree/dessert now, inform it will be served later.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">:pm [user1,user2,etc] I hope you enjoyed the ascent. Please choose a beverage and a starter to begin your meal service with us today.</div>
+      </div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">Splendid choices, please allow me to prepare your order.</div>
+      </div>
+    </div>
+
+    <div class="s-section"><h3>👨‍🍳 Step 3 — Prepare at Front Galley</h3>
+      <div class="info-box" style="margin-bottom:8px">Give yourself serving tool: <code>:give me serving</code>. Do cooking RP — be creative!</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-cooks [food name]-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-blends drink-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-prepares cutlery-</div></div>
+    </div>
+
+    <div class="s-section"><h3>🍽️ Step 4 — Serve the Passenger</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text pf-cmd">:handto [user]</div>
+      </div>
+    </div>
+
+    <div class="s-section"><h3>🥩 Step 5 — Entree</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">:pm [user1,user2,etc] I hope you are satisfied with your meal so far. What would you like for your Entree?</div>
+      </div>
+      <div class="info-box">Then repeat Steps 3 & 4.</div>
+    </div>
+
+    <div class="s-section"><h3>🍰 Step 6 — Dessert</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">:pm [user1,user2,etc] To finish off your dining experience with us today, may I interest you with a dessert?</div>
+      </div>
+      <div class="info-box">Then repeat Steps 3 & 4.</div>
+    </div>
+
+    <div class="s-section"><h3>💺 Step 7 — Assist to Seat for Landing</h3>
+      <div class="info-box">Opposite of Step 1. Do NOT lead them to seat unless CM gives CC a go signal.</div>
+    </div>
+
+    <div class="s-section"><h3>🧹 Galley Clean-Up</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks inventory of food & drink items-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-stows food carts and locks them in place-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-opens upper compartment and puts drink & towel platter-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-locks compartment in place-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-wipes off galley with wet wipe-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text pf-cmd">:notify %staff [GALLEY CLEAN UP] The galley has been cleaned and all trays & carts are stowed and locked for arrival. - [Username]</div>
+      </div>
+    </div>
+
+    <div class="s-section"><h3>🛬 Deboarding</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span>
+        <div class="s-text">A warm welcome to [destination]! We hope you enjoyed this Private Flight on-board our A320 Executive and wish to see you again soon.</div>
+      </div>
+    </div>
+
+  
+
+  <!-- ══════ GALLEY SETUP ══════ -->
+  <div id="pf-galley" class="pf-panel">
+    <div class="info-box"><b>Galley Setup &amp; Cleanup</b><br>Pre-flight setup is done after the CC walk. Cruising setup is done before serving meals at cruise.</div>
+
+    <div class="s-section"><h3>🍹 Pre-Flight Service Setup</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-pulls out drink tray-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-pulls out fancy cups and napkins-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-puts cups in chiller-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-grabs bag of ice-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-crushes ice with mallet and dumps in icebox-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-sets drink platter aside-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-pours warm water over towels-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-places towels in heated chiller-</div></div>
+    </div>
+
+    <div class="s-section"><h3>🍱 Cruising Service Setup</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-pulls out galley cart-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-stocks with food and drinks-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-grabs bag of ice and crushes with mallet-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-dumps in icebox-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-pours warm water over towels-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-places towels in heated chiller-</div></div>
+    </div>
+
+    <div class="s-section"><h3>🧹 Galley Clean-Up</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-checks inventory of food & drink items-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-stows food carts and locks them in place-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-opens upper compartment and puts drink & towel platter-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-locks compartment in place-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-wipes off galley with wet wipe-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff [GALLEY CLEAN UP] The galley has been cleaned and all trays & carts are stowed and locked for arrival. - [Username]</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:scriptchat cc</div></div>
+    </div>
+  </div>
+
+  <!-- ══════ MEAL SERVICE ══════ -->
+  <div id="pf-mealprep" class="pf-panel">
+    <div class="info-box"><b>Cruising Meal Service (3-Course)</b><br>
+    Private flights use three-course meals: Drinks &amp; Starters → Entree → Dessert. Assigned passengers by CM. PM all scripts.</div>
+
+    <div class="s-section"><h3>💺 Step 1 — Escort to Dining</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Greetings, dear passenger! Please head to the dining area so we can begin serving you.</div></div>
+      <div class="info-box">If AFK: <code>:bring [user]</code> to a dining table seat.</div>
+    </div>
+
+    <div class="s-section"><h3>🥗 Step 2 — Drinks &amp; Starters</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">:pm [user] I hope you enjoyed the ascent. Please choose a beverage and a starter to begin your meal service with us today.</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">Splendid choices, please allow me to prepare your order.</div></div>
+    </div>
+
+    <div class="s-section"><h3>👨‍🍳 Step 3 — Prepare at Galley</h3>
+      <div class="info-box"><code>:give me serving</code> then do cooking RP.</div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-cooks [food name]-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-blends drink-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">-prepares cutlery-</div></div>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me serving</div></div>
+    </div>
+
+    <div class="s-section"><h3>🍽️ Step 4 — Serve</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:handto [user]</div></div>
+    </div>
+
+    <div class="s-section"><h3>🥩 Step 5 — Entree</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">:pm [user] I hope you are satisfied with your meal so far. What would you like for your Entree?</div></div>
+    </div>
+
+    <div class="s-section"><h3>🍰 Step 6 — Dessert</h3>
+      <div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text">:pm [user] To finish off your dining experience with us today, may I interest you with a dessert?</div></div>
+    </div>
+
+    <div class="s-section"><h3>💺 Step 7 — Return to Seat</h3>
+      <div class="info-box">Assist passengers back to seats for landing — opposite of Step 1. Do NOT move them until CM gives the go signal.</div>
+    </div>
+  </div>
+</div><!-- /pf-chef -->
+
+</div>

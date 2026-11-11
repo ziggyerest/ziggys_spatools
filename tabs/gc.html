@@ -1,0 +1,750 @@
+<div id="page-gc" class="page" style="max-width:1100px">
+
+  <div class="roles-hero">
+    <div class="roles-hero-inner">
+      <div class="roles-hero-icon">🛠️</div>
+      <div>
+        <div class="roles-hero-title">Ground Crew</div>
+        <div class="roles-hero-sub">Ground Crew Handbook · All vehicles, procedures and RP scripts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sub-tab selector -->
+  <div class="roles-tab-row" style="flex-wrap:wrap">
+    <button class="roles-tab-btn active" onclick="selGC('info',this)">📋 General</button>
+    <button class="roles-tab-btn" onclick="selGC('jetway',this)">🌉 Jetway</button>
+    <button class="roles-tab-btn" onclick="selGC('airstairs',this)">🪜 Airstairs</button>
+    <button class="roles-tab-btn" onclick="selGC('airsteps',this)">🪜 Airsteps</button>
+    <button class="roles-tab-btn" onclick="selGC('gpu',this)">⚡ GPU</button>
+    <button class="roles-tab-btn" onclick="selGC('acu',this)">❄️ ACU</button>
+    <button class="roles-tab-btn" onclick="selGC('fuel',this)">⛽ Fuel</button>
+    <button class="roles-tab-btn" onclick="selGC('lav',this)">🚽 Lavatory</button>
+    <button class="roles-tab-btn" onclick="selGC('catering',this)">🍽️ Catering</button>
+    <button class="roles-tab-btn" onclick="selGC('baggage',this)">🧳 Baggage</button>
+    <button class="roles-tab-btn" onclick="selGC('cones',this)">🔶 Cones</button>
+    <button class="roles-tab-btn" onclick="selGC('marshalling',this)">🟠 Marshalling</button>
+    <button class="roles-tab-btn" onclick="selGC('wingwalk',this)">🦺 Wingwalking</button>
+    <button class="roles-tab-btn" onclick="selGC('followme',this)">🚗 Follow Me</button>
+    <button class="roles-tab-btn" onclick="selGC('buses',this)">🚌 Buses</button>
+    <button class="roles-tab-btn" onclick="selGC('cleaning',this)">🧹 A/C Cleaning</button>
+    <button class="roles-tab-btn" onclick="selGC('firetruck',this)">🚒 Firetruck</button>
+    <button class="roles-tab-btn" onclick="selGC('investorcar',this)">🚗 Investor Car</button>
+    <button class="roles-tab-btn" onclick="selGC('deicing',this)">🧊 De-icing</button>
+    <button class="roles-tab-btn" onclick="selGC('arrival',this)">🛬 Arrival</button>
+    <button class="roles-tab-btn" onclick="selGC('atc',this)">📡 ATC</button>
+  </div>
+
+  <!-- ══ GENERAL INFO ══ -->
+  <div id="gc-info" class="roletab active">
+    
+
+
+
+<div class="s-section"><h3>Insert Menu</h3><div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me at ease</div></div></div>
+
+
+
+
+
+
+
+
+
+    <div class="role-info-header">
+      <div class="role-info-badge">📋</div>
+      <div>
+        <div class="role-info-title">General Information</div>
+        <div class="role-info-meta">Name format: <code>GCXXXX [-] Username [-] Ground Crew [-] [LANG]</code></div>
+        <div class="role-info-meta">Uniform: Light GREEN vest (not orange — that's Ground Manager) + Ground Crew Earmuffs. No lanyards!</div>
+      </div>
+    </div>
+    <div class="role-cols">
+      <div>
+        <div class="rs"><div class="rs-title">📏 Rules</div>
+          <div class="info-box">
+            · Always ask permission from your Ground Manager before spawning vehicles or restricted activities.<br>
+            · Jetway, airstairs and airsteps can only be detached with explicit permission from the Flight Dispatcher.<br>
+            · Never walk in the jetway while it is in motion — it will fling.<br>
+            · When finished with a vehicle, park it in the Hangar. No hangar? Use white parking spots neatly.<br>
+            · No admin abuse of any kind. Serious consequences from HRD.<br>
+            · If you skip a vehicle and no Ground Manager is present, you must fill out the skip form.<br>
+            · At ease when idle: <code>:give me at ease</code>
+          </div>
+        </div>
+        <div class="rs"><div class="rs-title">⏰ Detach Times</div>
+          <div class="role-table">
+            <div class="role-table-row header"><span>Vehicle</span><span>Detach Time</span></div>
+            <div class="role-table-row"><span>Catering Truck</span><span>When all carts unloaded (RP)</span></div>
+            <div class="role-table-row"><span>Fuel Truck</span><span>XX:02</span></div>
+            <div class="role-table-row"><span>Lavatory Truck</span><span>XX:02</span></div>
+            <div class="role-table-row"><span>Ground Power Unit</span><span>XX:07–XX:09</span></div>
+            <div class="role-table-row"><span>Air Conditioning Unit</span><span>XX:07–XX:09</span></div>
+            <div class="role-table-row"><span>Baggage Loader</span><span>After Investor Boarding</span></div>
+            <div class="role-table-row"><span>Baggage Truck</span><span>After Investor Boarding</span></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="rs"><div class="rs-title">💡 Lighting System</div>
+          <div class="role-table">
+            <div class="role-table-row header"><span>Situation</span><span>Lights On</span></div>
+            <div class="role-table-row"><span>When Driving</span><span>Headlights, Beacon, Caution, Top Lights</span></div>
+            <div class="role-table-row"><span>When Attached/Anchored</span><span>Caution, Top, Stair, Interior Lights</span></div>
+            <div class="role-table-row"><span>When Parked</span><span>ALL LIGHTS OFF</span></div>
+          </div>
+        </div>
+        <div class="rs"><div class="rs-title">🛠️ Commands</div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">At ease</div><div class="rc-text rc-cmd">:give me at ease</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Flashlight</div><div class="rc-text rc-cmd">:give me flash</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Marshalling sticks</div><div class="rc-text rc-cmd">:give me marshal</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Cleaning kit</div><div class="rc-text rc-cmd">:give me clean</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Cones</div><div class="rc-text rc-cmd">/cone</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Trash bag</div><div class="rc-text rc-cmd">:give me trash</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Baggage system</div><div class="rc-text rc-cmd">/bag</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Clark CT30 insert height</div><div class="rc-text rc-cmd">:jheight me 17</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Catering truck stuck</div><div class="rc-text rc-cmd">:jpower me 200</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">GPU control</div><div class="rc-text rc-cmd">/gpu</div></div>
+          <div class="rc" onclick="rcopy(this)"><div class="rc-label">Keybinds menu</div><div class="rc-text rc-cmd">!keybinds</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ JETWAY ══ -->
+  <div id="gc-jetway" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🌉</div><div>
+      <div class="role-info-title">Jetway</div>
+      <div class="role-info-meta">Movable bridge connecting terminal to aircraft. Used at: LHR (dep+arr), MNI (dep), PUJ (dep). Reagan and Paine Field NOT in use.</div>
+      <div class="role-info-meta">⚠️ Do NOT detach without explicit permission from Flight Host or Ground Manager. Never walk on jetway while moving.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎮 Controls</div>
+        <div class="info-box">W/S/A/D = Movement &nbsp;·&nbsp; Z/X = Extension &nbsp;·&nbsp; Q/E = Rotate Cab Left/Right<br>R/F = Rotate Cab Up/Down &nbsp;·&nbsp; T/G = Canopy Up/Down &nbsp;·&nbsp; C/V = Camera View</div>
+      </div>
+      <div class="rs"><div class="rs-title">🔌 Attach Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Get inside the Jetway. Walk to the front and click the prompt to start manipulating it.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>GUI is on the right side: sun icon = lights, 4-boxes icon = doors, last icon = controls menu.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Before moving: turn on fan, spot lights, and caution lights.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Move slowly to the door. Adjust height and cab rotation carefully. Change camera for good alignment perspective.</span></div>
+          <div class="role-step"><span class="role-step-num">5</span><span>Once aligned: put canopy down, turn OFF spot lights + caution lights.</span></div>
+          <div class="role-step"><span class="role-step-num">6</span><span>Turn ON all 4 lights: Deck Lights, Rotunda Lights, Cab Lights and Tunnel Lights.</span></div>
+          <div class="role-step"><span class="role-step-num">7</span><span>To detach: reverse all steps. Only with explicit permission from Flight Host or Ground Manager.</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">💡 Lights Reference</div>
+        <div class="info-box"><b>Moving:</b> Fan ON, Spot Lights ON, Caution Lights ON<br><b>Attached:</b> Deck Lights, Rotunda Lights, Cab Lights, Tunnel Lights ON<br>Spot Lights + Caution Lights OFF when attached</div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ AIRSTAIRS ══ -->
+  <div id="gc-airstairs" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🪜</div><div>
+      <div class="role-info-title">Airstairs</div>
+      <div class="role-info-meta">Board passengers from tarmac. 2 versions: Glasscover (L1 door) and Regular (L2 door, widebody only). No Clark CT30 needed — self-propelled.</div>
+      <div class="role-info-meta">⚠️ B737 exception: nothing on L1 — inbuilt stairs. Must be completely still when anchoring.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎮 Controls</div>
+        <div class="info-box">Z = Raise &nbsp;·&nbsp; X = Lower &nbsp;·&nbsp; C = Anchor &nbsp;·&nbsp; V = First Person<br>L = Headlights &nbsp;·&nbsp; K = Spot Lights &nbsp;·&nbsp; J = Stair Lights &nbsp;·&nbsp; P = Caution Lights<br>Startup button = Start engines &nbsp;·&nbsp; GUI in lower right corner</div>
+      </div>
+      <div class="rs"><div class="rs-title">🔌 Attach Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Spawn airstairs and jump in. Turn on headlights and caution lights.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Line up carefully to your door (L1 = Glasscover, L2 = Regular on widebody).</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Raise height to match the door using Z. Slowly drive up to connect.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>When attached with no gap, make sure you are completely still, then anchor (C).</span></div>
+          <div class="role-step"><span class="role-step-num">5</span><span>After anchoring: turn OFF headlights + caution. Turn ON stair lights (J).</span></div>
+          <div class="role-step"><span class="role-step-num">6</span><span>Remove red ribbons and open the aircraft door.</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">📍 Airstairs Placement — Departure</div>
+        <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.76rem">
+          <tr style="background:#0d2244"><td style="padding:6px 10px;color:#4a7aaa;font-weight:700">Airport</td><td style="padding:6px 10px;color:#4a7aaa;font-weight:700">Narrowbody</td><td style="padding:6px 10px;color:#4a7aaa;font-weight:700">Widebody</td><td style="padding:6px 10px;color:#4a7aaa;font-weight:700">B737</td><td style="padding:6px 10px;color:#4a7aaa;font-weight:700">A321</td></tr>
+          <tr style="border-bottom:1px solid #1a3456"><td style="padding:5px 10px;color:#c8dff5">LHR, PUJ, MNI</td><td style="padding:5px 10px;color:#8aaccb">L1 Airstairs, L2 Airsteps</td><td style="padding:5px 10px;color:#8aaccb">L1 Airstairs, L2 Airstairs</td><td style="padding:5px 10px;color:#8aaccb">L1 Nothing, L2 Airsteps</td><td style="padding:5px 10px;color:#8aaccb">L1 Airstairs, L3 Airsteps</td></tr>
+          <tr style="border-bottom:1px solid #1a3456;background:#091830"><td style="padding:5px 10px;color:#c8dff5">Summit, SW, Monbetsu, Mesa</td><td style="padding:5px 10px;color:#8aaccb">L1 Airsteps, L2 Airsteps</td><td style="padding:5px 10px;color:#5b8ab0">No widebody</td><td style="padding:5px 10px;color:#8aaccb">L1 Nothing, L2 Airsteps</td><td style="padding:5px 10px;color:#8aaccb">L1 Airsteps, L3 Airsteps</td></tr>
+        </table></div>
+      </div>
+      <div class="rs"><div class="rs-title">📍 Airstairs Placement — Arrival</div>
+        <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.76rem">
+          <tr style="background:#0d2244"><td style="padding:6px 10px;color:#4a7aaa;font-weight:700">Airport</td><td style="padding:6px 10px;color:#4a7aaa;font-weight:700">Narrowbody</td><td style="padding:6px 10px;color:#4a7aaa;font-weight:700">Widebody</td><td style="padding:6px 10px;color:#4a7aaa;font-weight:700">B737</td><td style="padding:6px 10px;color:#4a7aaa;font-weight:700">A321</td></tr>
+          <tr style="border-bottom:1px solid #1a3456"><td style="padding:5px 10px;color:#c8dff5">LHR</td><td style="padding:5px 10px;color:#8aaccb">L1 Airstairs, L2 Airsteps</td><td style="padding:5px 10px;color:#8aaccb">L1 Airstairs, L2 Airstairs</td><td style="padding:5px 10px;color:#8aaccb">L1 Nothing, L2 Airsteps</td><td style="padding:5px 10px;color:#8aaccb">L1 Airstairs, L3 Airsteps</td></tr>
+          <tr style="border-bottom:1px solid #1a3456;background:#091830"><td style="padding:5px 10px;color:#c8dff5">PUJ, MNI</td><td style="padding:5px 10px;color:#8aaccb">L1 Airsteps, L2 Airsteps</td><td style="padding:5px 10px;color:#8aaccb">L1 Airstairs, L2 Airstairs</td><td style="padding:5px 10px;color:#8aaccb">L1 Nothing, L2 Airsteps</td><td style="padding:5px 10px;color:#8aaccb">L1 Airstairs, L3 Airsteps</td></tr>
+          <tr style="border-bottom:1px solid #1a3456"><td style="padding:5px 10px;color:#c8dff5">Summit, SW, Monbetsu</td><td style="padding:5px 10px;color:#8aaccb">L1 Airsteps, L2 Airsteps</td><td style="padding:5px 10px;color:#5b8ab0">No widebody</td><td style="padding:5px 10px;color:#8aaccb">L1 Nothing, L2 Airsteps</td><td style="padding:5px 10px;color:#8aaccb">L1 Airsteps, L3 Airsteps</td></tr>
+          <tr style="border-bottom:1px solid #1a3456;background:#091830"><td style="padding:5px 10px;color:#c8dff5">Phoenix-Mesa</td><td style="padding:5px 10px;color:#8aaccb">L1 Airstairs, L2 Airsteps</td><td style="padding:5px 10px;color:#5b8ab0">No widebody</td><td style="padding:5px 10px;color:#8aaccb">L1 Nothing, L2 Airsteps</td><td style="padding:5px 10px;color:#8aaccb">L1 Airstairs, L3 Airsteps</td></tr>
+        </table></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ AIRSTEPS ══ -->
+  <div id="gc-airsteps" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🪜</div><div>
+      <div class="role-info-title">Airsteps</div>
+      <div class="role-info-meta">Like Airstairs but require a Clark CT30 tug to move. Used on back doors of narrowbody (remote stand) and L1 at smaller airports. Never used on widebody.</div>
+      <div class="role-info-meta">⚠️ Always lower airsteps when in transit. Do not use Clark CT30 to position at door or remove from door.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎮 Controls (Airsteps)</div>
+        <div class="info-box">C = Anchor &nbsp;·&nbsp; Z/X = Lower/raise height<br>Icons on side panel to work with airsteps</div>
+      </div>
+      <div class="rs"><div class="rs-title">🎮 Controls (Clark CT30 Tug)</div>
+        <div class="info-box">F = Get into tug &nbsp;·&nbsp; J = Caution Lights &nbsp;·&nbsp; H = Headlights</div>
+      </div>
+      <div class="rs"><div class="rs-title">📦 Clark CT30 Insert Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Run <code>:jheight me 17</code> in the command bar.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Jump and insert the Clark CT30 Tug at the peak of your jump.</span></div>
+        </div>
+      </div>
+      <div class="rs"><div class="rs-title">🔌 Attach Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Insert Clark CT30 + Airsteps. Get in tug (hold F), turn on all lights.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Drive up to Airsteps. Press arrow icon to lower the latch. Pull toward tug until plug icon appears — click it.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Drive Airsteps to designated door. Take great care lining up.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Stop close to door, exit tug, go to side of Airsteps, click the icon. Menu pops up — turn on engine, lower height to match door.</span></div>
+          <div class="role-step"><span class="role-step-num">5</span><span>Disconnect Clark CT30 and park it. Pull Airsteps to the door by hand.</span></div>
+          <div class="role-step"><span class="role-step-num">6</span><span>At the door: press icon → Anchor. Remove red ribbon. Pull railings to connect to aircraft. Open door.</span></div>
+          <div class="role-step"><span class="role-step-num">7</span><span>⚠️ Do NOT pull railings inside the aircraft. Ensure railings are not clipped in the door.</span></div>
+          <div class="role-step"><span class="role-step-num">8</span><span>To detach: reverse all steps. When pushing away, do not hit the wings.</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">📍 Airsteps same placement table as Airstairs</div>
+        <div class="info-box">Narrowbody back doors = always Airsteps on remote stand. L1 = Airsteps at smaller airports (no jetway). Widebody = Airsteps NEVER used. See Airstairs tab for full airport table.</div>
+      </div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Insert height command</div><div class="rc-text rc-cmd">:jheight me 17</div></div>
+    </div></div>
+  </div>
+
+  <!-- ══ ACU ══ -->
+  <div id="gc-acu" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">❄️</div><div>
+      <div class="role-info-title">Air Conditioning Unit (ACU)</div>
+      <div class="role-info-meta">Supplies cool air into aircraft while APU is off. Detach at XX:07–XX:09.</div>
+      <div class="role-info-meta">⚠️ This vehicle can fling. If it flings, do not attach it — notify your Ground Manager. Make as FEW turns as possible. Practice on a private server first.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎮 Controls</div>
+        <div class="info-box">B = Beacon &nbsp;·&nbsp; H = Headlights &nbsp;·&nbsp; C = Anchor &nbsp;·&nbsp; V = Anchor the ACU</div>
+      </div>
+      <div class="rs"><div class="rs-title">🔌 Attach Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Spawn ACU + ACU tug. Get in tug, turn on Beacon and Headlights.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Align tug with the wedge of the ACU. Hop out, press E at the wedge to connect (look for "Weld ACU GF/30" prompt).</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Drive ACU to the front of the aircraft, Captain side, facing the belly. Make as few turns as possible — it spins out easily.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Anchor ACU with V. Hop out. Disconnect tug and park it nearby.</span></div>
+          <div class="role-step"><span class="role-step-num">5</span><span>Head to the hoses. Use E + move mouse to belly of aircraft + B to connect the hose.</span></div>
+          <div class="role-step"><span class="role-step-num">6</span><span>Go to side of ACU, find E prompt for Control Panel. Turn on fan, select temperature and fan speed.</span></div>
+          <div class="role-step"><span class="role-step-num">7</span><span>To detach: reverse all steps.</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">⚠️ ACU Tips</div>
+        <div class="info-box">· The ACU can spin out and get stuck VERY easily on turns.<br>· Use extreme caution on all turns.<br>· Practice driving on a private server before using in a live flight.<br>· If it flings, do not try to attach it — let your Ground Manager know immediately.</div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ GPU ══ -->
+  <div id="gc-gpu" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">⚡</div><div>
+      <div class="role-info-title">Ground Power Unit (GPU)</div>
+      <div class="role-info-meta">Provides aircraft with power when at gate. Detach between XX:07–XX:09. Uses Clark CT30 tug to move.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎮 Controls (Clark CT30)</div>
+        <div class="info-box">F = Get into tug &nbsp;·&nbsp; J = Caution Lights &nbsp;·&nbsp; H = Headlights</div>
+      </div>
+      <div class="rs"><div class="rs-title">🔌 Attach Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Run <code>:jheight me 17</code>, jump, insert Clark CT30 at peak of jump.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Insert Clark CT30 + GPU. Get in tug (hold F), turn on all lights.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Run <code>/gpu</code> in chat to control the GPU. Lower the latch, pull GPU toward tug until plug icon appears — click it.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Drive Clark CT30 carefully underneath the nose of the aircraft.</span></div>
+          <div class="role-step"><span class="role-step-num">5</span><span>Disconnect Clark from GPU (click plug icon). Park Clark in white boxes, turn off all lights.</span></div>
+          <div class="role-step"><span class="role-step-num">6</span><span>Walk to side of GPU closer to aircraft. Click circle icon — another icon appears on aircraft. Click it to connect the hose. (Not all aircraft compatible — skip if so.)</span></div>
+          <div class="role-step"><span class="role-step-num">7</span><span>Go to front of GPU, click eye icon. Turn on GPU by clicking the orange and red buttons.</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Insert height</div><div class="rc-text rc-cmd">:jheight me 17</div></div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">GPU control</div><div class="rc-text rc-cmd">/gpu</div></div>
+      <div class="role-note">💡 GPU goes UNDER the nose of the aircraft. Not all aircraft are compatible — if no connection point appears, you don't need to connect the hose.</div>
+    </div></div>
+  </div>
+
+  <!-- ══ CATERING ══ -->
+  <div id="gc-catering" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🍽️</div><div>
+      <div class="role-info-title">Catering Truck</div>
+      <div class="role-info-meta">Supplies meals and drinks to aircraft. Attach: R1 door on narrowbody, R1 and R2 on widebody. Detach when all carts unloaded (RP).</div>
+      <div class="role-info-meta">⚠️ Will ALWAYS spawn stuck in the air. Ask Ground Manager or host to bring it down. Last resort: <code>:jpower me 200</code></div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎮 Controls (arrow-box icon, bottom left)</div>
+        <div class="info-box">H = Headlights &nbsp;·&nbsp; K = Caution Lights &nbsp;·&nbsp; J = Top Lights<br>Z = Lift Truck &nbsp;·&nbsp; X = Lower Truck &nbsp;·&nbsp; G = Extend Platform &nbsp;·&nbsp; V = Retract Platform<br>C = Anchor &nbsp;·&nbsp; F = Open Front Door</div>
+      </div>
+      <div class="rs"><div class="rs-title">🔌 Attach Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Insert catering truck — it spawns in the air. Ask GM or host to bring it down.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Get in (car icon), start engine, lower elevator as much as possible. Turn on headlights, caution lights, top lights.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Drive to the aircraft's door (R1 narrowbody, R1+R2 widebody). Line up carefully.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Raise truck to height of door. Extend platform (G). Anchor (C) when neatly positioned.</span></div>
+          <div class="role-step"><span class="role-step-num">5</span><span>Turn OFF caution lights and headlights. Open front door (F).</span></div>
+          <div class="role-step"><span class="role-step-num">6</span><span>Do NOT use the "unload carts" option. Wait 3–5 minutes, then detach.</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🔌 Detach Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Close aircraft door first.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Get in truck. Close front door (F). Turn on caution + headlights. Start engine. Unanchor.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Lower elevator (X). Drive to parking/hangar. Turn off all lights.</span></div>
+        </div>
+      </div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Truck stuck in air</div><div class="rc-text rc-cmd">:jpower me 200</div></div>
+    </div></div>
+  </div>
+
+  <!-- ══ LAVATORY ══ -->
+  <div id="gc-lav" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🚽</div><div>
+      <div class="role-info-title">Lavatory Truck</div>
+      <div class="role-info-meta">Removes passenger waste from aircraft. Detach at XX:02. Position: right side of aircraft behind rear door.</div>
+      <div class="role-info-meta">⚠️ May be buggy. If so, notify Ground Manager.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎮 Controls</div>
+        <div class="info-box">E = Control Elevator (hold) &nbsp;·&nbsp; E = Rise &nbsp;·&nbsp; F = Lower &nbsp;·&nbsp; Q = Control Hose &nbsp;·&nbsp; Left Mouse Button = Confirm hose placement</div>
+      </div>
+      <div class="rs"><div class="rs-title">🔌 Attach Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Insert Lavatory Truck. Get in, turn on engine, lights and beacon.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Drive to the right side of the aircraft, behind the rear door.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Head into the elevator. Hold E to access panel. Use E to raise elevator to a respectable height.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Use Q to attach the hose to the side of the aircraft. Click "extract poo" button once attached.</span></div>
+          <div class="role-step"><span class="role-step-num">5</span><span>To detach: reverse all steps.</span></div>
+        </div>
+      </div>
+    </div><div></div></div>
+  </div>
+
+  <!-- ══ FUEL ══ -->
+  <div id="gc-fuel" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">⛽</div><div>
+      <div class="role-info-title">Fuel Truck</div>
+      <div class="role-info-meta">Loads fuel into aircraft for departure. Park on FO side (right side) of wing, near wingtip, facing front. Detach as soon as fuel is loaded.</div>
+      <div class="role-info-meta">⚠️ May be buggy. If so, notify Ground Manager.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎮 Controls</div>
+        <div class="info-box">E = Engine &nbsp;·&nbsp; H = Headlights &nbsp;·&nbsp; J = Caution Lights &nbsp;·&nbsp; K = Spot Lights<br>L = Fog Lights &nbsp;·&nbsp; P = Interior Lights &nbsp;·&nbsp; Z/X = Blinkers &nbsp;·&nbsp; V = Anchor</div>
+      </div>
+      <div class="rs"><div class="rs-title">⛽ Fuel Quantities</div>
+        <div class="role-table">
+          <div class="role-table-row header"><span>Flight Type</span><span>Fuel Quantity</span></div>
+          <div class="role-table-row"><span>Short-haul</span><span>5,000 – 8,000</span></div>
+          <div class="role-table-row"><span>Medium-haul</span><span>12,000 – 22,000</span></div>
+          <div class="role-table-row"><span>Long-haul</span><span>45,000 – 75,000</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🔌 Attach Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Insert fuel truck. Turn on Caution Lights, Headlights, Spot Lights (when needed).</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Drive to right side (FO side) of aircraft wing. Park near wingtip, facing front.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Turn off headlights. Keep spot lights on. Hop out. Open the fuel truck latch.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Two hoses inside: connect LEFT and RIGHT hoses to the gear and wing of the aircraft.</span></div>
+          <div class="role-step"><span class="role-step-num">5</span><span>Click the button near the end of the hose to enter fuel quantity. Enter the correct amount for the flight type.</span></div>
+          <div class="role-step"><span class="role-step-num">6</span><span>Open the valve on the side panel of the fuel truck. Detach as soon as fuel is loaded.</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ FOLLOW ME ══ -->
+  <div id="gc-followme" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🚗</div><div>
+      <div class="role-info-title">Follow Me Car</div>
+      <div class="role-info-meta">Guides aircraft to stand after arrival. Arrival airport only. Speed limit: 40 MPH. Match aircraft speed — no sudden moves.</div>
+      <div class="role-info-meta">⚠️ Will ALWAYS spawn stuck in the air. Ask GM or host to bring it down. Last resort: <code>:jpower me 200</code></div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎮 Controls (arrow-box icon, bottom left)</div>
+        <div class="info-box">H = Headlights &nbsp;·&nbsp; K = Caution Lights &nbsp;·&nbsp; J = Top Lights &nbsp;·&nbsp; Light Patterns = Top Lights mode<br>X = Strobe Lights &nbsp;·&nbsp; B = Caution Sound &nbsp;·&nbsp; M = Wipers &nbsp;·&nbsp; C = Anchor &nbsp;·&nbsp; F = Fog Light<br>Startup Button = Engine &nbsp;·&nbsp; Board Console = Follow Me Sign</div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🔌 Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Spawn Follow Me Car. Ask GM or host to bring it down.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>When aircraft starts descending: enter car, turn on headlights, head to expected exit. Ask Flight Deck which side they land on.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>When aircraft exits runway: park in front of it. Turn on Caution Lights, Top Lights (Beep-Boop or Flicker pattern), and Follow Me sign (arrow-box icon).</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Guide to stand via shortest route. Stay at aircraft speed. Slow on turns. No sudden speeding/braking.</span></div>
+          <div class="role-step"><span class="role-step-num">5</span><span>Approaching stand: leave space between aircraft and marshaller. Park Follow Me Car, turn off ALL lights including Follow Me sign.</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ BUSES ══ -->
+  <div id="gc-buses" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🚌</div><div>
+      <div class="role-info-title">Shuttle Bus &amp; Irizar Bus</div>
+      <div class="role-info-meta">Shuttle Bus: moves passengers across airport (dep+arr). Irizar Bus: transports passengers to resort after arrival. Both have 40 MPH speed limit.</div>
+      <div class="role-info-meta">⚠️ Do NOT leave either bus while anchored — it breaks the vehicle. Set to neutral gear first.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🚌 Shuttle Bus Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Insert Shuttle Bus. Turn on Lights and Interior Lights. Select gear and drive toward passengers (ask GM/host where to go).</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>At boarding spot: turn off lights, anchor, open all doors on one side. Leave Interior Lights ON.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>When host says depart: close doors, enable seat lock, unanchor, turn on lights, drive to aircraft.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>At aircraft: anchor, open doors, disable seat lock. Wait for all passengers to disembark.</span></div>
+          <div class="role-step"><span class="role-step-num">5</span><span>If returning for more passengers: repeat. Otherwise park in designated spot.</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🚌 Irizar Bus Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>GM or host spawns the Irizar Bus. If no GM and host unavailable: insert Irizar LWB Bus yourself, park, open door, set gear to neutral.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Come back after completing other arrival duties. Get in and anchor.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>When host allows: close doors, unanchor, turn on lights. Drive to resort (40 MPH max).</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>At resort: park, turn off lights, anchor, open doors.</span></div>
+        </div>
+      </div>
+      <div class="role-note">💡 Shuttle Bus controls: Q/E = Gears. Irizar Bus GUI shown on screen when in vehicle.</div>
+    </div></div>
+  </div>
+
+  <!-- ══ BAGGAGE ══ -->
+  <div id="gc-baggage" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🧳</div><div>
+      <div class="role-info-title">Baggage Loader &amp; Baggage Truck</div>
+      <div class="role-info-meta">Baggage Loader: loads bags onto aircraft. Baggage Truck (Clark CT30 + 2 carts): transports bags to/from loader. Both detach after investor boarding.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎮 Baggage Loader Controls</div>
+        <div class="info-box">V = First Person &nbsp;·&nbsp; X/Z = Increase/Decrease Height &nbsp;·&nbsp; C = Anchor<br>K = Spot Lights &nbsp;·&nbsp; J = Caution Lights &nbsp;·&nbsp; H = Headlights</div>
+      </div>
+      <div class="rs"><div class="rs-title">🔌 Baggage Loader — Attach</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Insert Baggage Loader. Turn on Headlights and Caution Lights. Drive to aircraft.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Stop near aircraft and open baggage hold door. Run <code>/bag</code> in chat.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Baggage system pops up when possible to attach. Proceed to attach loader.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Once attached: turn OFF headlights, turn ON Spot Lights.</span></div>
+        </div>
+      </div>
+      <div class="rs"><div class="rs-title">📦 Practical Baggage Loading</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Run <code>/bag</code>. Click on a bag — outline lights up.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Click a free spot on the Baggage Loader — spot lights up.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Press "Move" in Baggage GUI. Bag loads automatically.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>To unload: walk up to loader, hold "point" icon that pops up.</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🔌 Baggage Truck — Attach</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Run <code>:jheight me 17</code>, jump, insert Clark CT30 at peak of jump. Insert 2 Baggage Carts too.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Get in Clark CT30 (hold F), turn on all lights. Drive to Baggage Carts.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Run <code>/bag</code>. Lower latch, pull each cart to tug until plug icon appears — click it for both.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Roleplay: park next to Baggage Loader. Practical: drive to conveyor belt near hangar.</span></div>
+        </div>
+      </div>
+      <div class="rs"><div class="rs-title">📦 Practical Baggage Truck Loading</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Drive to conveyor belt. Open cart cover (finger UI near cart).</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Click bag → click free space in cart → press "Move". Repeat.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Close cover. Drive to Baggage Loader. Load same way after check-in closes (XX:10).</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Unloading: same technique. Drive bags to baggage collection point.</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ CONES ══ -->
+  <div id="gc-cones" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🔶</div><div>
+      <div class="role-info-title">Cones</div>
+      <div class="role-info-meta">Primarily GM duty but you must do it if no GM is present. Command: <code>/cone</code> in chat.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🛡️ Safety Cones (after aircraft arrives)</div>
+        <div class="info-box">
+          · Under each wing: <b>2 total</b><br>
+          · Next to each engine: <b>4 total</b><br>
+          · Under the nose: <b>1 total</b><br><br>
+          Use regular cones only — no modifications or lights.
+        </div>
+      </div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Command</div><div class="rc-text rc-cmd">/cone</div></div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🛣️ Passenger Path Cones (before boarding)</div>
+        <div class="info-box">
+          Form a path from the gate to the aircraft. You may use cones with ropes attached. Lights are optional depending on time of day — do NOT use flashing lights.<br><br>
+          ⚠️ Only 20 cones total available. Space them out evenly.
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ MARSHALLING ══ -->
+  <div id="gc-marshalling" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🟠</div><div>
+      <div class="role-info-title">Marshalling</div>
+      <div class="role-info-meta">Used at both departure and arrival airports. Command: <code>:give me marshal</code> — select orange color.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">📍 Positioning</div>
+        <div class="info-box">Stand a respectable distance from the yellow stop line — preferably behind the tarmac piece so the captain can clearly see you. Do not stand too close or the captain may not be able to see your signals.</div>
+      </div>
+      <div class="rs"><div class="rs-title">🚦 Signals</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Aircraft approaching — use <b>Left</b> or <b>Right</b> buttons to guide the aircraft to the centerline.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Aircraft aligned with centerline — use <b>Forward</b> motion to signal to continue.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Aircraft getting close — use <b>Slow Forward</b> motion to signal to slow down.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Aircraft at the stop marker — use <b>Stop</b> motion to signal to stop.</span></div>
+          <div class="role-step"><span class="role-step-num">5</span><span>Aircraft stopped on centerline — use <b>Stop Engines</b> motion to signal to anchor and shut down.</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Get marshalling sticks</div><div class="rc-text rc-cmd">:give me marshal</div></div>
+      <div class="info-box" style="margin-top:10px">Same procedure at both departure and arrival airports.</div>
+    </div></div>
+  </div>
+
+  <!-- ══ WINGWALKING ══ -->
+  <div id="gc-wingwalk" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🦺</div><div>
+      <div class="role-info-title">Wingwalking</div>
+      <div class="role-info-meta">Used during pushback. Stand under wing tips and nose to ensure wings don't collide with objects. NOT used at Southwest Regional or Okhotsk Monbetsu (unless regular stand).</div>
+      <div class="role-info-meta">⚠️ Do NOT change your speed unless wingwalking is actively in progress.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">📍 3 Positions</div>
+        <div class="info-box">· <b>Left</b> — left wing tip<br>· <b>Right</b> — right wing tip<br>· <b>Front</b> — under the nose</div>
+      </div>
+      <div class="rs"><div class="rs-title">⌨️ Keybind Setup</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Type <code>!keybinds</code> in command bar. Press <b>Add</b>.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Command: <code>:speed me 6</code> → assign to a numpad key → Save.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Repeat for all 4 speeds: 6, 10, 16, 26.</span></div>
+        </div>
+      </div>
+      <div class="rs"><div class="rs-title">🏃 Speed Reference</div>
+        <div class="role-table">
+          <div class="role-table-row header"><span>Speed</span><span>Situation</span></div>
+          <div class="role-table-row"><span><b>6</b></span><span>Smallest inside-wing turn</span></div>
+          <div class="role-table-row"><span><b>10</b></span><span>Pushing back straight</span></div>
+          <div class="role-table-row"><span><b>16</b></span><span>Regular walking speed</span></div>
+          <div class="role-table-row"><span><b>26</b></span><span>Large turn (nose / outside wing)</span></div>
+        </div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🔌 Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Wait until all vehicles detached and boarding complete.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Go to your assigned position (Left, Right, or Front).</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Get marshalling sticks: <code>:give me mar</code>. Set <b>Face Me</b> position + <b>red lights</b>.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Follow the aircraft during pushback. Match its speed using your keybinds.</span></div>
+          <div class="role-step"><span class="role-step-num">5</span><span>When pushback finishes, walk back to gate and await GM instructions.</span></div>
+        </div>
+      </div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Get marshalling sticks</div><div class="rc-text rc-cmd">:give me mar</div></div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Keybinds menu</div><div class="rc-text rc-cmd">!keybinds</div></div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Speed 6</div><div class="rc-text rc-cmd">:speed me 6</div></div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Speed 10</div><div class="rc-text rc-cmd">:speed me 10</div></div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Speed 16</div><div class="rc-text rc-cmd">:speed me 16</div></div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Speed 26</div><div class="rc-text rc-cmd">:speed me 26</div></div>
+    </div></div>
+  </div>
+
+  <!-- ══ AIRCRAFT CLEANING ══ -->
+  <div id="gc-cleaning" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🧹</div><div>
+      <div class="role-info-title">Aircraft Cleaning</div>
+      <div class="role-info-meta">Roleplay role done on departure. Only do this when asked by your Ground Manager. Command: <code>:give me clean</code></div>
+      <div class="role-info-meta">⚠️ Abusing the cleaning kit (spraying staff etc.) = GCL/HRD action. Only use when asked.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🔌 Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Get permission from your Ground Manager to start cleaning.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>Run <code>:give me clean</code> and equip the kit.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>Walk inside the cabin of the aircraft.</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>Continuously spray seats while walking through. Keep particles inside the aircraft as much as possible.</span></div>
+        </div>
+      </div>
+      <div class="rc" onclick="rcopy(this)"><div class="rc-label">Get cleaning kit</div><div class="rc-text rc-cmd">:give me clean</div></div>
+    </div><div></div></div>
+  </div>
+
+  <!-- ══ FIRETRUCK ══ -->
+  <div id="gc-firetruck" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🚒</div><div>
+      <div class="role-info-title">Firetruck</div>
+      <div class="role-info-meta">Used during emergency flights or special events only. Requires 2 operators — one drives, one controls water.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎮 Operator Controls (driver)</div>
+        <div class="info-box">Once in seat, click "read and close." Ignore the side panel (just statistics).<br><br>· Click <b>engine off</b> button to start.<br>· <b>E</b> = drive forward<br>· Double-click <b>Q</b> = reverse</div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">💧 Water Operator Controls</div>
+        <div class="info-box">Small panel on the side of your screen:<br><br>· <b>Blue buttons</b> = control the arm (don't hold at same time)<br>· <b>Extend/retract buttons</b> = control hose length<br>· <b>Right toggle</b> = water from the FRONT of vehicle<br>· <b>Left toggle</b> = water from the cannon on the arm<br>· <b>Angle buttons</b> = control cannon spray direction</div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ INVESTOR CAR ══ -->
+  <div id="gc-investorcar" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🚗</div><div>
+      <div class="role-info-title">Investor Car</div>
+      <div class="role-info-meta">Used on private flights to transport investors to the aircraft. Also used occasionally to transport investors to a remote stand. Speed limit: 40 MPH.</div>
+      <div class="role-info-meta">Vehicle name: <b>Investor Vehicle 1</b> or <b>Investor Vehicle 2</b></div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎮 Controls</div>
+        <div class="info-box">S + F = Engine Start/Stop &nbsp;·&nbsp; L = Headlights<br>P = Parking Brake &nbsp;·&nbsp; Q/E = Gears<br>Click on doors to open them for passengers.</div>
+      </div>
+      <div class="rs"><div class="rs-title">🔌 Procedure</div>
+        <div class="role-steps">
+          <div class="role-step"><span class="role-step-num">1</span><span>Spawn Investor Car. Hold S + F to start engine. Turn on headlights. Drive to pickup spot.</span></div>
+          <div class="role-step"><span class="role-step-num">2</span><span>At pickup: turn off headlights, enable parking brake, turn off engine. Open doors for passengers.</span></div>
+          <div class="role-step"><span class="role-step-num">3</span><span>When host says depart: close doors, start engine, turn on headlights, disable parking brake. Drive to aircraft (40 MPH max).</span></div>
+          <div class="role-step"><span class="role-step-num">4</span><span>At aircraft: turn off headlights, enable parking brake, turn off engine. Open doors for passengers.</span></div>
+        </div>
+      </div>
+    </div><div></div></div>
+  </div>
+
+  <!-- ══ DE-ICING ══ -->
+  <div id="gc-deicing" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🧊</div><div>
+      <div class="role-info-title">De-icing Truck</div>
+      <div class="role-info-meta">Used December–March only to remove ice from aircraft before boarding. Announced by Ground Operations Leadership in December.</div>
+      <div class="role-info-meta" style="color:#f85149">⚠️ Currently NOT in use.</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🎮 Controls</div>
+        <div class="info-box">· Power button in cab to turn on.<br>· Two sliders: <b>Cabin Height</b> (how high you go) and <b>Hose Angle</b>.<br>· Click sliders icon for full keybinds + water flow toggle (hose icon), pressure and spread controls.</div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">⚙️ Settings for De-icing</div>
+        <div class="role-table">
+          <div class="role-table-row header"><span>Setting</span><span>Value</span></div>
+          <div class="role-table-row"><span>Cabin Height</span><span>MAX</span></div>
+          <div class="role-table-row"><span>Spray Spread</span><span>MAX</span></div>
+          <div class="role-table-row"><span>Pressure</span><span>MAX</span></div>
+        </div>
+        <div class="info-box" style="margin-top:8px">Ensure all lights are ON before beginning. Set a decent hose angle before spraying.</div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ══ ARRIVAL ══ -->
+  <div id="gc-arrival" class="roletab">
+    <div class="role-info-header"><div class="role-info-badge">🛬</div><div>
+      <div class="role-info-title">Arrival Duties</div>
+      <div class="role-info-meta">Tarmac Control → Vehicle Checks → Airport Cleaning → (after deboarding) Arrival Cleanup</div>
+    </div></div>
+    <div class="role-cols"><div>
+      <div class="rs"><div class="rs-title">🔍 Arrival Tarmac Control</div>
+        <div class="info-box" style="margin-bottom:8px">Command: <code>:give me flash</code> · Do this BEFORE vehicle checks. Takes ~5 minutes. Walk around the stand area only — don't wander the airport.</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">RP 1</div><div class="rc-text">-Picks Up Debris-</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">RP 2</div><div class="rc-text">-Checks The Drain Plug-</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">RP 3</div><div class="rc-text">-Prepares Gate For Arrival-</div></div>
+        <div class="info-box" style="margin-top:6px">Paste these in public chat while walking around the stand. Repeat as appropriate for ~5 minutes.</div>
+      </div>
+      <div class="rs"><div class="rs-title">🔧 Arrival Vehicle Checks</div>
+        <div class="info-box" style="margin-bottom:8px">Command: <code>:give me flash</code> · Done AFTER tarmac control. Check 2–3 vehicles (e.g. Lavatory Truck, Baggage Loader). Walk around each with flashlight equipped.</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">RP 1</div><div class="rc-text">-Checks tire pressure-</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">RP 2</div><div class="rc-text">-Fuelling Vehicle-</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">RP 3</div><div class="rc-text">-Preparing Vehicle Systems-</div></div>
+        <div class="info-box" style="margin-top:6px">Repeat 1–2 more times for each vehicle. When done, STS with the team and wait for aircraft to land.</div>
+      </div>
+    </div><div>
+      <div class="rs"><div class="rs-title">🧹 Arrival Airport Cleaning</div>
+        <div class="info-box" style="margin-bottom:8px">Command: <code>:give me cleaning</code> · Takes ~2 minutes max. ⚠️ Not used if arrival airport has no arrival interior — check with GM.<br>Areas to clean: Seats · Gate Area · Passport Scanner · Security Scanners · Baggage Claims<br>⚠️ Abusing the cleaning tool (e.g. spraying staff) = GCL/HRD action.</div>
+      </div>
+      <div class="rs"><div class="rs-title">🗑️ Arrival Cleanup (after deboarding)</div>
+        <div class="info-box" style="margin-bottom:8px">Command: <code>:give me trash</code><br>After everyone deboarded: go to your section (Cleanup 1 = Premium, Cleanup 2 = Economy). Walk through your area and paste RP in chat. Once through, exit aircraft.</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Trash RP</div><div class="rc-text">-takes trash-</div></div>
+      </div>
+      <div class="rs"><div class="rs-title">🛠️ Quick Commands</div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Flashlight</div><div class="rc-text rc-cmd">:give me flash</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Cleaning tool</div><div class="rc-text rc-cmd">:give me cleaning</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Trash bag</div><div class="rc-text rc-cmd">:give me trash</div></div>
+      </div>
+    </div></div>
+  </div>
+
+
+  <!-- ══ ATC ══ -->
+  <div id="gc-atc" class="roletab">
+    <div id="gc-atc-inner" class="role-panel">
+
+    <!-- ATC Inputs -->
+    <div style="background:#0a1d36;border:1px solid #1a3456;border-radius:12px;padding:16px 20px;margin-bottom:18px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:10px">
+        <div class="form-group">
+          <label>Route ID (callsign)</label>
+          <input id="atc-rid" placeholder="280" oninput="buildATC()">
+        </div>
+        <div class="form-group">
+          <label>Dep Airport Code</label>
+          <input id="atc-dep" placeholder="MDPC" oninput="buildATC()">
+        </div>
+        <div class="form-group">
+          <label>Dest Airport Code</label>
+          <input id="atc-dest" placeholder="KEWR" oninput="buildATC()">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+        <div class="form-group">
+          <label>Gate Number</label>
+          <input id="atc-gate" placeholder="A4" oninput="buildATC()">
+        </div>
+        <div class="form-group">
+          <label>Runway</label>
+          <input id="atc-rwy" placeholder="e.g. 09" oninput="buildATC()">
+        </div>
+        <div class="form-group">
+          <label>Vacated Taxiway (arr)</label>
+          <input id="atc-vac" placeholder="Hotel 4" oninput="buildATC()">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px">
+        <div class="form-group">
+          <label>Tail Push Direction</label>
+          <select id="atc-push" onchange="buildATC()">
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Arr Taxi Route</label>
+          <input id="atc-taxi" placeholder="Hotel 4, Alpha" oninput="buildATC()">
+        </div>
+      </div>
+    </div>
+
+    <button onclick="buildATC()" style="width:100%;padding:11px;background:linear-gradient(135deg,#1565c0,#0d8a9e);border:none;border-radius:10px;color:#fff;font-weight:700;font-size:.88rem;cursor:pointer;margin-bottom:16px;letter-spacing:.04em">
+      ⚡ Generate ATC Scripts
+    </button>
+
+    <div id="atc-scripts" style="min-height:100px">
+      <div style="color:#4a7aaa;font-size:.82rem;padding:12px;text-align:center">
+        ✏️ Fill in the inputs above — scripts will appear here automatically.
+      </div>
+    </div>
+
+  </div><!-- /role-atc -->
+  </div>
+
+</div>
