@@ -986,6 +986,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent) !important;ou
 <div id="slot-permissions"></div>
 <div id="slot-suggest"></div>
 <script src="data/routes.js"></script>
+<script src="data/notams.js"></script>
 <script>
 // Loads each tab from its own file in the tabs folder before the rest of the tool starts.
 // To edit a tab, open its file in tabs/ (for example tabs/cc.html).
@@ -1037,7 +1038,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.28</span>
+      <span class="topbar-badge">v1.2.29</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -1648,6 +1649,7 @@ function update() {
   const numStr = g('inp-rid').value.trim();
   curRoute = lookupRoute(numStr);
   fillFlightPaths(curRoute && curRoute.airport);
+  renderNotams();
 
   // Route header
   const hdr = g('route-hdr');
@@ -4597,6 +4599,35 @@ captureDiscordToken();
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', enforceLogin);
 else enforceLogin();
 
+
+// ── NOTAMS: show only the notices for the selected aircraft ──
+function notamKey(v) {
+  v = v || '';
+  const toks = [['A220','A220'],['A318','A318'],['A319','A319'],['A320','A320'],['A321','A321'],['A330','A330'],['A350','A350'],['737','737'],['777','777'],['787','787']];
+  const hit = toks.filter(function (t) { return v.indexOf(t[0]) !== -1; })[0];
+  return hit ? hit[1] : '';
+}
+function renderNotams() {
+  const box = document.getElementById('notam-box');
+  if (!box || typeof NOTAMS === 'undefined') return;
+  const key = notamKey(g('inp-ac') ? g('inp-ac').value : '');
+  const list = NOTAMS.filter(function (n) { return key && n.aircraft.indexOf(key) !== -1; });
+  const esc = function (t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+  const sev = { High:'#e66a5b', Medium:'#f2a93b', Low:'#6fc3d6' };
+  box.innerHTML = list.map(function (n) {
+    let body = '<div style="margin-top:8px;color:#e9eef4;font-size:.9rem;line-height:1.5">';
+    if (n.issue) body += '<b>Issue:</b> ' + esc(n.issue) + '<br>';
+    if (n.actions.length) body += '<b>Required actions:</b>' + n.actions.map(function (a) { return '<div style="margin-top:4px">• ' + esc(a) + '</div>'; }).join('');
+    if (n.important.length) body += '<div style="margin-top:8px;color:#f2a93b"><b>Important</b>' + n.important.map(function (a) { return '<div style="margin-top:3px">• ' + esc(a) + '</div>'; }).join('') + '</div>';
+    body += '</div>';
+    const meta = (n.issuer ? 'Issued by ' + esc(n.issuer) : '') + (n.effective ? ' • Effective: ' + esc(n.effective) : '');
+    const badge = n.severity ? '<span style="background:' + sev[n.severity] + ';color:#0c131b;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:4px">' + esc(n.severity) + '</span>' : '';
+    return '<div style="border:1px solid #2b3570;border-left:3px solid ' + (sev[n.severity] || '#6fc3d6') + ';background:rgba(21,26,61,.7);border-radius:6px;padding:12px 14px;margin-bottom:10px">'
+      + '<div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><b style="font-size:1rem;color:#fff">' + esc(n.title) + '</b>' + badge + '</div>'
+      + (meta ? '<div style="font-size:.78rem;color:#9aa3d6;margin-top:2px">' + meta + '</div>' : '')
+      + body + '</div>';
+  }).join('');
+}
 // ── STARTUP (after all declarations) ──
 restoreInputs();
 initGreetings();
