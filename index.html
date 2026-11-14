@@ -967,6 +967,63 @@ input:focus,select:focus,textarea:focus{border-color:var(--accent) !important;ou
 .cv-stage.drag{cursor:grabbing}
 .cv-stage img{position:absolute;left:0;top:0;transform-origin:0 0;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
 </style>
+<style id="aurora-glass">
+/* Aurora glass: frosted panels, soft gradient borders, a slow colour glow behind everything */
+:root{
+  --bg:#060914; --bg2:rgba(14,18,38,.72); --panel:rgba(20,25,52,.55); --panel2:rgba(30,37,72,.6);
+  --border:rgba(120,140,255,.16); --border2:rgba(120,140,255,.28);
+  --accent:#4ff0e0; --accent2:#ff8a65; --accent3:#b28cff;
+  --text:#f5f7ff; --text2:#c2cbf0; --text3:#7d88bf;
+  --card:rgba(18,23,48,.62); --hover:rgba(79,240,224,.08);
+  --glow:rgba(79,240,224,.16); --glow2:rgba(255,138,101,.12);
+  --radius:14px; --radius2:18px;
+  --shadow:0 12px 40px rgba(0,0,0,.35); --shadow2:0 20px 60px rgba(0,0,0,.5);
+}
+html{background:var(--bg) !important}
+body{background:transparent !important;position:relative;isolation:isolate;color:var(--text);font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+/* the aurora */
+body::before,body::after{content:"";position:fixed;z-index:-1;pointer-events:none;border-radius:50%;filter:blur(70px);opacity:.9;animation:aurora 26s ease-in-out infinite alternate}
+body::before{width:58vw;height:58vw;left:-14vw;top:-18vw;background:radial-gradient(circle,rgba(79,240,224,.5),transparent 65%)}
+body::after{width:52vw;height:52vw;right:-12vw;bottom:-18vw;background:radial-gradient(circle,rgba(255,138,101,.45),transparent 65%);animation-delay:-13s}
+@keyframes aurora{0%{transform:translate(0,0) scale(1)}50%{transform:translate(6vw,4vw) scale(1.08)}100%{transform:translate(-4vw,6vw) scale(.96)}}
+@media (prefers-reduced-motion: reduce){body::before,body::after{animation:none}}
+/* headings get a gradient */
+h1,h2,h3,.roles-hero-title,.ss-title{font-family:'Chakra Petch',sans-serif;letter-spacing:.01em}
+h3{font-size:1.05rem;font-weight:600;margin:0 0 12px;padding:0 0 0 12px;border:0;background:linear-gradient(90deg,var(--accent),var(--accent3) 60%,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+label{color:var(--text2);font-size:.78rem;font-weight:500;letter-spacing:.02em}
+/* glass topbar and sidebar */
+.topbar{background:linear-gradient(180deg,rgba(18,22,46,.82),rgba(8,11,26,.82)) !important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-right:1px solid var(--border) !important}
+.nav-group{color:var(--text3) !important;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;padding-top:18px !important}
+.main-nav button{border-radius:12px !important;color:var(--text2) !important;padding:9px 12px !important;transition:background .2s,color .2s,transform .2s}
+.main-nav button:hover{background:rgba(255,255,255,.05) !important;color:var(--text) !important;transform:translateX(3px)}
+.main-nav button.active{background:linear-gradient(90deg,rgba(79,240,224,.22),rgba(178,140,255,.08)) !important;color:var(--accent) !important;box-shadow:inset 3px 0 0 var(--accent),0 0 24px rgba(79,240,224,.12) !important}
+.topbar-badge{background:rgba(79,240,224,.12) !important;color:var(--accent) !important;border:1px solid rgba(79,240,224,.25) !important;border-radius:999px !important}
+/* glass sections and cards */
+.s-section{background:transparent;border:0;border-top:1px solid var(--border);padding:18px 0 16px;margin-bottom:10px}
+.s-block{background:var(--card) !important;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--border) !important;border-radius:var(--radius) !important;box-shadow:var(--shadow);transition:transform .2s,border-color .2s,box-shadow .2s}
+.s-block:hover{transform:translateY(-2px);border-color:rgba(79,240,224,.5) !important;box-shadow:0 14px 40px rgba(79,240,224,.12)}
+.s-block:active{transform:translateY(0)}
+.s-text,.pf-cmd{font-family:'IBM Plex Mono',ui-monospace,monospace !important;font-size:.82rem;color:var(--text)}
+.copy-hint{color:var(--text3) !important;font-size:.7rem;letter-spacing:.03em}
+.info-box{background:linear-gradient(135deg,rgba(18,23,48,.7),rgba(30,20,50,.5)) !important;border:1px solid var(--border) !important;border-left:3px solid var(--accent3) !important;border-radius:var(--radius) !important;color:var(--text2) !important;box-shadow:var(--shadow)}
+.rs,.cm-card,.cm-hero,.cv-thumb,.chart-card,#notam-box > div{border-radius:var(--radius2) !important}
+.cm-card,.rs{background:var(--card) !important;backdrop-filter:blur(12px);border:1px solid var(--border) !important;box-shadow:var(--shadow)}
+.cm-hero{background:linear-gradient(120deg,rgba(79,240,224,.16),rgba(178,140,255,.12),rgba(255,138,101,.14)) !important;border:1px solid var(--border2) !important;box-shadow:var(--shadow2)}
+/* pill buttons */
+.roles-tab-btn,button.btn{border-radius:999px !important;border:1px solid var(--border2) !important;background:rgba(30,37,72,.6) !important;color:var(--text) !important;padding:7px 16px;transition:all .2s;box-shadow:none !important}
+.roles-tab-btn:hover{border-color:var(--accent) !important;color:var(--accent) !important;box-shadow:0 0 18px rgba(79,240,224,.2) !important}
+.roles-tab-btn.active{background:linear-gradient(90deg,rgba(79,240,224,.28),rgba(255,138,101,.16)) !important;border-color:transparent !important;color:#fff !important;box-shadow:0 0 22px rgba(79,240,224,.22) !important}
+/* glass inputs */
+input,select,textarea{background:rgba(8,11,28,.6) !important;border:1px solid var(--border2) !important;border-radius:12px !important;color:var(--text) !important;padding:9px 12px !important;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:none !important;border-color:var(--accent) !important;box-shadow:0 0 0 3px rgba(79,240,224,.18) !important}
+/* chart cards and viewer */
+.cv-thumb,.chart-card{background:var(--card) !important;border:1px solid var(--border) !important;box-shadow:var(--shadow);transition:transform .2s,border-color .2s}
+.cv-thumb:hover,.chart-card:hover{transform:translateY(-3px);border-color:rgba(79,240,224,.5) !important}
+.cv-viewer{background:rgba(6,9,20,.92) !important;backdrop-filter:blur(10px)}
+.cv-bar{background:rgba(14,18,38,.7) !important;backdrop-filter:blur(12px)}
+::selection{background:rgba(255,138,101,.35)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:rgba(120,140,255,.25);border-radius:999px}::-webkit-scrollbar-track{background:transparent}
+</style>
 </head>
 <body>
 <div id="slot-flight"></div>
@@ -1038,7 +1095,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.33</span>
+      <span class="topbar-badge">v1.2.34</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
