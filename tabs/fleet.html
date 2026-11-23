@@ -8,7 +8,7 @@
       <div style="flex:1">
         <div style="font-size:1.5rem;font-weight:800;color:#fff;letter-spacing:-.02em;text-shadow:0 0 24px rgba(33,150,243,.4)">Fleet Information</div>
         <div style="font-size:.82rem;color:#5b8ab0;margin-top:4px;font-style:italic">&bull; Aim High, Fly High, Go Anywhere &bull;</div>
-        <div style="font-size:.78rem;color:#3a6080;margin-top:2px">Last updated: 10/6/2026 &nbsp;&middot;&nbsp; Check NOTAMs for issue details</div>
+        <div style="font-size:.78rem;color:#3a6080;margin-top:2px">Last updated: 10/30/2026 &nbsp;&middot;&nbsp; Check NOTAMs for issue details</div>
       </div>
       <!-- Filter pills -->
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-left:auto">
@@ -36,113 +36,101 @@
       </thead>
       <tbody>
 
-        <!-- Operational rows -->
-        <tr class="frow fop fairbus" onclick="copyFleetRow(this,'Airbus A220-300')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0f2540'" onmouseout="this.style.background=''">
+        <tr class="frow fop fairbus" onclick="copyFleetRow(this,'Airbus A220-300')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0d2040'" onmouseout="this.style.background=''">
           <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">Airbus A220-300</td>
           <td style="padding:13px 16px;color:#2196f3;font-family:Consolas,monospace;font-weight:700">A223</td>
           <td style="padding:13px 16px;color:#8aaccb">Aeroware</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">136 kts</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">46%</td>
-          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">✅ Operational</span> <span style="color:#e3a008;font-size:.73rem;margin-left:4px">Small Issues</span></td>
+          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">Operational, Small Issues</span></td>
         </tr>
-
-        <tr class="frow fop fairbus" onclick="copyFleetRow(this,'Airbus A318')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s;background:#091830" onmouseover="this.style.background='#0f2540'" onmouseout="this.style.background='#091830'">
+        <tr class="frow fop fairbus" onclick="copyFleetRow(this,'Airbus A318')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0d2040'" onmouseout="this.style.background=''">
           <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">Airbus A318</td>
           <td style="padding:13px 16px;color:#2196f3;font-family:Consolas,monospace;font-weight:700">A318</td>
           <td style="padding:13px 16px;color:#8aaccb">Aeroware</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">156 kts</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">52%</td>
-          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700">✅ Operational</span></td>
+          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">Operational</span></td>
         </tr>
-
-        <tr class="frow fground fairbus" onclick="copyFleetRow(this,'Airbus A319')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0f2540'" onmouseout="this.style.background=''">
+        <tr class="frow fop fairbus" onclick="copyFleetRow(this,'Airbus A319')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0d2040'" onmouseout="this.style.background=''">
           <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">Airbus A319</td>
           <td style="padding:13px 16px;color:#2196f3;font-family:Consolas,monospace;font-weight:700">A319</td>
           <td style="padding:13px 16px;color:#8aaccb">Aeroware</td>
-          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">156 kts</td>
-          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">52%</td>
-          <td style="padding:13px 16px"><span style="background:rgba(248,81,73,.1);color:#f85149;border:1px solid rgba(248,81,73,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700">🔴 Grounded</span></td>
+          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">140 kts</td>
+          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">47%</td>
+          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">Operational</span></td>
         </tr>
-
-        <tr class="frow fground fairbus" onclick="copyFleetRow(this,'Airbus A320-231')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s;background:#091830" onmouseover="this.style.background='#0f2540'" onmouseout="this.style.background='#091830'">
-          <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">Airbus A320-231</td>
+        <tr class="frow fop fairbus" onclick="copyFleetRow(this,'A320-231')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0d2040'" onmouseout="this.style.background=''">
+          <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">A320-231</td>
           <td style="padding:13px 16px;color:#2196f3;font-family:Consolas,monospace;font-weight:700">A320</td>
           <td style="padding:13px 16px;color:#8aaccb">Aeroware</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">156 kts</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">52%</td>
-          <td style="padding:13px 16px"><span style="background:rgba(248,81,73,.1);color:#f85149;border:1px solid rgba(248,81,73,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700">🔴 Grounded</span></td>
+          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">Operational</span></td>
         </tr>
-
-        <tr class="frow fop fairbus" onclick="copyFleetRow(this,'Airbus A321neo')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0f2540'" onmouseout="this.style.background=''">
+        <tr class="frow fop fairbus" onclick="copyFleetRow(this,'Airbus A321neo')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0d2040'" onmouseout="this.style.background=''">
           <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">Airbus A321neo</td>
           <td style="padding:13px 16px;color:#2196f3;font-family:Consolas,monospace;font-weight:700">A21N</td>
           <td style="padding:13px 16px;color:#8aaccb">Aeroware</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">156 kts</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">47%</td>
-          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700">✅ Operational</span></td>
+          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">Operational</span></td>
         </tr>
-
-        <tr class="frow fop fairbus" onclick="copyFleetRow(this,'Airbus A330-941neo')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s;background:#091830" onmouseover="this.style.background='#0f2540'" onmouseout="this.style.background='#091830'">
+        <tr class="frow fop fairbus" onclick="copyFleetRow(this,'Airbus A330-941neo')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0d2040'" onmouseout="this.style.background=''">
           <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">Airbus A330-941neo</td>
           <td style="padding:13px 16px;color:#2196f3;font-family:Consolas,monospace;font-weight:700">A339</td>
           <td style="padding:13px 16px;color:#8aaccb">Vuela</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">146 kts</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">49%</td>
-          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700">✅ Operational</span> <span style="color:#e3a008;font-size:.73rem;margin-left:4px">Medium Issues</span></td>
+          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">Operational, Medium Issues</span></td>
         </tr>
-
-        <tr class="frow fop fairbus" onclick="copyFleetRow(this,'Airbus A350-900')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0f2540'" onmouseout="this.style.background=''">
+        <tr class="frow fop fairbus" onclick="copyFleetRow(this,'Airbus A350-900')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0d2040'" onmouseout="this.style.background=''">
           <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">Airbus A350-900</td>
           <td style="padding:13px 16px;color:#2196f3;font-family:Consolas,monospace;font-weight:700">A359</td>
           <td style="padding:13px 16px;color:#8aaccb">Aeroware</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">145 kts</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">48%</td>
-          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700">✅ Operational</span></td>
+          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">Operational</span></td>
         </tr>
-
-        <tr class="frow fground fairbus" onclick="copyFleetRow(this,'Airbus A380-800')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s;background:#091830" onmouseover="this.style.background='#0f2540'" onmouseout="this.style.background='#091830'">
+        <tr class="frow fop fairbus" onclick="copyFleetRow(this,'Airbus A380-800')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0d2040'" onmouseout="this.style.background=''">
           <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">Airbus A380-800</td>
           <td style="padding:13px 16px;color:#2196f3;font-family:Consolas,monospace;font-weight:700">A388</td>
           <td style="padding:13px 16px;color:#8aaccb">Aerotech</td>
-          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">145 kts</td>
-          <td style="padding:13px 16px;color:#5b8ab0;font-family:Consolas,monospace">TBA</td>
-          <td style="padding:13px 16px"><span style="background:rgba(248,81,73,.1);color:#f85149;border:1px solid rgba(248,81,73,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700">🔴 Grounded</span></td>
+          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">TBA</td>
+          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">TBA</td>
+          <td style="padding:13px 16px"><span style="background:rgba(255,193,7,.12);color:#ffc107;border:1px solid rgba(255,193,7,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">In-Testing</span></td>
         </tr>
-
-        <tr class="frow fground fboeing" onclick="copyFleetRow(this,'Boeing 737 MAX 8')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0f2540'" onmouseout="this.style.background=''">
-          <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">Boeing 737 MAX 8</td>
+        <tr class="frow fground fboeing" onclick="copyFleetRow(this,'Boeing 737-800')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0d2040'" onmouseout="this.style.background=''">
+          <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">Boeing 737-800</td>
           <td style="padding:13px 16px;color:#2196f3;font-family:Consolas,monospace;font-weight:700">B38M</td>
-          <td style="padding:13px 16px;color:#8aaccb">ZeroTECH <span style="color:#5b8ab0;font-size:.72rem">→ SkyHangar</span></td>
-          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">165 kts</td>
-          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">55%</td>
-          <td style="padding:13px 16px"><span style="background:rgba(248,81,73,.1);color:#f85149;border:1px solid rgba(248,81,73,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700">🔴 Grounded</span></td>
+          <td style="padding:13px 16px;color:#8aaccb">Skyhangar</td>
+          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">Changes when turning</td>
+          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">Changes when turning</td>
+          <td style="padding:13px 16px"><span style="background:rgba(248,81,73,.12);color:#f85149;border:1px solid rgba(248,81,73,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">Grounded</span></td>
         </tr>
-
-        <tr class="frow fground fboeing" onclick="copyFleetRow(this,'Boeing 747-400')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s;background:#091830" onmouseover="this.style.background='#0f2540'" onmouseout="this.style.background='#091830'">
+        <tr class="frow fground fboeing" onclick="copyFleetRow(this,'Boeing 747-400')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0d2040'" onmouseout="this.style.background=''">
           <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">Boeing 747-400</td>
           <td style="padding:13px 16px;color:#2196f3;font-family:Consolas,monospace;font-weight:700">B744</td>
           <td style="padding:13px 16px;color:#8aaccb">Vuela</td>
-          <td style="padding:13px 16px;color:#5b8ab0;font-family:Consolas,monospace">TBA</td>
-          <td style="padding:13px 16px;color:#5b8ab0;font-family:Consolas,monospace">TBA</td>
-          <td style="padding:13px 16px"><span style="background:rgba(248,81,73,.1);color:#f85149;border:1px solid rgba(248,81,73,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700">🔴 Grounded</span></td>
+          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">TBA</td>
+          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">TBA</td>
+          <td style="padding:13px 16px"><span style="background:rgba(248,81,73,.12);color:#f85149;border:1px solid rgba(248,81,73,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">Grounded</span></td>
         </tr>
-
-        <tr class="frow fop fboeing" onclick="copyFleetRow(this,'Boeing 787-9 Dreamliner')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0f2540'" onmouseout="this.style.background=''">
+        <tr class="frow fop fboeing" onclick="copyFleetRow(this,'Boeing 787-9 Dreamliner')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0d2040'" onmouseout="this.style.background=''">
           <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">Boeing 787-9 Dreamliner</td>
           <td style="padding:13px 16px;color:#2196f3;font-family:Consolas,monospace;font-weight:700">B789</td>
           <td style="padding:13px 16px;color:#8aaccb">Aeroware</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">137 kts</td>
           <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">30%</td>
-          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700">✅ Operational</span> <span style="color:#e3a008;font-size:.73rem;margin-left:4px">Medium Issues</span></td>
+          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">Operational, Medium Issues</span></td>
         </tr>
-
-        <tr class="frow fop fboeing" onclick="copyFleetRow(this,'Boeing 777-300ER')" style="cursor:pointer;transition:background .15s;background:#091830" onmouseover="this.style.background='#0f2540'" onmouseout="this.style.background='#091830'">
+        <tr class="frow fop fboeing" onclick="copyFleetRow(this,'Boeing 777-300ER')" style="border-bottom:1px solid #1a3456;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#0d2040'" onmouseout="this.style.background=''">
           <td style="padding:13px 16px;color:#e8f0fe;font-weight:600">Boeing 777-300ER</td>
           <td style="padding:13px 16px;color:#2196f3;font-family:Consolas,monospace;font-weight:700">B77W</td>
-          <td style="padding:13px 16px;color:#8aaccb">Vuela</td>
-          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">126 kts</td>
-          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">42%</td>
-          <td style="padding:13px 16px"><span style="background:rgba(29,185,84,.12);color:#1db954;border:1px solid rgba(29,185,84,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700">✅ Operational</span> <span style="color:#e3a008;font-size:.73rem;margin-left:4px">Medium Issues</span></td>
+          <td style="padding:13px 16px;color:#8aaccb">Aerotech</td>
+          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">TBA</td>
+          <td style="padding:13px 16px;color:#c8dff5;font-family:Consolas,monospace">TBA</td>
+          <td style="padding:13px 16px"><span style="background:rgba(255,193,7,.12);color:#ffc107;border:1px solid rgba(255,193,7,.3);padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:700;white-space:nowrap">In-Testing</span></td>
         </tr>
 
       </tbody>
