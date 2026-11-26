@@ -39,24 +39,7 @@
   <div id="cc-arming" style="margin-bottom:14px"></div>
   <div class="cc-tabs" id="cc-tabs"></div>
 
-  <!-- dual username bars — shown/hidden per tab -->
-  <div class="user-bar" id="ub-single">
-    <label>Username:</label>
-    <input id="ub-user" placeholder="passengeruser" oninput="renderCC()">
-    <small>(user) and [USERNAME] replaced</small>
-  </div>
-  <div class="user-bar2" id="ub-dual">
-    <div class="user-bar show" style="flex:1;margin:0">
-      <label>Greeting username(s):</label>
-      <input id="ub-greet-user" placeholder="user1,user2,user3" oninput="renderCC()">
-      <small>replaces user,user,user in :pm</small>
-    </div>
-    <div class="user-bar show" style="flex:1;margin:0">
-      <label>Serving username:</label>
-      <input id="ub-serve-user" placeholder="passengername" oninput="renderCC()">
-      <small>replaces (user) in :give</small>
-    </div>
-  </div>
+
 
   <div id="cc-panels"></div>
 </div>
@@ -148,12 +131,27 @@
       </div>
     </div><div>
       <div class="rs"><div class="rs-title">🏷️ Naming Formats</div>
-        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Gate Agent</div><div class="rc-text rc-cmd">:name me [NAME] [-] Gate Agent [-] [ENG]</div></div>
-        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Lounge Attendant</div><div class="rc-text rc-cmd">:name me [NAME] [-] Premium Lounge Attendant [-] [ENG]</div></div>
-        <div class="rc" onclick="rcopy(this)"><div class="rc-label">CSA</div><div class="rc-text rc-cmd">:name me [NAME] [-] Customer Service Assistant [-] [ENG]</div></div>
-        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Check-In Agent</div><div class="rc-text rc-cmd">:name me [NAME] [-] Check-In Agent [-] [ENG]</div></div>
-        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Cabin Crew (walk)</div><div class="rc-text rc-cmd">:name me [NAME] [-] Cabin Crew [-] [ENG]</div></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <label style="color:var(--sub);font-size:.78rem;white-space:nowrap">✏ Your name:</label>
+          <input id="cc-naming-name" type="text" placeholder="Maria A." oninput="ccUpdateNamingFormats()" style="max-width:180px;padding:5px 10px;border-radius:8px;background:#0a1d36;border:1px solid #1a3456;color:var(--text);font-size:.84rem">
+          <small style="color:var(--sub);font-size:.68rem">replaces Firstname L. in commands below</small>
+        </div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Gate Agent</div><div class="rc-text rc-cmd" data-name="" data-tpl=":name me [NAME] [-] Gate Agent [-] [ENG]">:name me Firstname L. [-] Gate Agent [-] [ENG]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Lounge Attendant</div><div class="rc-text rc-cmd" data-name="" data-tpl=":name me [NAME] [-] Premium Lounge Attendant [-] [ENG]">:name me Firstname L. [-] Premium Lounge Attendant [-] [ENG]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">CSA</div><div class="rc-text rc-cmd" data-name="" data-tpl=":name me [NAME] [-] Customer Service Assistant [-] [ENG]">:name me Firstname L. [-] Customer Service Assistant [-] [ENG]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Check-In Agent</div><div class="rc-text rc-cmd" data-name="" data-tpl=":name me [NAME] [-] Check-In Agent [-] [ENG]">:name me Firstname L. [-] Check-In Agent [-] [ENG]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Cabin Crew (walk)</div><div class="rc-text rc-cmd" data-name="" data-tpl=":name me [NAME] [-] Cabin Crew [-] [ENG]">:name me Firstname L. [-] Cabin Crew [-] [ENG]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Senior Cabin Crew</div><div class="rc-text rc-cmd" data-name="" data-tpl=":name me [NAME] [-] Senior Cabin Crew [-] [ENG]">:name me Firstname L. [-] Senior Cabin Crew [-] [ENG]</div></div>
+        <div class="rc" onclick="rcopy(this)"><div class="rc-label">Destination Crew</div><div class="rc-text rc-cmd" data-name="" data-tpl=":name me [NAME] [-] Destination Crew [-] [ENG]">:name me Firstname L. [-] Destination Crew [-] [ENG]</div></div>
       </div>
+      <script>
+      function ccUpdateNamingFormats() {
+        var nm = (document.getElementById('cc-naming-name').value||'').trim() || 'Firstname L.';
+        document.querySelectorAll('#cctop-airport .rc-text[data-tpl]').forEach(function(el) {
+          el.textContent = el.getAttribute('data-tpl').replace(/\[NAME\]/g, nm);
+        });
+      }
+      </script>
       <div class="rs"><div class="rs-title">⏰ Flight Time Schedule</div>
         <div class="role-table">
           <div class="role-table-row header"><span>Flight</span><span>Premium CI</span><span>Economy CI</span><span>Boarding</span></div>
