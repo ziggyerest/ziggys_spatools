@@ -18,5 +18,4 @@ briefing.html  Briefing
 atc.html       ATC
 routeinfo.html Route Info
 permissions.htmlPermissions (admin only)
-gct.html       GCT Guide (admin only)
 suggest.html   Suggestions
