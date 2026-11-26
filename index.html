@@ -1041,6 +1041,7 @@ input:focus,select:focus,textarea:focus{outline:none !important;border-color:var
 <div id="slot-atc"></div>
 <div id="slot-routeinfo"></div>
 <div id="slot-permissions"></div>
+<div id="slot-gct"></div>
 <div id="slot-suggest"></div>
 <script src="data/routes.js"></script>
 <script src="data/notams.js"></script>
@@ -1048,7 +1049,7 @@ input:focus,select:focus,textarea:focus{outline:none !important;border-color:var
 // Loads each tab from its own file in the tabs folder before the rest of the tool starts.
 // To edit a tab, open its file in tabs/ (for example tabs/cc.html).
 (function () {
-  var TABS = ["flight","cc","cm","charts","pf","ss","roles","fleet","greet","gc","cohost","briefing","atc","routeinfo","permissions","suggest"];
+  var TABS = ["flight","cc","cm","charts","pf","ss","roles","fleet","greet","gc","cohost","briefing","atc","routeinfo","permissions","gct","suggest"];
   TABS.forEach(function (name) {
     var slot = document.getElementById("slot-" + name);
     var xhr = new XMLHttpRequest();
@@ -1067,7 +1068,7 @@ document.addEventListener('DOMContentLoaded', function () {
     ['Flight',       ['flight', 'routeinfo', 'charts', 'fleet']],
     ['Cabin Crew',   ['cc', 'pf', 'roles', 'greet']],
     ['Managers',     ['cm', 'cohost', 'briefing']],
-    ['Ground Crew',  ['gc', 'atc']],
+    ['Ground Crew',  ['gc', 'atc', 'gct']],
     ['Security',     ['ss']],
     ['Tools',        ['suggest', 'permissions']]
   ];
@@ -1095,7 +1096,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.39</span>
+      <span class="topbar-badge">v1.2.40</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -1116,6 +1117,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <button onclick="showPage('atc',this)">🗼 ATC</button>
       <button onclick="showPage('routeinfo',this)">🧭 Route Info</button>
       <button onclick="showPage('permissions',this);permLoad()" data-admin-only="1" style="display:none">🔑 Permissions</button>
+      <button onclick="showPage('gct',this)" data-admin-only="1" style="display:none">🔒 GCT Guide</button>
       <button onclick="showPage('suggest',this)">💡 Suggestions</button>
   </nav>
 </div>
@@ -4571,8 +4573,10 @@ async function permSave() {
   } catch (e) { permMsg(e.message); }
 }
 function permNavVisibility() {
-  var b = document.querySelector('button[data-admin-only="1"]');
-  if (b) b.style.display = localStorage.getItem('spa_discord_id') === PERM_ADMIN_ID ? '' : 'none';
+  var isAdmin = localStorage.getItem('spa_discord_id') === PERM_ADMIN_ID;
+  document.querySelectorAll('button[data-admin-only="1"]').forEach(function (b) {
+    b.style.display = isAdmin ? '' : 'none';
+  });
 }
 document.addEventListener('DOMContentLoaded', function () { try { permClient(); } catch (e) {} permBuildBoxes([]); permNavVisibility(); });
 var PERM_ACCESS = null;

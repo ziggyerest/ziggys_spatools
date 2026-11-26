@@ -1,0 +1,249 @@
+<div id="page-gct" class="page" style="max-width:1100px">
+
+  <div class="roles-hero">
+    <div class="roles-hero-inner">
+      <div class="roles-hero-icon">🔒</div>
+      <div>
+        <div class="roles-hero-title">Ground Crew Trainer Guide</div>
+        <div class="roles-hero-sub">Admin only · Updated 3 October 2026 · Source: GCL (ondra789987)</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.3);border-radius:10px;padding:10px 14px;font-size:.78rem;color:var(--text2);margin-bottom:16px">
+    Confidential GCT material. Visible only to the account allow-listed as admin — do not share or re-grant.
+  </div>
+
+  <!-- Sub-tab selector -->
+  <div class="roles-tab-row" style="flex-wrap:wrap">
+    <button class="roles-tab-btn active" onclick="selGCT('quota',this)">⭐ Quota &amp; M2</button>
+    <button class="roles-tab-btn" onclick="selGCT('m3a',this)">🛬 M3 Part A</button>
+    <button class="roles-tab-btn" onclick="selGCT('m3b',this)">🧳 M3 Part B</button>
+    <button class="roles-tab-btn" onclick="selGCT('m4',this)">✈️ M4 &amp; Marking</button>
+    <button class="roles-tab-btn" onclick="selGCT('situations',this)">⚠️ Situations</button>
+  </div>
+
+  <!-- ═══ QUOTA & M2 ═══ -->
+  <div class="roletab" id="gct-quota">
+    <div class="rs-title">Quota</div>
+    <div class="rc"><div class="rc-text">GCT quota: <b>3 Quota Points (QP)</b>, earned via:
+      <ul>
+        <li>Reading M2 exams — 6 exams = 1 point</li>
+        <li>Hosting M3 Training — 1 point per training</li>
+        <li>M4 flight supervision — 1 point per supervision</li>
+        <li>Supervising a GCT trial — 1 point per supervision</li>
+      </ul>
+      Check your total via <code>/gct_profile</code> (the GCT database doesn't show QPs for every month you've been a GCT — the command does). Leaderboard via <code>/gct_leaderboard</code>.
+    </div></div>
+
+    <div class="rs-title">Module 2 — Theory Exam</div>
+    <div class="rc"><div class="rc-text">
+      Split into Part A (department as a whole) and Part B (ATC).
+      <ul>
+        <li><code>/review_exam_list</code> — check if any exams are left to read</li>
+        <li><code>/review_exam</code> — read/mark an exam (bot gives a suggested answer per question — don't rely on it 100%, especially open-ended ones; bot auto-calculates the result, 85% to pass)</li>
+        <li><code>/review_cancel</code> — cancel a review in progress</li>
+        <li><code>/review_view</code> — view only, no marking, usable freely</li>
+      </ul>
+      4th attempts may only be read by GCL.
+    </div></div>
+  </div>
+
+  <!-- ═══ M3 PART A ═══ -->
+  <div class="roletab" id="gct-m3a" style="display:none">
+    <div class="rs-title">Server Set-up</div>
+    <div class="rc"><div class="rc-text">
+      <ol>
+        <li>Join your private server. Recommended airports: Mark Neris, LHR, Punta Cana.</li>
+        <li>Insert a narrowbody aircraft (one per trainee), anchored near the gates.</li>
+        <li>Setmessage: <code>:setmessage Welcome to this Ground Crew Module 3 part A Training! [-] Host: Username [-] Time: Time in EDT [-] Good luck!</code></li>
+        <li>Equip the standard Ground Manager uniform.</li>
+        <li>Name yourself: <code>:name me GCXXXX [-] Username [-] Training Host [-] Languages</code></li>
+        <li>If over 4 trainees:
+          <ul>
+            <li>Request a TA/GCT in #request-ta</li>
+            <li>You may dismiss (not fail) trainees who can't name/uniform themselves in a reasonable time</li>
+            <li>All vehicles except marshalling, jetway and wingwalking can run on mesh planes (put an invisible part under each mesh plane so the lavatory truck hose can attach)</li>
+            <li>Constantly swap trainees on the physical gates — after jetway attach, return it to default position and teleport the next trainee; your TA can assist trainees at the mesh planes meanwhile</li>
+          </ul>
+        </li>
+      </ol>
+      <b>Set-up notes:</b>
+      <ul>
+        <li>More trainees than jetways (optional): marshalling/jetway on one or two real aircraft, rest of vehicles on mesh planes if the airport has them (e.g. Mark Neris)</li>
+        <li>If vehicles keep despawning: <code>:shutdown</code> the server → change airport → contact GCL. All vehicles must be working during the training.</li>
+        <li>Aeroware (A318/A321) preferred. If not working, other aircraft types are fine, but if it doesn't stay anchored after leaving the CPT seat, anchor manually with btools — doors won't work in that case, so inform the trainee and how to work around it.</li>
+      </ul>
+    </div></div>
+
+    <div class="rs-title">Server Opening</div>
+    <div class="rc"><div class="rc-text">
+      <ol>
+        <li>In #training-rooms, create a training room. Rename ticket to <code>gc-part-a</code> via <code>/ticket rename</code>, add trainees via <code>/ticket add</code>.</li>
+        <li>Run <code>!profile</code> on each trainee → Game tab. Accelerometer/gyroscope or no keyboard = likely mobile/tablet → report ticket in academy server with a screenshot, dismiss the trainee.</li>
+        <li>If not ranked, rank in #trainee-ranking: <code>;trainee-rank &lt;full username&gt; 120</code></li>
+        <li>Check the trainee database — remind them to fill the registration form if missing.</li>
+        <li><code>:slock</code> the server, remove the private server link from the training announcement.</li>
+        <li>Assign all trainees as Ground Crew via the staff panel.</li>
+      </ol>
+      <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;font-size:.82rem;margin-top:8px">
+        <code>:ann</code> Welcome to this Ground Operations Module 3 part A training! I am NAME, and I will be your trainer during this session.<br>
+        <code>:ann</code> Grammar is required for this training, including team chat.<br>
+        <code>:ann</code> You are allowed to use the guide, but your time is limited.<br>
+        <code>:ann</code> Please equip your uniform and name yourself. Use GC---- as a callsign.<br>
+        <code>:ann</code> We will now proceed with marshalling. Equip marshall sticks via <code>:give me mar</code>. One-by-one.
+      </div>
+    </div></div>
+
+    <div class="rs-title">Attaching</div>
+    <div class="rc"><div class="rc-text">
+      Vehicles: Fuel truck, Catering truck, Lavatory truck, GPU, ACU, Jetway — ACU attached last (if it flings, you may exempt the trainee if everything else was done correctly beforehand).<br>
+      <b>Time limit: 25 minutes.</b> Chat disabled → exempt from GPU, time limit −3 min. Fails to finish in time → fail immediately.
+      <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;font-size:.82rem;margin-top:8px">
+        <code>:notify all</code> Jetway, Fuel truck, Catering truck, Lavatory truck, GPU, ACU<br>
+        <code>:ann</code> ACU shall be attached last. Time limit 25 minutes — chat-disabled trainees may skip GPU for −3 minutes (tell me if that's you). You may begin. Good luck!
+      </div>
+    </div></div>
+
+    <div class="rs-title">Wingwalking (Final Stage)</div>
+    <div class="rc"><div class="rc-text">
+      Roles by trainee count: 1 → FO or CPT (your call) · 2 → FO + CPT · 3 → Front + FO + CPT · 4 → 2 rounds, split 2:2.<br>
+      Standard flight path (A) is mandatory.<br>
+      Keybinds: <b>5</b> inside turn · <b>10</b> straight pushback · <b>16</b> normal walking · <b>26</b> outside turn — wait for all trainees to confirm before starting.<br>
+      Dismiss after wingwalking finishes → go to Marking tab below.
+    </div></div>
+  </div>
+
+  <!-- ═══ M3 PART B ═══ -->
+  <div class="roletab" id="gct-m3b" style="display:none">
+    <div class="rs-title">Server Set-up</div>
+    <div class="rc"><div class="rc-text">
+      <ol>
+        <li>Approved airports: Punta Cana, Southwest. LHR only if neither of those works.</li>
+        <li>Insert a narrowbody at the destination airport, start of the landing runway (path A).</li>
+        <li>Setmessage: <code>:setmessage Welcome to this Ground Crew Module 3 part B Training! [-] Host: Username [-] Time: Time in EDT [-] Good luck!</code></li>
+        <li>Equip the standard Ground Manager uniform.</li>
+        <li>Name yourself: <code>:name me GCXXXX [-] Username [-] Training Host [-] Languages</code></li>
+        <li>If over 4 trainees:
+          <ul>
+            <li>Request a TA/GCT in #request-ta</li>
+            <li>Dismiss (not fail) trainees who can't name/uniform in reasonable time</li>
+            <li>FMC can run on two runways simultaneously — if only one runway, use both ends</li>
+            <li>Not enough stands at destination → extend apron with btools, or also use departure airport's stands</li>
+            <li>All trainees may attend</li>
+          </ul>
+        </li>
+      </ol>
+      <b>Set-up notes:</b>
+      <ul>
+        <li>Vehicles despawning → <code>:shutdown</code> → change airport → contact GCL</li>
+        <li>Aeroware preferred; if unanchored after CPT exit, btools-anchor manually (doors won't work — inform trainee)</li>
+        <li>Trainee count cannot exceed total stands/gates at the destination airport</li>
+      </ul>
+    </div></div>
+
+    <div class="rs-title">Server Opening</div>
+    <div class="rc"><div class="rc-text">
+      Same ticket/profile/ranking/slock/staff-panel steps as M3 Part A (rename ticket <code>gc-part-a</code>, add trainees, <code>!profile</code> Game-tab check, <code>;trainee-rank</code>, <code>:slock</code>, assign Ground Crew).
+      <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;font-size:.82rem;margin-top:8px">
+        <code>:ann</code> Welcome to this Ground Operations Module 3 part B training! I am NAME, and I will be your trainer during this session.<br>
+        <code>:ann</code> Grammar required, including team chat. Guide allowed but time-limited.<br>
+        <code>:ann</code> Equip uniform, name yourself with GC---- callsign.
+      </div>
+    </div></div>
+
+    <div class="rs-title">FMC</div>
+    <div class="rc"><div class="rc-text">
+      Simulate a landing aircraft the trainee must lead via FMC to the correct stand/gate (your choice, but communicate it clearly). Insert an aircraft at the start of the landing runway per trainee. On start, 5-second headstart simulating touchdown speed. FMC usually spawns in the air — put it down and confirm the trainee can drive it before starting. All trainees must finish FMC before moving on.
+      <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;font-size:.82rem;margin-top:8px">
+        <code>:ann</code> We will begin the FMC simulation. Lead the landing aircraft to the correct gate once called. The aircraft gets a 5-second headstart — start only after the countdown ends.<br>
+        <code>:cd 5</code>
+      </div>
+    </div></div>
+
+    <div class="rs-title">Attaching</div>
+    <div class="rc"><div class="rc-text">
+      Vehicles: Baggage truck (+ baggage cart), Baggage loader, Glasscover airstairs [L1], Airsteps [L2].<br>
+      <b>Time limit: 15 minutes.</b> Chat disabled → exempt from baggage truck (doc notes −5 min in the rule, −3 min in the announcement script — use your judgment / confirm with GCL which stands), still required to attach the baggage loader. Fails to finish in time → fail immediately.
+    </div></div>
+
+    <div class="rs-title">Buses</div>
+    <div class="rc"><div class="rc-text">
+      <b>Shuttle bus:</b> at the departure airport, insert an aircraft (preferably A318/A321) on a remote stand (or use mesh planes if available; if no remote stand, park on the tarmac at a realistic distance). Trainees insert one bus each, drive remote stand → gate → back. Check anchored + seatlock off before boarding; check seatlock enabled during the ride (split checks across trainees on multi-trainee rides if needed).<br><br>
+      <b>Irizar bus:</b> at the destination airport, trainees insert and park the bus, drive airport → resort (or a reasonable substitute distance if no resort). Driver may not leave the seat while anchored or the vehicle breaks. Check anchored + seatlock both ways.<br>
+      Dismiss after Irizar bus finishes → go to Marking tab below.
+    </div></div>
+  </div>
+
+  <!-- ═══ M4 & MARKING ═══ -->
+  <div class="roletab" id="gct-m4" style="display:none">
+    <div class="rs-title">Module 4 — In-Flight Supervision</div>
+    <div class="rc"><div class="rc-text">
+      Final stage of GC training. Notify the host and get permission before supervising — alliance/private (and similar) flight types automatically prohibit M4s.<br><br>
+      If allocated as supervisor, announce it in #upcoming-sv (personnel server) in the standard format.<br><br>
+      During the flight, assess overall Ground Crew performance <i>and</i> general flight knowledge (communication, admin command usage, professionalism, etc).<br><br>
+      After the flight: <code>/gct_mark_m4</code> to mark overall performance. You DM all generated formats/certificates to the trainee(s) yourself — unless marking is put to SGM review, in which case that responsibility shifts to them. The command auto-logs everything.
+    </div></div>
+
+    <div style="background:rgba(255,200,0,.08);border:1px solid rgba(255,200,0,.3);border-radius:10px;padding:10px 14px;font-size:.82rem;margin-bottom:12px">
+      <b>When logging &amp; marking M4s, do it in ONE command.</b> Separate all trainees with a comma: <code>/gct_mark_m4 trainee_usernames: User1, User2, User3</code><br><br>
+      It is <b>REQUIRED</b> to send the Graduation Certificate to M4 passers — it's provided below the bot's message and is only visible to you.
+    </div>
+
+    <div class="rs-title">M3 &amp; M4 Marking</div>
+    <div class="rc"><div class="rc-text">
+      To pass a role, the trainee must complete the key step and earn a set percentage of marks for that role.<br>
+      Fail 1 role → your discretion whether the session passes or fails.<br>
+      Fail 2+ roles → automatic session fail.<br>
+      Mark via <code>/gct_mark_m2</code> and <code>/gct_mark_m4</code>.
+    </div></div>
+  </div>
+
+  <!-- ═══ SITUATION HANDLING ═══ -->
+  <div class="roletab" id="gct-situations" style="display:none">
+    <div class="rs-title">Misbehaving Trainee</div>
+    <div class="rc"><div class="rc-text">
+      <ol>
+        <li>Take evidence (screenshots, videos)</li>
+        <li>Dismiss the trainee from the training. If it happens mid-flight, have the Flight Host dismiss them instead.</li>
+        <li>Report to HRD in the Pacific Academy.</li>
+      </ol>
+    </div></div>
+
+    <div class="rs-title">Suspected AI Use</div>
+    <div class="rc"><div class="rc-text">
+      Report to HRD in the Pacific Academy — <b>you are not allowed to fail the trainee yourself</b> for suspected AI use; HRD will instruct next steps.<br><br>
+      Signs (usually several together, not just one):
+      <ul>
+        <li>Answers that make sense in real life but not in SPA's context</li>
+        <li>Overall polished phrasing</li>
+        <li>Repetitive sentence structure across answers</li>
+        <li>Flawless, formal grammar with no personality</li>
+      </ul>
+      Perfect grammar alone isn't proof — treat it as one signal among several.
+    </div></div>
+
+    <div class="rs-title">Ticket Handling — Etiquette</div>
+    <div class="rc"><div class="rc-text">
+      <ol>
+        <li>Don't step into tickets claimed by someone else without their permission</li>
+        <li>Write correctly, stay professional</li>
+        <li>Don't debate the ticket in the ticket channel — use trainer channels if needed</li>
+        <li>Don't overping roles — max one role-ping per 24h unless truly necessary</li>
+        <li>Don't claim tickets you can't actually answer</li>
+      </ol>
+    </div></div>
+  </div>
+
+</div>
+
+<script>
+// Sub-tab switcher for the GCT guide (admin-only tab)
+function selGCT(name, btn) {
+  document.querySelectorAll('#page-gct .roletab').forEach(function (p) { p.style.display = 'none'; });
+  var target = document.getElementById('gct-' + name);
+  if (target) target.style.display = '';
+  document.querySelectorAll('#page-gct .roles-tab-row .roles-tab-btn').forEach(function (b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+}
+</script>
