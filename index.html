@@ -1095,7 +1095,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.39</span>
+      <span class="topbar-badge">v1.2.40</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -2122,7 +2122,7 @@ function showPage(p, btn) {
   if (p==='cc') renderCC();
   if (p==='greet') renderGreetings();
   if (p==='fleet') { setTimeout(renderFleet,0); }
-  if (p==='flight') { setTimeout(update,0); }
+  if (p==='flight') { update(); }
   if (p==='suggest') renderSuggestGate();
 }
 function showRole(role, btn, cls) {
