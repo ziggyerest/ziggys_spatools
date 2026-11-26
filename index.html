@@ -1095,7 +1095,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.39</span>
+      <span class="topbar-badge">v1.2.38</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -1994,6 +1994,8 @@ function selCC(tab, btn) {
   document.querySelectorAll('#cc-tabs button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   const data = CC[tab];
+  g('ub-single').classList.toggle('show', data.needsUser && !data.dual);
+  g('ub-dual').classList.toggle('show', data.dual);
   renderCC();
 }
 
@@ -2571,8 +2573,8 @@ function selectRoleTab(role, btn) {
 function rcopy(el) {
   var textEl = el.querySelector('.rc-text');
   if (!textEl) return;
-  var nm = (g('cc-naming-name')?.value||g('roles-name')?.value||'Ziggy').trim()||'Ziggy';
-  var text = (textEl.getAttribute('data-name') !== null || textEl.getAttribute('data-tpl') !== null)
+  var nm = ((document.getElementById('roles-name')||{}).value||'Ziggy').trim()||'Ziggy';
+  var text = textEl.getAttribute('data-name') !== null
     ? textEl.textContent.replace(/\[NAME\]/g, nm)
     : textEl.textContent;
   navigator.clipboard.writeText(text).catch(function(){
