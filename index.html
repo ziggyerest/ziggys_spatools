@@ -1096,7 +1096,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="topbar-logo">
       <div class="topbar-logo-icon">✈️</div>
       <span class="topbar-logo-text">SPA Flight Ops</span>
-      <span class="topbar-badge">v1.2.39</span>
+      <span class="topbar-badge">v1.2.40</span>
       <span class="topbar-badge" style="opacity:.6">428 routes</span>
       <button onclick="discordSignOut()" style="background:transparent;border:1px solid var(--border2);color:var(--text3);padding:3px 10px;border-radius:12px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:'Inter',sans-serif">Sign out</button>
     </div>
@@ -3189,6 +3189,7 @@ var LOCKED = {};
 var ALL_ACCESS_IDS = ['1327108083281035325'];
 function applyRoleLocks() {
   if (typeof gctApplyVisibility === 'function') gctApplyVisibility();
+  if (typeof dmApplyVisibility === 'function') dmApplyVisibility();
   var bypass = ALL_ACCESS_IDS.indexOf(localStorage.getItem('spa_discord_id')) !== -1;
   var roles = [];
   try { roles = JSON.parse(localStorage.getItem('spa_discord_roles') || '[]'); } catch (e) {}
@@ -4670,6 +4671,29 @@ function rankTitle() {
 }
 
 
+
+// ── DECK MANAGER sub-tab: visible/openable only with this Discord role ──
+var DM_ROLE_ID = '1194347013052047461';
+function dmApplyVisibility() {
+  var btn = document.getElementById('dm-tab-btn');
+  if (!btn) return;
+  var bypass = ALL_ACCESS_IDS.indexOf(localStorage.getItem('spa_discord_id')) !== -1;
+  var roles = [];
+  try { roles = JSON.parse(localStorage.getItem('spa_discord_roles') || '[]'); } catch (e) {}
+  var has = bypass || roles.indexOf(DM_ROLE_ID) !== -1;
+  btn.style.display = has ? '' : 'none';
+  var content = document.getElementById('dm-content');
+  var locked = document.getElementById('dm-locked');
+  if (content) content.style.display = has ? '' : 'none';
+  if (locked) locked.style.display = has ? 'none' : '';
+  // if the Deck Manager panel is open but access was just revoked, bounce back to Captain
+  var panel = document.getElementById('role-dm');
+  if (panel && panel.classList.contains('active') && !has) {
+    var cptBtn = document.querySelector('.role-tabs button.r-cpt') || document.querySelector('.role-tabs button');
+    if (cptBtn) cptBtn.click();
+  }
+}
+document.addEventListener('DOMContentLoaded', dmApplyVisibility);
 // ── GROUND CREW TRAINER: visible only to one Discord user id, like the Permissions tab ──
 var GCT_USER_ID = '1327108083281035325';
 function gctApplyVisibility() {

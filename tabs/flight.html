@@ -68,6 +68,7 @@
     <button class="active r-cpt" onclick="showRole('cpt',this,'r-cpt')">Captain</button>
     <button onclick="showRole('fo',this,'r-fo')">First Officer</button>
     <button onclick="showRole('so',this,'r-so')">Second Officer <span class="beta-badge">BETA</span></button>
+    <button id="dm-tab-btn" onclick="showRole('dm',this,'r-dm')" style="display:none">Deck Manager</button>
   </div>
 
   <!-- ── CAPTAIN ── -->
@@ -171,6 +172,49 @@
 </div>
 <div id="so-scripts"></div>
   </div>
+  <div id="role-dm" class="role-panel" data-role-gate="1194347013052047461">
+    <div id="dm-locked" class="info-box" style="display:none">This tab is locked to the Deck Manager role.</div>
+    <div id="dm-content">
+    <div class="s-section"><h3>Pre-Flight Duties</h3><div class="info-box" style="margin-bottom:8px">Join at xx:30, get teleported and assigned as Deck Manager. Name yourself and equip the Supervisor uniform, then prepare the briefing sheet during xx:30-33 using /briefing in the Briefing Sheet Generator channel or the Announcement Generator.</div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:name me (Senior) Deck Manager</div></div>
+<div class="info-box" style="margin-bottom:8px">Only post the briefing sheet once all FD members have shown up or told the Deck Manager/host they&#x27;ll be late or absent. If there&#x27;s no backup CPT/FO, put yourself in that spot. Airport Roam, Captain Announcements, Second Officer Announcements and First Officer Chat Roleplay should all default to Yes unless a special situation or missing role says otherwise.</div>
+</div>
+<div class="s-section"><h3>Briefing to Delag</h3><div class="info-box" style="margin-bottom:8px">Create a department private chat (no space between names, only one comma), then teleport everyone to the plane. Fly above the cockpit and bring FD members one by one, or notify staff to teleport to you.</div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:privatechat [User 1],[User 2],[User 3]</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:bring [Username]</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %staff -- Flight Deck please TP to me - DM</div></div>
+<div class="info-box" style="margin-bottom:8px">Once everyone is seated and ready, give delag permissions and monitor closely for bugs or speedlag.</div>
+</div>
+<div class="s-section"><h3>Delag to Boarding</h3><div class="info-box" style="margin-bottom:8px">FO and SO complete the walkaround and roam with the Deck Manager before economy check-in. The Second Officer runs ATC scripts correctly — without a SO, the FO or Deck Manager takes over ATC duties.</div>
+<div class="info-box" style="margin-bottom:8px">At xx:05-xx:06, all FD except CPT join the CC walk. When the Cabin Manager sends the “[CABIN CREW &amp; FD WALK]” notification, teleport to them as soon as possible and tell FO and SO to do the same.</div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:give me cabin</div></div>
+<div class="info-box" style="margin-bottom:8px">Wait for the Cabin Manager&#x27;s green light to board. If the cockpit only has 2 seats, take a spare jumpseat only after all Cabin Crew have one, or sit at the back of Economy. Stay in the cockpit during boarding, then move back into the cabin once Economy boarding finishes.</div>
+</div>
+<div class="s-section"><h3>Pushback to Landing</h3><div class="info-box" style="margin-bottom:8px">Watch every FD member throughout the flight and give timely reminders when something&#x27;s off — for example, if the Captain&#x27;s AOA is excessive, tell them directly in team chat, private chat, or with :npm admins, and make sure they acknowledge it and fix it.</div>
+<div class="info-box" style="margin-bottom:8px">Don&#x27;t micromanage FD at every stage unless they genuinely don&#x27;t know what to do, and never threaten or warn your crew for poor performance — keep the environment positive, and open an FD report in the Personnel Server after the flight if someone&#x27;s skills are questionable. Stay in your seat from pushback to deboard unless there&#x27;s an emergency.</div>
+</div>
+<div class="s-section"><h3>Shutdown to Deboard</h3><div class="info-box" style="margin-bottom:8px">After the host gives deboard permission, stay seated until all passengers have deboarded, then give your FD members deboard permission with the script below. Lead the FD crew off the aircraft and join post-flight activities if you&#x27;d like.</div>
+<div class="info-box" style="margin-bottom:8px">During debrief, tell every FD member about any mistakes and how to fix them, as well as what they did well.</div>
+</div>
+<div class="s-section"><h3>Post-Flight Duties</h3><div class="info-box" style="margin-bottom:8px">File the DM Post-Flight Report within 24 hours — this is key quality control for the department. Mention anything that happened, positive or negative, and DM an FDL member if the report needs special attention. If an FD member&#x27;s skills were questionable, open an FD report with evidence in #help on the Personnel Server.</div>
+</div>
+<div class="s-section"><h3>Handling Situations</h3><div class="info-box" style="margin-bottom:8px">Use common sense first. Never discourage an FD member or say anything that could. For a CPT/FO/SO replacement: stay calm, ask the host for permission except in a genuine emergency (switch immediately and inform the host after), and time the switch for cruising unless urgency demands otherwise.</div>
+<div class="info-box" style="margin-bottom:8px">Avoid switching while the aircraft is unanchored or uncruised, while FD members are unaware of the switch, or after 2+ switches already — only break this rule if there&#x27;s truly no other way.</div>
+<div class="info-box" style="margin-bottom:8px">Switch with whoever holds the necessary certification and needs the least time to switch — FO first for a CPT swap, then yourself if FO can&#x27;t take it. Document everything in the post-flight report and open FD reports when needed. DM an FDL member if you&#x27;re ever unsure.</div>
+</div>
+<div class="s-section"><h3>Deck Manager Scripts</h3><div class="info-box" style="margin-bottom:8px">Customize each announcement with your name, the flight number, destination, aircraft and timings before pushback. You can also use the Announcement Generator.</div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:n Ladies and Gentlemen, this is Deck Manager [NAME] speaking, and we would like to welcome you aboard South Pacific Airways flight SPAXXX to [DESTINATION]. The flight deck would like to extend a warm welcome on board, as our lovely Captain and First Officer will be operating today&#x27;s flight aboard our [AIRCRAFT]. | !wait 10 | :n We are expecting a flight time of X hours, and our flight path appears clear with light turbulence expected ahead. For now, we wish you a pleasant flight.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:n Ladies and Gentlemen, we will be departing from runway X shortly, so please remain seated with your seatbelts fastened, window blinds open, and your seat and tray table in the upright position. | !wait 10 | :n Cabin Crew, please be seated for departure.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:n Ladies and Gentlemen, I am happy to inform you that we have reached our cruising altitude. Our Cabin Crew will be coming through the cabin to offer a wide selection of meals and beverages. Feel free to check out our inflight entertainment throughout the flight. | !wait 10 | :n For your safety, we kindly ask you to remain seated with your seatbelt fastened in case of unexpected turbulence. If you do require any assistance, please use the call button located above you. For now, we wish you a pleasant flight.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:n Ladies and Gentlemen, we will shortly start our descent into [DESTINATION]. At this time, please return to your seats, stow any baggage in the overhead bins or under the seat in front of you, set your seat to the upright position, and fasten your seatbelt securely. Our Cabin Crew will be coming through the cabin shortly to collect any trash. We hope you have enjoyed your flight.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:n Ladies and Gentlemen, we will be landing at our destination shortly. Ensure that your seatbelt is fastened, window blinds open, and your seat and tray table are in the upright position. We thank you for your cooperation.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:n Ladies and Gentlemen, welcome to [ARRIVAL], where the local time is [TIME IN ARRIVAL] with temperatures of X Fahrenheit and X Celsius. We hope you enjoyed the smooth landing.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:n Ladies and Gentlemen, this is your Deck Manager [NAME] speaking. We have arrived in [ARRIVAL], where the local time is [TIME], and the weather is currently [WEATHER] with temperatures of X Fahrenheit and X Celsius. | !wait 10 | :n You will be able to deboard the aircraft shortly. The Flight Deck has been pleased to have served you on today&#x27;s flight, and we thank you for choosing South Pacific Airways as your travel partner.</div></div>
+<div class="s-block" onclick="cp(this)"><span class="copy-hint">click to copy</span><div class="s-text pf-cmd">:notify %sta Flight Deck members may deboard the aircraft now! - DM/SDM</div></div>
+</div>
+    </div>
+  </div>
+
 
 
 
